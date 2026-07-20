@@ -3,7 +3,7 @@ import { Navbar }    from '../components/Navbar.js';
 import { Footer }    from '../components/Footer.js';
 import { ebooksData } from '../data/ebooks.js';
 
-const WA = 'https://wa.me/5551992395284?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta.';
+const WA = 'https://wa.me/5551992395284';
 
 export class HomePage {
   constructor(container) {

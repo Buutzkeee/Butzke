@@ -1,7 +1,7 @@
 /* ===============================
    Navbar Component
    =============================== */
-const WA = 'https://wa.me/5551992395284?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta.';
+const WA = 'https://wa.me/5551992395284';
 
 export class Navbar {
   static render(activePage = '') {
