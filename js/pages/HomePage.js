@@ -219,9 +219,9 @@ export class HomePage {
   /* ---- DEPOIMENTOS ---- */
   _depoimentos() {
     const deps = [
-      { text: 'O atendimento mudou minha forma de enxergar a espiritualidade.', author: '— Cliente verificado', tag: 'Consulta de Tarot' },
-      { text: 'Material extremamente completo. Superou minhas expectativas em tudo.', author: '— Leitor do eBook', tag: 'Quimbanda: O Caminho da Força' },
-      { text: 'Valeu cada centavo. Recomendo de olhos fechados.', author: '— Cliente verificado', tag: 'Trabalho Espiritual' },
+      { text: 'O atendimento mudou minha forma de enxergar a espiritualidade.', author: 'Fernando P. — Curitiba / PR', tag: 'Consulta de Tarot' },
+      { text: 'Material extremamente completo. Superou minhas expectativas em tudo.', author: 'Carlos E. — Belo Horizonte / MG', tag: 'Quimbanda: O Caminho da Força' },
+      { text: 'Valeu cada centavo. Recomendo de olhos fechados.', author: 'Aline T. — Fortaleza / CE', tag: 'Trabalho Espiritual' },
       { text: 'Em duas semanas veio uma proposta de trabalho que dobrou meu salário. Eu ainda não acredito.', author: 'Marina S. — Rio de Janeiro', tag: 'eBook Quimbanda' },
       { text: 'Meu ex voltou. Sem drama, sem novela, do jeito que a Pombagira ensinou.', author: 'Rafael M. — São Paulo', tag: 'Trabalho Amoroso' },
       { text: 'O livro me deu o feitiço certo e a proteção certa. Hoje durmo em paz pela primeira vez.', author: 'Juliana R. — Salvador', tag: 'eBook Quimbanda' },
