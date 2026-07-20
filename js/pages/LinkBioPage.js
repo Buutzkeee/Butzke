@@ -1,7 +1,7 @@
 import { Router }    from '../router.js';
 import { ebooksData } from '../data/ebooks.js';
 
-const WA = 'https://wa.me/55519395284?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta.';
+const WA = 'https://wa.me/5551992395284?text=Ol%C3%A1%2C%20gostaria%20de%20agendar%20uma%20consulta.';
 
 /* ============================================================
    Link Bio Page — Standalone, sem navbar/footer
@@ -91,8 +91,7 @@ export class LinkBioPage {
 
           ${ebooksData.map(e => `
           <div class="link-card ${e.featured ? 'featured' : ''}" style="margin-bottom: 14px;">
-            <a href="${e.featured ? '#/ebook/' + e.slug : e.paymentLink}"
-               ${!e.featured ? 'target="_blank"' : ''}
+            <a href="#/ebook/${e.slug}"
                class="link-btn">
               <div class="btn-icon" style="font-size:2rem">${e.icon}</div>
               <div class="btn-content">

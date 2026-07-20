@@ -13,7 +13,7 @@ export class Footer {
             <div class="footer-brand-btns">
               <a href="https://www.instagram.com/buutzke/" target="_blank"
                  class="btn btn-outline" style="padding:8px 16px;font-size:.8rem" id="footer-ig">@buutzke</a>
-              <a href="https://wa.me/55519395284" target="_blank"
+              <a href="https://wa.me/5551992395284" target="_blank"
                  class="btn btn-primary" style="padding:8px 16px;font-size:.8rem" id="footer-wa">WhatsApp</a>
             </div>
           </div>

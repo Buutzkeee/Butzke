@@ -37,7 +37,7 @@ export class SobrePage {
               </div>
               <div class="sp-btns">
                 <a href="https://www.instagram.com/buutzke/" target="_blank" class="btn btn-primary" id="sp-ig">@buutzke no Instagram</a>
-                <a href="https://wa.me/55519395284" target="_blank" class="btn btn-outline" id="sp-wa">WhatsApp</a>
+                <a href="https://wa.me/5551992395284" target="_blank" class="btn btn-outline" id="sp-wa">WhatsApp</a>
               </div>
             </div>
           </div>
