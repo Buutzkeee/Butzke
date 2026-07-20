@@ -6,14 +6,24 @@ export class Router {
     this.routes = routes;
     this.app = document.getElementById('app');
     this.appendUTMs();
-    window.addEventListener('hashchange', () => this._navigate());
+    this._interceptLinks();
+    window.addEventListener('popstate', () => this._navigate());
   }
 
   start() {
-    if (!window.location.hash || window.location.hash === '#') {
-      window.location.hash = '#/';
-    }
     this._navigate();
+  }
+
+  _interceptLinks() {
+    document.body.addEventListener('click', e => {
+      const link = e.target.closest('a');
+      if (link && link.getAttribute('href') && link.getAttribute('href').startsWith('/')) {
+        e.preventDefault();
+        const path = link.getAttribute('href');
+        window.history.pushState(null, '', path);
+        this._navigate();
+      }
+    });
   }
 
   appendUTMs() {
@@ -47,16 +57,17 @@ export class Router {
 
     // Run it now and also after every route change
     appendToLinks();
-    window.addEventListener('hashchange', () => {
-      setTimeout(appendToLinks, 300);
-    });
   }
 
   _navigate() {
-    const hash = window.location.hash || '#/';
-    if (!hash.startsWith('#/')) return; // ignore section anchors
+    // Get path from pathname instead of hash
+    let path = window.location.pathname;
+    
+    // If hosted on GitHub pages without custom domain, remove the repo name /Butzke
+    if (window.location.hostname.includes('.github.io') && path.startsWith('/Butzke')) {
+      path = path.replace('/Butzke', '') || '/';
+    }
 
-    const path = hash.slice(1) || '/';
     let PageClass = null;
     let params = {};
 
@@ -75,6 +86,9 @@ export class Router {
     this.app.innerHTML = '';
 
     if (PageClass) new PageClass(this.app, params);
+    
+    // re-append UTMs after rendering new view
+    setTimeout(() => this.appendUTMs(), 100);
   }
 
   _match(pattern, path) {
@@ -99,7 +113,8 @@ export class Router {
   }
 
   static go(path) {
-    window.location.hash = '#' + path;
+    window.history.pushState(null, '', path);
+    window.dispatchEvent(new Event('popstate'));
   }
 
   static initReveal() {

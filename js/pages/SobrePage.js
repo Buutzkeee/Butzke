@@ -90,8 +90,8 @@ export class SobrePage {
             <div class="ornament">✦ BUUTZKE ✦</div>
             <h2 class="section-title reveal" style="margin:24px 0">Pronto para começar <span class="text-gold">sua jornada?</span></h2>
             <div class="sp-cta-btns reveal delay-1">
-              <a href="#/ebooks" class="btn btn-primary btn-lg btn-shimmer" id="sp-cta-ebooks">Ver os eBooks</a>
-              <a href="#/atendimentos" class="btn btn-outline btn-lg" id="sp-cta-atend">Agendar Atendimento</a>
+              <a href="/ebooks" class="btn btn-primary btn-lg btn-shimmer" id="sp-cta-ebooks">Ver os eBooks</a>
+              <a href="/atendimentos" class="btn btn-outline btn-lg" id="sp-cta-atend">Agendar Atendimento</a>
             </div>
           </div>
         </section>

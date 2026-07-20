@@ -26,7 +26,7 @@ export class EbookSalesPage {
         </div>
 
         <!-- Back button -->
-        <a href="#/" class="back-btn" id="back-btn" style="position: absolute; top: 20px; left: 20px; z-index: 100;">
+        <a href="/" class="back-btn" id="back-btn" style="position: absolute; top: 20px; left: 20px; z-index: 100;">
           ← Voltar ao Portal
         </a>
 

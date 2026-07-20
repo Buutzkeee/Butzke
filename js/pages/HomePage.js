@@ -49,7 +49,7 @@ export class HomePage {
             Aprenda através de eBooks, conteúdos exclusivos e atendimentos particulares.
           </p>
           <div class="hero-ctas reveal delay-3">
-            <a href="#/ebooks" class="btn btn-primary" id="hero-ebooks">
+            <a href="/ebooks" class="btn btn-primary" id="hero-ebooks">
                <span style="margin-right:6px">📖</span> CONHECER OS EBOOKS
             </a>
             <a href="${WA}" target="_blank" class="btn btn-outline" id="hero-agendar" style="border-color: rgba(255,255,255,0.1); color: #fff;">

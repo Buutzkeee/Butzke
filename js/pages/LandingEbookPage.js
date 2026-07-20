@@ -349,7 +349,7 @@ export class LandingEbookPage {
       <div style="padding:200px 24px;text-align:center">
         <h2>eBook não encontrado</h2>
         <p style="margin:16px 0">O eBook que você procura não existe.</p>
-        <a href="#/ebooks" class="btn btn-primary">Ver todos os eBooks</a>
+        <a href="/ebooks" class="btn btn-primary">Ver todos os eBooks</a>
       </div>
       ${Footer.render()}`;
     Navbar.init();

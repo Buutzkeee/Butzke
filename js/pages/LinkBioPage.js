@@ -51,7 +51,7 @@ export class LinkBioPage {
 
           <!-- Site principal -->
           <div class="link-card" id="card-site">
-            <a href="#/" class="link-btn" id="btn-site">
+            <a href="/" class="link-btn" id="btn-site">
               <div class="btn-icon">🌐</div>
               <div class="btn-content">
                 <span class="btn-title">Meu Site Oficial</span>
@@ -91,7 +91,7 @@ export class LinkBioPage {
 
           ${ebooksData.map(e => `
           <div class="link-card ${e.featured ? 'featured' : ''}" style="margin-bottom: 14px;">
-            <a href="#/ebook/${e.slug}"
+            <a href="/ebook/${e.slug}"
                class="link-btn">
               <div class="btn-icon" style="font-size:2rem">${e.icon}</div>
               <div class="btn-content">

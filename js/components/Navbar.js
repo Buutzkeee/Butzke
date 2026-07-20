@@ -11,7 +11,7 @@ export class Navbar {
     return `
     <nav class="navbar" id="navbar">
       <div class="container navbar-inner">
-        <a href="#/" class="navbar-logo" id="nav-logo">BUUTZKE</a>
+        <a href="/" class="navbar-logo" id="nav-logo">BUUTZKE</a>
 
         <div class="navbar-links" id="nav-links">
           ${link('#/', 'HOME', 'home')}
@@ -33,12 +33,12 @@ export class Navbar {
 
     <div class="navbar-overlay" id="nav-overlay"></div>
     <div class="navbar-mobile" id="nav-mobile">
-      <a href="#/" id="mob-home">Home</a>
-      <a href="#/ebooks" id="mob-ebooks">eBooks</a>
-      <a href="#/atendimentos" id="mob-atendimentos">Atendimentos</a>
+      <a href="/" id="mob-home">Home</a>
+      <a href="/ebooks" id="mob-ebooks">eBooks</a>
+      <a href="/atendimentos" id="mob-atendimentos">Atendimentos</a>
       <a href="https://www.instagram.com/buutzke/" target="_blank" id="mob-ig">Instagram</a>
-      <a href="#/sobre" id="mob-sobre">Sobre</a>
-      <a href="#/linkbio" id="mob-linkbio">Link Bio</a>
+      <a href="/sobre" id="mob-sobre">Sobre</a>
+      <a href="/linkbio" id="mob-linkbio">Link Bio</a>
       <a href="${WA}" target="_blank" class="btn btn-primary btn-full" id="mob-cta" style="margin-top:20px;">Agendar Consulta</a>
     </div>`;
   }

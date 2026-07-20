@@ -8,7 +8,7 @@ export class Footer {
       <div class="container">
         <div class="footer-grid">
           <div class="footer-brand">
-            <a href="#/" class="footer-logo">BUUTZKE</a>
+            <a href="/" class="footer-logo">BUUTZKE</a>
             <p>O oculto sem fantasias. Quimbanda, Exu e espiritualidade real.</p>
             <div class="footer-brand-btns">
               <a href="https://www.instagram.com/buutzke/" target="_blank"
@@ -21,11 +21,11 @@ export class Footer {
           <div class="footer-col">
             <h5>Navegação</h5>
             <ul>
-              <li><a href="#/" id="fl-home">Home</a></li>
-              <li><a href="#/ebooks" id="fl-ebooks">eBooks</a></li>
-              <li><a href="#/atendimentos" id="fl-atend">Atendimentos</a></li>
-              <li><a href="#/sobre" id="fl-sobre">Sobre</a></li>
-              <li><a href="#/linkbio" id="fl-linkbio">Link Bio</a></li>
+              <li><a href="/" id="fl-home">Home</a></li>
+              <li><a href="/ebooks" id="fl-ebooks">eBooks</a></li>
+              <li><a href="/atendimentos" id="fl-atend">Atendimentos</a></li>
+              <li><a href="/sobre" id="fl-sobre">Sobre</a></li>
+              <li><a href="/linkbio" id="fl-linkbio">Link Bio</a></li>
             </ul>
           </div>
 

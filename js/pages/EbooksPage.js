@@ -45,7 +45,7 @@ export class EbooksPage {
                 </div>
                 <div class="efc-actions">
                   ${e.featured
-                    ? `<a href="#/ebook/${e.slug}" class="btn btn-outline" id="efc-ver-${e.slug}">Ver detalhes</a>`
+                    ? `<a href="/ebook/${e.slug}" class="btn btn-outline" id="efc-ver-${e.slug}">Ver detalhes</a>`
                     : ''}
                   <a href="${e.featured ? '#/ebook/' + e.slug : e.paymentLink}"
                      ${!e.featured ? 'target="_blank"' : ''}
