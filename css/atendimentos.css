@@ -1,0 +1,66 @@
+/* === ATENDIMENTOS PAGE CSS === */
+
+.atend-hero { padding-top: calc(var(--nav-h) + 60px); }
+.atend-hero-icon {
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  display: block;
+  animation: floatIcon 3s ease-in-out infinite;
+}
+@keyframes floatIcon { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+
+.atend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.atend-card { text-align: center; }
+.atend-card-icon { font-size: 2.2rem; margin-bottom: 14px; }
+.atend-card h3 { font-size: 1.1rem; margin-bottom: 10px; }
+.atend-card p { font-size: 0.86rem; margin-bottom: 16px; }
+.atend-prazo {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 16px;
+  letter-spacing: 0.5px;
+}
+
+/* Processo */
+.processo-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+.prc-step {
+  text-align: center;
+  padding: 24px 16px;
+  background: var(--bg-card);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius);
+  transition: var(--transition);
+}
+.prc-step:hover { border-color: var(--gold-border-hover); transform: translateY(-4px); }
+.prc-num {
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--grad-btn);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #fff;
+  margin: 0 auto 16px;
+  box-shadow: 0 4px 14px rgba(192,57,43,0.3);
+}
+.prc-step h4 { font-size: 0.9rem; margin-bottom: 8px; }
+.prc-step p  { font-size: 0.8rem; }
+
+@media (max-width: 900px) {
+  .atend-grid     { grid-template-columns: repeat(2, 1fr); }
+  .processo-grid  { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 580px) {
+  .atend-grid    { grid-template-columns: 1fr; }
+  .processo-grid { grid-template-columns: 1fr; }
+}

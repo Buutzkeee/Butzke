@@ -1,0 +1,62 @@
+/* === EBOOKS PAGE CSS === */
+
+.ebooks-page { padding-top: calc(var(--nav-h) + 40px); }
+
+.ebooks-full-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+.ebook-full-card {
+  display: flex;
+  flex-direction: column;
+}
+.efc-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.efc-icon { font-size: 2.2rem; }
+.efc-meta { text-align: right; display: flex; flex-direction: column; gap: 4px; align-items: flex-end; }
+.efc-cat {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.efc-title { font-size: 1.2rem; margin-bottom: 4px; }
+.efc-sub { font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px; }
+.efc-desc { font-size: 0.88rem; margin-bottom: 16px; }
+.efc-topics {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+.efc-topics li { font-size: 0.82rem; color: var(--text-muted); }
+.efc-price-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 20px;
+  margin-top: auto;
+}
+.efc-from { font-size: 0.78rem; color: var(--text-faint); text-decoration: line-through; }
+.efc-price {
+  font-family: var(--font-title);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+.efc-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.efc-actions .btn { flex: 1; min-width: 120px; }
+
+@media (max-width: 900px) {
+  .ebooks-full-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 580px) {
+  .ebooks-full-grid { grid-template-columns: 1fr; }
+}
