@@ -14,11 +14,11 @@ export class Navbar {
         <a href="/" class="navbar-logo" id="nav-logo">BUUTZKE</a>
 
         <div class="navbar-links" id="nav-links">
-          ${link('#/', 'HOME', 'home')}
-          ${link('#/ebooks', 'EBOOKS', 'ebooks')}
-          ${link('#/atendimentos', 'ATENDIMENTOS', 'atendimentos')}
+          ${link('/', 'HOME', 'home')}
+          ${link('/ebooks', 'EBOOKS', 'ebooks')}
+          ${link('/atendimentos', 'ATENDIMENTOS', 'atendimentos')}
           <a href="https://www.instagram.com/buutzke/" target="_blank" id="nav-ig">INSTAGRAM</a>
-          ${link('#/sobre', 'SOBRE', 'sobre')}
+          ${link('/sobre', 'SOBRE', 'sobre')}
           <a href="${WA}" target="_blank" id="nav-contato">CONTATO</a>
         </div>
 

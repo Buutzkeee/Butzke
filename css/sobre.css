@@ -18,13 +18,10 @@
 .sp-av {
   width: 240px; height: 240px;
   border-radius: 50%;
-  background: var(--grad-btn);
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-title);
-  font-size: 5.5rem;
-  font-weight: 700;
-  color: #fff;
+  object-fit: cover;
+  border: 2px solid var(--gold-border);
   box-shadow: 0 0 80px rgba(192,57,43,0.2);
+  display: block;
 }
 .sp-av-ring {
   position: absolute;

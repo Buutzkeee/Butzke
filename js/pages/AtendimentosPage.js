@@ -24,7 +24,7 @@ export class AtendimentosPage {
     ];
 
     const faqs = [
-      { q: 'Quanto tempo demora o atendimento?', a: 'Depende do tipo de trabalho. Consultas de Tarot são realizadas em até 48h. Trabalhos espirituais podem levar de 3 a 21 dias conforme a força necessária.' },
+      { q: 'Quanto tempo demora o atendimento?', a: 'O prazo depende do tipo de trabalho e da demanda espiritual. Tudo será alinhado e combinado com total transparência diretamente com você pelo WhatsApp antes do início.' },
       { q: 'Os trabalhos são presenciais?', a: 'Não necessariamente. A maioria dos atendimentos pode ser feita à distância com a mesma eficácia. Entre em contato pelo WhatsApp para alinhamos os detalhes.' },
       { q: 'Os trabalhos espirituais são seguros?', a: 'Sim. Todo trabalho é conduzido com respeito às tradições e dentro de uma ética espiritual séria. Trabalho com responsabilidade e sem promessas vazias.' },
       { q: 'Como funciona o pagamento?', a: 'Alinhamos os valores e condições diretamente pelo WhatsApp antes de qualquer trabalho. Transparência total em todas as etapas.' },
@@ -60,8 +60,7 @@ export class AtendimentosPage {
                 <div class="atend-card-icon">${s.icon}</div>
                 <h3>${s.title}</h3>
                 <p>${s.desc}</p>
-                <div class="atend-prazo">⏱ Prazo: ${s.prazo}</div>
-                <a href="${WA}" target="_blank" class="btn btn-outline" id="${s.id}">Agendar no WhatsApp</a>
+                <a href="${WA}" target="_blank" class="btn btn-outline" id="${s.id}" style="margin-top: 16px;">Agendar no WhatsApp</a>
               </div>`).join('')}
             </div>
           </div>

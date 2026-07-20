@@ -20,7 +20,7 @@ export class SobrePage {
           <div class="container sobre-page-grid">
             <div class="sp-visual reveal">
               <div class="sp-av-wrap">
-                <div class="sp-av">E</div>
+                <img src="assets/foto-perfil.png" alt="Eduardo Souza" class="sp-av">
                 <div class="sp-av-ring"></div>
                 <div class="sp-av-ring ring2"></div>
               </div>
