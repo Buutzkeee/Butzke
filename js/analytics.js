@@ -15,6 +15,11 @@ export class Analytics {
     };
   }
 
+  // Variáveis para rastrear tempo de tela
+  static pageEntryTime = Date.now();
+  static currentPagePath = window.location.pathname;
+  static timeTrackerInitialized = false;
+
   /**
    * Envia dados para o Google Sheets
    * @param {string} eventType 'PAGEVIEW' ou 'CLICK'
@@ -40,6 +45,7 @@ export class Analytics {
       fetch(WEBHOOK_URL, {
         method: 'POST',
         mode: 'no-cors', // Fundamental para não dar erro de CORS no Sheets
+        keepalive: true, // Garante que envie mesmo se a pessoa fechar a aba
         headers: {
           'Content-Type': 'application/json'
         },
@@ -64,9 +70,55 @@ export class Analytics {
     return path;
   }
 
+  static trackTimeOnPreviousPage() {
+    if (!this.currentPagePath) return;
+    
+    const timeSpentSeconds = Math.round((Date.now() - this.pageEntryTime) / 1000);
+    
+    // Só envia se ficou mais de 3 segundos
+    if (timeSpentSeconds > 3) {
+      const pageName = this.getPageName(this.currentPagePath);
+      
+      // Gambiarra necessária porque o fetch no beforeunload usa a URL atual da janela,
+      // mas precisamos garantir que o path do evento seja da página anterior.
+      const payload = {
+        timestamp: new Date().toISOString(),
+        eventType: 'TEMPO DE TELA',
+        eventName: 'Saiu da Página',
+        eventDetail: `Ficou ${timeSpentSeconds} segundos na página: ${pageName}`,
+        pagePath: this.currentPagePath,
+        ...this.getUTMs()
+      };
+      
+      fetch(WEBHOOK_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        keepalive: true,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      }).catch(() => {});
+    }
+  }
+
   static trackPageview() {
+    // 1. Registra o tempo que a pessoa passou na página ANTERIOR
+    if (this.currentPagePath && this.currentPagePath !== window.location.pathname) {
+      this.trackTimeOnPreviousPage();
+    }
+
+    // 2. Avisa que entrou na NOVA página
     const pageName = this.getPageName(window.location.pathname);
     this.sendData('VISITA', 'Acessou a Página', pageName);
+
+    // 3. Reseta o relógio para a NOVA página
+    this.currentPagePath = window.location.pathname;
+    this.pageEntryTime = Date.now();
+    
+    // 4. Inicia o rastreador de fechamento de aba (só 1 vez)
+    if (!this.timeTrackerInitialized) {
+      window.addEventListener('beforeunload', () => this.trackTimeOnPreviousPage());
+      this.timeTrackerInitialized = true;
+    }
   }
 
   static initClickTracker() {
