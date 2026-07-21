@@ -6,7 +6,7 @@ import { ebooksData } from '../data/ebooks.js';
 export class EbooksPage {
   constructor(container) {
     this.container = container;
-    Router.loadCSS('css/ebooks.css');
+    Router.loadCSS('/css/ebooks.css');
     this._render();
     Navbar.init();
     Router.initReveal();

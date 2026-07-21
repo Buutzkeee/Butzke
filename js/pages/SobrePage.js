@@ -5,7 +5,7 @@ import { Footer } from '../components/Footer.js';
 export class SobrePage {
   constructor(container) {
     this.container = container;
-    Router.loadCSS('css/sobre.css');
+    Router.loadCSS('/css/sobre.css');
     this._render();
     Navbar.init();
     Router.initReveal();

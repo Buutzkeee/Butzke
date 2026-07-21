@@ -8,7 +8,7 @@ const WA = 'https://wa.me/5551992395284';
 export class HomePage {
   constructor(container) {
     this.container = container;
-    Router.loadCSS('css/home.css');
+    Router.loadCSS('/css/home.css');
     this._render();
     Navbar.init();
     Router.initReveal();
@@ -77,7 +77,7 @@ export class HomePage {
         </div>
         <div class="hero-right reveal delay-2">
           <div class="hero-photo-wrap">
-            <img src="assets/foto-hero.jpg" alt="Eduardo Souza" class="hero-photo">
+            <img src="/assets/foto-hero.jpg" alt="Eduardo Souza" class="hero-photo">
             <div class="hero-photo-glow"></div>
           </div>
         </div>
@@ -124,7 +124,7 @@ export class HomePage {
       <div class="container sobre-grid">
         <div class="sobre-visual reveal" style="justify-content: flex-start;">
           <div class="sobre-photo-wrap" style="max-width: 100%;">
-            <img src="assets/foto-sobre.jpg" alt="Eduardo Souza" class="sobre-photo" style="max-height: 700px;">
+            <img src="/assets/foto-sobre.jpg" alt="Eduardo Souza" class="sobre-photo" style="max-height: 700px;">
             <div class="sobre-photo-border"></div>
           </div>
         </div>

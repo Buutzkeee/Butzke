@@ -8,7 +8,7 @@ export class LandingEbookPage {
     this.container = container;
     this.slug  = params.slug;
     this.ebook = getEbookBySlug(this.slug);
-    Router.loadCSS('css/landing-ebook.css?v=' + Date.now());
+    Router.loadCSS('/css/landing-ebook.css?v=' + Date.now());
 
     if (!this.ebook) { this._notFound(); return; }
     this._render();
@@ -43,38 +43,47 @@ export class LandingEbookPage {
     <section class="lhero">
       <div class="lhero-orb lhero-orb1"></div>
       <div class="lhero-orb lhero-orb2"></div>
-      <div class="container lhero-body">
-        <div class="lhero-badge">✦ ${e.badge || 'CONTEÚDO EXCLUSIVO'} ✦</div>
-        <h1 class="lhero-title" style="font-size:clamp(2.2rem,6vw,3.5rem); margin-bottom: 24px;">${e.title}</h1>
-        <p class="lhero-sub" style="font-size:1.15rem; color:var(--gold); margin-bottom:16px;">
-          ${e.heroText}
-        </p>
-        <p style="color:#cccccc; font-size:1rem; max-width:600px; margin:0 auto 32px;">
-          ${e.shortDesc}
-        </p>
+      <div class="container lhero-body" style="display: flex; flex-wrap: wrap; gap: 60px; align-items: center; justify-content: center; text-align: left; position: relative; z-index: 2;">
         
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
-          <div class="ltimer" id="ltimer" style="margin-bottom: 24px;">
-            <div class="ltimer-label">⚡ OFERTA RELÂMPAGO — expira em:</div>
-            <div class="ltimer-display">
-              <div class="ltimer-unit"><span id="th">00</span><small>horas</small></div>
-              <div class="ltimer-sep">:</div>
-              <div class="ltimer-unit"><span id="tm">00</span><small>min</small></div>
-              <div class="ltimer-sep">:</div>
-              <div class="ltimer-unit"><span id="ts">00</span><small>seg</small></div>
-            </div>
-          </div>
+        <div style="flex: 1; min-width: 300px; max-width: 600px;">
+          <div class="lhero-badge" style="margin-bottom: 20px; font-size: 0.8rem; letter-spacing: 4px;">✦ ${e.badge || 'CONTEÚDO EXCLUSIVO'} ✦</div>
+          <h1 class="lhero-title" style="font-size:clamp(2rem,5vw,3rem); margin: 0 0 20px 0; text-align: left; max-width: 100%; animation: none;">${e.title}</h1>
+          <p class="lhero-sub" style="font-size:1.15rem; color:var(--gold); margin: 0 0 16px 0; text-align: left; max-width: 100%; animation: none;">
+            ${e.heroText}
+          </p>
+          <p style="color:#cccccc; font-size:1rem; margin-bottom: 32px; text-align: left; line-height: 1.6;">
+            ${e.shortDesc}
+          </p>
           
-          <a href="${e.paymentLink}" target="_blank" class="btn btn-primary btn-lg btn-shimmer lcta" id="hero-cta" style="margin-bottom: 24px; display: inline-flex;">
-            Quero Meu Acesso Agora
-          </a>
+          <div style="display: flex; flex-direction: column; align-items: flex-start;">
+            <div class="ltimer" id="ltimer" style="margin: 0 0 24px 0;">
+              <div class="ltimer-label">⚡ OFERTA RELÂMPAGO — expira em:</div>
+              <div class="ltimer-display">
+                <div class="ltimer-unit"><span id="th">00</span><small>horas</small></div>
+                <div class="ltimer-sep">:</div>
+                <div class="ltimer-unit"><span id="tm">00</span><small>min</small></div>
+                <div class="ltimer-sep">:</div>
+                <div class="ltimer-unit"><span id="ts">00</span><small>seg</small></div>
+              </div>
+            </div>
+            
+            <a href="${e.paymentLink}" target="_blank" class="btn btn-primary btn-lg btn-shimmer lcta" id="hero-cta" style="margin: 0 0 24px 0; padding: 20px 40px; font-size: 1.1rem;">
+              Quero Meu Acesso Agora
+            </a>
+          </div>
+
+          <div class="ltrust" style="justify-content: flex-start; gap: 20px;">
+            <span>Acesso imediato</span>
+            <span>Pagamento seguro</span>
+            <span>7 dias de garantia</span>
+          </div>
         </div>
 
-        <div class="ltrust">
-          <span>Acesso imediato</span>
-          <span>Pagamento seguro</span>
-          <span>7 dias de garantia</span>
+        <div style="flex: 1; min-width: 300px; max-width: 450px; display: flex; justify-content: center; position: relative;">
+          <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 120%; height: 120%; background: radial-gradient(circle, rgba(212,160,23,0.15) 0%, transparent 60%); z-index: 0; filter: blur(30px); pointer-events: none;"></div>
+          <img src="${e.imageHome}" alt="${e.title}" style="width: 100%; max-width: 400px; height: auto; border-radius: var(--radius-sm); border: 1px solid var(--gold-border-hover); box-shadow: 0 20px 50px rgba(0,0,0,0.8), 0 0 30px rgba(212,160,23,0.15); z-index: 1; transform: perspective(1000px) rotateY(-12deg); transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);" onmouseover="this.style.transform='perspective(1000px) rotateY(0deg) scale(1.02)'" onmouseout="this.style.transform='perspective(1000px) rotateY(-12deg) scale(1)'">
         </div>
+
       </div>
     </section>`;
   }
@@ -102,7 +111,7 @@ export class LandingEbookPage {
       <div class="container lsobre-inner">
         <div class="lsobre-avatar reveal">
           <div class="lsobre-av-wrap">
-            <img src="assets/foto-sobre.jpg" alt="Eduardo Souza" class="lsobre-av" style="object-fit:cover; border-radius:50%;" />
+            <img src="/assets/foto-sobre.jpg" alt="Eduardo Souza" class="lsobre-av" style="object-fit:cover; border-radius:50%;" />
             <div class="lsobre-av-ring"></div>
           </div>
         </div>

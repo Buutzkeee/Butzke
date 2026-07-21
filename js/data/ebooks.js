@@ -117,6 +117,7 @@ export const ebooksData = [
     category: 'Ervas & Magia',
     image: '/assets/img/grimorio_novo.jpg',
     imageHome: '/assets/img/grimorio_ervas.jpg',
+    hasCoverText: true,
     icon: '🌿',
     featured: true,
     chapters: [

@@ -10,7 +10,7 @@ const WA = 'https://wa.me/5551992395284';
 export class LinkBioPage {
   constructor(container) {
     this.container = container;
-    Router.loadCSS('css/linkbio.css');
+    Router.loadCSS('/css/linkbio.css');
     this._render();
     this._initCanvas();
   }

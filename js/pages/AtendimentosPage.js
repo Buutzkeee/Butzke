@@ -7,7 +7,7 @@ const WA = 'https://wa.me/5551992395284';
 export class AtendimentosPage {
   constructor(container) {
     this.container = container;
-    Router.loadCSS('css/atendimentos.css');
+    Router.loadCSS('/css/atendimentos.css');
     this._render();
     Navbar.init();
     Router.initReveal();
