@@ -89,13 +89,13 @@ export class HomePage {
   _ebooks() {
     const cards = ebooksData.map((e, i) => `
     <div class="ebook-card card reveal delay-${i + 1}" role="button" onclick="Router.go('/ebook/${e.slug}')" style="display: flex; flex-direction: column; height: 100%;">
-      <div class="ebook-card-top" style="justify-content:center; margin-bottom: 24px;">
-        <div style="font-size: 5rem;">${e.icon}</div>
+      <div class="ebook-card-top" style="justify-content:center; margin-bottom: 24px; height: 320px; display: flex; align-items: center;">
+        <img src="${e.imageHome}" alt="${e.title}" style="max-width: 100%; max-height: 100%; object-fit: contain; border-radius:var(--radius-sm); border: 1px solid var(--gold-border-hover); box-shadow: 0 0 20px rgba(204,0,0,0.1);">
       </div>
       <h3 style="font-size:1.15rem; letter-spacing:1px; margin-bottom:8px; min-height: 48px; display: flex; align-items: flex-start;">${e.title}</h3>
       <p class="ebook-sub" style="color: var(--gold); font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; flex-grow: 1;">${e.subtitle}</p>
-      <a href="${e.featured ? '#/ebook/' + e.slug : e.paymentLink}"
-         ${!e.featured ? 'target="_blank"' : ''}
+      <a href="${e.paymentLink}"
+         target="_blank"
          class="btn btn-primary btn-full"
          style="margin-top: auto;"
          onclick="event.stopPropagation()"

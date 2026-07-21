@@ -59,4 +59,5 @@
 }
 @media (max-width: 580px) {
   .ebooks-full-grid { grid-template-columns: 1fr; }
+  .efc-title { font-size: 1.1rem; }
 }
