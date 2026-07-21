@@ -116,15 +116,23 @@ export class Analytics {
       if (!label) label = 'Ícone ou Imagem';
       const destination = target.href || '';
 
+      // Trata especialmente cliques na página de LinkBio
+      if (window.location.pathname === '/linkbio') {
+        this.sendData('CLIQUE_LINKBIO', 'Acessou Link da Bio', `Botão: "${label.replace(/\s+/g, ' ')}" -> ${destination}`);
+        return;
+      }
+
       // Classifica o tipo de clique para ficar bonito na planilha
       if (destination.includes('kirvano.com')) {
-        this.sendData('CONVERSÃO', 'Foi para o Checkout (Kirvano)', `Botão: "${label}"`);
+        this.sendData('CONVERSÃO', 'Foi para o Checkout (Kirvano)', `Botão: "${label.replace(/\s+/g, ' ')}"`);
       } else if (destination.includes('wa.me')) {
-        this.sendData('CONVERSÃO', 'Chamou no WhatsApp', `Botão: "${label}"`);
+        this.sendData('CONVERSÃO', 'Chamou no WhatsApp', `Botão: "${label.replace(/\s+/g, ' ')}"`);
       } else if (destination.includes('instagram.com')) {
-        this.sendData('CLIQUE', 'Saiu para o Instagram', `Botão: "${label}"`);
+        this.sendData('CLIQUE', 'Saiu para o Instagram', `Botão: "${label.replace(/\s+/g, ' ')}"`);
+      } else if (destination.startsWith('http') && !destination.includes(window.location.host)) {
+        this.sendData('CLIQUE', 'Saiu para Link Externo', `Botão: "${label.replace(/\s+/g, ' ')}" -> ${destination}`);
       } else {
-        this.sendData('NAVEGAÇÃO', 'Navegou no Site', `Clicou em: "${label}"`);
+        this.sendData('NAVEGAÇÃO', 'Navegou no Site', `Clicou em: "${label.replace(/\s+/g, ' ')}"`);
       }
     });
   }
