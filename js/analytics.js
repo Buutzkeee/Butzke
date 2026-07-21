@@ -20,41 +20,37 @@ export class Analytics {
   static currentPagePath = window.location.pathname;
   static timeTrackerInitialized = false;
 
-  /**
-   * Envia dados para o Google Sheets
-   * @param {string} eventType 'PAGEVIEW' ou 'CLICK'
-   * @param {string} eventName Nome da ação (ex: 'Acessou Home', 'Clicou Agendar')
-   * @param {string} eventDetail Informação extra (ex: 'URL de Destino')
-   */
-  static async sendData(eventType, eventName, eventDetail = '') {
-    if (WEBHOOK_URL === 'COLE_AQUI_A_URL_DO_GOOGLE_APPS_SCRIPT') {
-      console.warn('Analytics: Webhook do Google Sheets não configurado.');
-      return;
-    }
+  static fetchQueue = Promise.resolve();
+
+  static sendData(eventType, eventName, eventDetail = '', pathOverride = null) {
+    if (WEBHOOK_URL === 'COLE_AQUI_A_URL_DO_GOOGLE_APPS_SCRIPT') return;
 
     const payload = {
       timestamp: new Date().toISOString(),
       eventType,
       eventName,
       eventDetail,
-      pagePath: window.location.pathname,
+      pagePath: pathOverride || window.location.pathname,
       ...this.getUTMs()
     };
 
-    try {
-      fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors', // Fundamental para não dar erro de CORS no Sheets
-        keepalive: true, // Garante que envie mesmo se a pessoa fechar a aba
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
+    // Enfileira as requisições com 400ms de intervalo para evitar que o Google Sheets engula dados 
+    // por tentar salvar 3 linhas no exato mesmo milissegundo (Race Condition do Apps Script).
+    this.fetchQueue = this.fetchQueue.then(() => {
+      return new Promise(resolve => {
+        try {
+          fetch(WEBHOOK_URL, {
+            method: 'POST',
+            mode: 'no-cors',
+            keepalive: true,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          console.log(`[Analytics] ${eventType}: ${eventName}`);
+        } catch (e) {}
+        setTimeout(resolve, 400);
       });
-      console.log(`[Analytics] ${eventType}: ${eventName}`);
-    } catch (error) {
-      console.error('Erro ao enviar analytics:', error);
-    }
+    });
   }
 
   static getPageName(path) {
@@ -79,24 +75,12 @@ export class Analytics {
     if (timeSpentSeconds > 3) {
       const pageName = this.getPageName(this.currentPagePath);
       
-      // Gambiarra necessária porque o fetch no beforeunload usa a URL atual da janela,
-      // mas precisamos garantir que o path do evento seja da página anterior.
-      const payload = {
-        timestamp: new Date().toISOString(),
-        eventType: 'TEMPO DE TELA',
-        eventName: 'Saiu da Página',
-        eventDetail: `Ficou ${timeSpentSeconds} segundos na página: ${pageName}`,
-        pagePath: this.currentPagePath,
-        ...this.getUTMs()
-      };
-      
-      fetch(WEBHOOK_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        keepalive: true,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      }).catch(() => {});
+      this.sendData(
+        'TEMPO DE TELA', 
+        'Saiu da Página', 
+        `Ficou ${timeSpentSeconds} segundos na página: ${pageName}`,
+        this.currentPagePath // Força a URL do evento a ser da página anterior
+      );
     }
   }
 
