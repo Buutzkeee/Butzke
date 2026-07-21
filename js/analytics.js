@@ -51,8 +51,22 @@ export class Analytics {
     }
   }
 
+  static getPageName(path) {
+    if (path === '/' || path === '') return 'Home';
+    if (path.includes('/ebooks')) return 'Página Geral de eBooks';
+    if (path.includes('/ebook/')) {
+      const name = path.split('/').pop().replace(/-/g, ' ');
+      return 'Vendas: ' + name.charAt(0).toUpperCase() + name.slice(1);
+    }
+    if (path.includes('/atendimentos')) return 'Atendimentos Espirituais';
+    if (path.includes('/sobre')) return 'Sobre o Criador';
+    if (path.includes('/linkbio')) return 'Árvore de Links (Bio)';
+    return path;
+  }
+
   static trackPageview() {
-    this.sendData('PAGEVIEW', 'Page Loaded', window.location.pathname);
+    const pageName = this.getPageName(window.location.pathname);
+    this.sendData('VISITA', 'Acessou a Página', pageName);
   }
 
   static initClickTracker() {
@@ -62,17 +76,19 @@ export class Analytics {
       const target = e.target.closest('a, button, .btn');
       if (!target) return;
 
-      const label = target.textContent.trim().substring(0, 50) || target.id || 'Botão sem nome';
-      const destination = target.href || target.getAttribute('id') || '';
+      let label = target.textContent.trim().substring(0, 50);
+      if (!label) label = 'Ícone ou Imagem';
+      const destination = target.href || '';
 
-      // Verifica se é uma conversão (Kirvano ou WhatsApp)
+      // Classifica o tipo de clique para ficar bonito na planilha
       if (destination.includes('kirvano.com')) {
-        this.sendData('CLICK', 'Checkout (Kirvano)', label + ' -> ' + destination);
+        this.sendData('CONVERSÃO', 'Foi para o Checkout (Kirvano)', `Botão: "${label}"`);
       } else if (destination.includes('wa.me')) {
-        this.sendData('CLICK', 'Contato WhatsApp', label);
+        this.sendData('CONVERSÃO', 'Chamou no WhatsApp', `Botão: "${label}"`);
+      } else if (destination.includes('instagram.com')) {
+        this.sendData('CLIQUE', 'Saiu para o Instagram', `Botão: "${label}"`);
       } else {
-        // Cliques gerais (navegação)
-        this.sendData('CLICK', 'Interação Geral', label + ' -> ' + destination);
+        this.sendData('NAVEGAÇÃO', 'Navegou no Site', `Clicou em: "${label}"`);
       }
     });
   }
