@@ -316,10 +316,10 @@ export class QuimbandaSalesPage {
   /* ---- TIMER ---- */
   _timer() {
     const key = 'btz_timer_' + this.slug;
-    let end = parseInt(sessionStorage.getItem(key));
+    let end = parseInt(localStorage.getItem(key));
     if (!end || end < Date.now()) {
       end = Date.now() + (23 * 3600 + 59 * 60 + 59) * 1000;
-      sessionStorage.setItem(key, end);
+      localStorage.setItem(key, end);
     }
     const pad = n => String(n).padStart(2, '0');
     const tick = () => {
@@ -330,13 +330,16 @@ export class QuimbandaSalesPage {
       const th = document.getElementById('th');
       const tm = document.getElementById('tm');
       const ts = document.getElementById('ts');
+      
+      if (!th && !tm && !ts) return; // Stop timer if page changed
+      
       if (th) th.textContent = pad(h);
       if (tm) tm.textContent = pad(m);
       if (ts) ts.textContent = pad(s);
+      
       if (left > 0) this._timerTO = setTimeout(tick, 1000);
     };
     tick();
-    window.addEventListener('hashchange', () => clearTimeout(this._timerTO), { once: true });
   }
 
   _initFaq() {
