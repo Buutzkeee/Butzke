@@ -1,5 +1,7 @@
+import { Analytics } from './analytics.js';
+
 /* =====================================
-   Router — Hash-based SPA routing
+   Router — History API SPA routing
    ===================================== */
 export class Router {
   constructor(routes) {
@@ -7,6 +9,10 @@ export class Router {
     this.app = document.getElementById('app');
     this.appendUTMs();
     this._interceptLinks();
+    
+    // Iniciar rastreamento de cliques globais
+    Analytics.initClickTracker();
+    
     window.addEventListener('popstate', () => this._navigate());
   }
 
@@ -89,6 +95,9 @@ export class Router {
     
     // re-append UTMs after rendering new view
     setTimeout(() => this.appendUTMs(), 100);
+
+    // Disparar o Pageview para a nova rota
+    Analytics.trackPageview();
   }
 
   _match(pattern, path) {
