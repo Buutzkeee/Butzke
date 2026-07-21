@@ -109,6 +109,7 @@ export const ebooksData = [
     paymentLink: 'https://pay.kirvano.com/7ea42e6e-ec90-4619-acf6-96e8c2502daf',
     badge: 'EDIÇÃO EXPANDIDA',
     category: 'Ervas & Banhos',
+    image: '/assets/img/grimorio_ervas.jpg',
     icon: '🌿',
     featured: true,
     chapters: [

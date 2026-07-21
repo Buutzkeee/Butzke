@@ -6,6 +6,7 @@ import { LinkBioPage }        from './pages/LinkBioPage.js';
 import { EbooksPage }         from './pages/EbooksPage.js';
 import { AtendimentosPage }   from './pages/AtendimentosPage.js';
 import { SobrePage }          from './pages/SobrePage.js';
+import { ObrigadoPage }       from './pages/ObrigadoPage.js';
 
 const loader = document.getElementById('loader');
 
@@ -18,6 +19,7 @@ const router = new Router({
   '/atendimentos':                         AtendimentosPage,
   '/sobre':                                SobrePage,
   '/linkbio':                              LinkBioPage,
+  '/obrigado':                             ObrigadoPage,
 });
 
 const start = () => {
