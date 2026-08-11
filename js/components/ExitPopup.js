@@ -168,7 +168,7 @@ export class ExitPopup {
   }
 
   /* ---------- Submit ---------- */
-  async _handleSubmit(e) {
+  _handleSubmit(e) {
     e.preventDefault();
     const nome     = document.getElementById('ep-nome').value.trim();
     const whatsapp = document.getElementById('ep-whatsapp').value.trim();
@@ -189,30 +189,27 @@ export class ExitPopup {
       pagina: window.location.pathname,
     };
 
-    try {
-      if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'COLE_AQUI_A_URL_DO_SEU_APPS_SCRIPT') {
-        await fetch(APPS_SCRIPT_URL, {
-          method: 'POST',
-          mode:   'no-cors',
-          // text/plain é o único Content-Type permitido com no-cors
-          // O Apps Script ainda recebe o JSON via e.postData.contents
-          headers: { 'Content-Type': 'text/plain' },
-          body: JSON.stringify(payload),
-        });
-      } else {
-        // Modo desenvolvimento: só loga no console
-        console.log('📋 Lead capturado (Apps Script não configurado):', payload);
-      }
-    } catch (err) {
-      console.warn('Erro ao enviar lead:', err);
-    }
-
-    // Salva também no localStorage como backup local
+    // Backup local sempre
     const leads = JSON.parse(localStorage.getItem('btz_leads') || '[]');
     leads.push({ ...payload, timestamp: new Date().toISOString() });
     localStorage.setItem('btz_leads', JSON.stringify(leads));
 
-    // Mostra sucesso
+    // Envia via POST incluindo query params (bypassa qualquer redirecionamento GET ou POST do Apps Script)
+    if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'COLE_AQUI_A_URL_DO_SEU_APPS_SCRIPT') {
+      const queryParams = new URLSearchParams(payload).toString();
+      const targetUrl = APPS_SCRIPT_URL.includes('?') ? `${APPS_SCRIPT_URL}&${queryParams}` : `${APPS_SCRIPT_URL}?${queryParams}`;
+      
+      fetch(targetUrl, {
+        method:  'POST',
+        mode:    'no-cors',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body:    JSON.stringify(payload),
+      }).catch(() => {/* no-cors — resposta silenciosa */});
+    } else {
+      console.log('📋 Lead (dev):', payload);
+    }
+
+    // Mostra sucesso imediatamente (sem esperar resposta)
     document.getElementById('ep-form').style.display = 'none';
     document.getElementById('ep-success').style.display = 'block';
 
@@ -220,7 +217,6 @@ export class ExitPopup {
       localStorage.setItem(this._storageKey, '1');
     }
 
-    // Fecha automaticamente após 4 segundos
     setTimeout(() => this._hide(), 4000);
   }
 
