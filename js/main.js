@@ -22,15 +22,24 @@ const router = new Router({
   '/obrigado':                             ObrigadoPage,
 });
 
+let started = false;
 const start = () => {
-  setTimeout(() => {
+  if (started) return;
+  started = true;
+  if (loader) {
     loader.classList.add('fade-out');
-    setTimeout(() => router.start(), 400);
-  }, 900);
+    setTimeout(() => {
+      loader.style.display = 'none';
+    }, 400);
+  }
+  router.start();
 };
 
-if (document.readyState === 'complete') {
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
   start();
 } else {
+  document.addEventListener('DOMContentLoaded', start);
   window.addEventListener('load', start);
+  // Fallback de segurança (máximo 800ms) caso a rede trave algum asset
+  setTimeout(start, 800);
 }
