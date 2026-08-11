@@ -1,4 +1,5 @@
 import { Router } from '../router.js';
+import { ExitPopup } from '../components/ExitPopup.js';
 
 /* ============================================================
    Ebook Sales Page — Dedicated Landing Page for "O Caminho da Força"
@@ -191,6 +192,8 @@ export class EbookSalesPage {
   _initCanvas() {
     this._initParticles();
     this._initClickCounters();
+    // Popup de saída para captura de leads de remarketing
+    new ExitPopup({ ebookName: 'Grimório + Segredos das Encruzilhadas' });
   }
 
   _initParticles() {
