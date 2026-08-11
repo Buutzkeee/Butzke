@@ -4,7 +4,7 @@
    ============================================================ */
 
 // ⚠️  SUBSTITUA pela URL do seu Apps Script Web App após publicar
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwcDPpFjiTjLOUZ5EWfATCnn9Hpeq0vCgvZaAU9Cr87K1X9OZYgNhlsbYoUnjzZBX04GQ/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwel_Dz9nO2VHuRpG-vuqimhHa8WhM5UXmgeVpQGbOBleIKytzA0DofNKUjbvWokh5mxw/exec';
 
 export class ExitPopup {
   /**
