@@ -193,8 +193,10 @@ export class ExitPopup {
       if (APPS_SCRIPT_URL && APPS_SCRIPT_URL !== 'COLE_AQUI_A_URL_DO_SEU_APPS_SCRIPT') {
         await fetch(APPS_SCRIPT_URL, {
           method: 'POST',
-          mode:   'no-cors',        // Apps Script exige no-cors
-          headers: { 'Content-Type': 'application/json' },
+          mode:   'no-cors',
+          // text/plain é o único Content-Type permitido com no-cors
+          // O Apps Script ainda recebe o JSON via e.postData.contents
+          headers: { 'Content-Type': 'text/plain' },
           body: JSON.stringify(payload),
         });
       } else {
