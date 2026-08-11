@@ -91,7 +91,8 @@ export class LinkBioPage {
 
           ${ebooksData.map(e => `
           <div class="link-card ${e.featured ? 'featured' : ''}" style="margin-bottom: 14px;">
-            <a href="/ebook/${e.slug}"
+            <a href="${e.paymentLink}"
+               target="_blank" rel="noopener"
                class="link-btn">
               <div class="btn-icon" style="font-size:2rem">${e.icon}</div>
               <div class="btn-content">
@@ -101,6 +102,18 @@ export class LinkBioPage {
               <div class="btn-arrow">→</div>
             </a>
           </div>`).join('')}
+
+          <!-- Ver mais Ebooks -->
+          <div class="link-card" style="margin-bottom: 14px;">
+            <a href="/ebooks" class="link-btn" id="btn-ver-mais-ebooks">
+              <div class="btn-icon" style="font-size:2rem">📚</div>
+              <div class="btn-content">
+                <span class="btn-title">Ver mais Ebooks</span>
+                <span class="btn-subtitle">Conheça nossa biblioteca completa</span>
+              </div>
+              <div class="btn-arrow">→</div>
+            </a>
+          </div>
 
           <!-- Redes sociais -->
           <div class="mystic-divider" style="margin: 40px 0 20px;">
