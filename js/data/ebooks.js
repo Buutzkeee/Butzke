@@ -3,6 +3,55 @@
    =============================== */
 export const ebooksData = [
   {
+    slug: 'goetia-a-arte-da-soberania',
+    title: 'Goetia: A Arte da Soberania',
+    subtitle: 'Lemegeton Clavicula Salomonis · O Grimório Prático Definitivo',
+    shortDesc: 'O guia definitivo para desmistificar as 72 forças goéticas, evocar resultados no plano físico e assumir a soberania absoluta da sua realidade.',
+    heroText: 'O Lemegeton Revelado: A Chave de Salomão Sem Mitologias, Sem Medo e Sem Complicações para Dominar as 72 Forças da Goetia.',
+    topics: ['Lemegeton & Salomão', 'Os 72 Daemons Goéticos', 'Evocação Segura Passo a Passo', 'Soberania & Prosperidade'],
+    features: [
+      'O Grimório Prático Definitivo em alta resolução (PDF vitalício para celular, tablet e PC)',
+      'O Guia Completo dos 72 Daemons Goéticos: Atribuições, Selos e Objetivos Práticos',
+      'O Método de Evocação Seguro em 7 Passos: Do banimento à licença para partir',
+      'Como evocar para Dinheiro, Prosperidade nos Negócios, Proteção e Autoridade Pessoal',
+      'Adaptação moderna do Círculo e Triângulo Mágico — sem gastar rios de dinheiro em paramentos',
+      'A Alquimia da Soberania: Como comandar as forças espirituais com honra, firmeza e sem perigo'
+    ],
+    priceFrom: 197.0,
+    priceTo: 97.0,
+    pages: '90+',
+    paymentLink: 'https://pay.kirvano.com/4d6663ed-5853-46de-9ed8-ab730dd21278',
+    badge: 'LANÇAMENTO',
+    category: 'Goetia & Alta Magia',
+    image: '/assets/img/goetia.jpg',
+    imageHome: '/assets/img/goetia_home.jpg',
+    hasCoverText: true,
+    icon: '🔯',
+    featured: true,
+    chapters: [
+      { num: 'I',   title: 'A Chave Oculta de Salomão',       desc: 'A verdadeira história do Lemegeton, a desmistificação do terror medieval e o retorno à Alta Magia Prática.' },
+      { num: 'II',  title: 'A Estrutura das 72 Forças',       desc: 'Quem são os Daemons da Goetia, suas hierarquias, reinos, naturezas e como escolher o espírito exato para sua necessidade.' },
+      { num: 'III', title: 'O Templo e os Instrumentos',      desc: 'O Círculo de Proteção, o Triângulo de Evocação, o Selo Secreto de Salomão e as ferramentas adaptadas para praticar em casa.' },
+      { num: 'IV',  title: 'O Ritual de Evocação Passo a Passo', desc: 'Protocolo completo de abertura, invocação da autoridade divina, chamada do espírito, comunicação e licença para partir.' },
+      { num: 'V',   title: 'Objetivos Materiais & Espirituais', desc: 'Aplicações reais para riqueza, fechamento de contratos, magnetismo pessoal, inteligência acelerada e corte de demandas.' },
+      { num: 'VI',  title: 'A Arte da Soberania Pessoal',     desc: 'O código ético do mago: como manter o equilíbrio psicológico, evitar armadilhas de ego e sustentar as conquistas materiais.' },
+      { num: '✦',   title: 'Bônus de Lançamento',             desc: 'Tabela de Correspondências Planetárias, Compilado dos 72 Selos em Alta Resolução e Guia de Blindagem Salomoniana.' }
+    ],
+    testimonials: [
+      { text: 'A clareza com que o Eduardo desmistificou a Goetia é surreal. Sempre tive receio de praticar por causa dos mitos da internet, mas o passo a passo com o selo de proteção me deu 100% de segurança. Fiz meu primeiro pacto de trabalho para negócios e fechei o maior contrato da minha empresa.', name: 'Guilherme B.', location: 'São Paulo / SP' },
+      { text: 'O capítulo sobre os 72 daemons e a adaptação do triângulo para quem não tem espaço ou rios de dinheiro em paramentos vale mais que qualquer curso de mil reais. Material de altíssimo nível!', name: 'Renata V.', location: 'Porto Alegre / RS' },
+      { text: 'Direto ao ponto, com respeito e autoridade. A Goetia finalmente explicada como uma arte de soberania e poder pessoal, e não de medo. Simplesmente obrigatório.', name: 'Matheus L.', location: 'Belo Horizonte / MG' }
+    ],
+    faqs: [
+      { q: 'A prática da Goetia é perigosa?', a: 'Não quando realizada com os fundamentos corretos e respeito às leis de proteção. Este grimório ensina detalhadamente o Círculo de Proteção, o Selo de Salomão e o banimento seguro, garantindo que você pratique com total soberania e tranquilidade.' },
+      { q: 'Preciso de ferramentas medievais caras ou um templo gigante?', a: 'Não. O grimório foi elaborado para o praticante moderno, ensinando como consagrar seus instrumentos e montar o triângulo e o círculo em qualquer espaço com elementos acessíveis e eficazes.' },
+      { q: 'Serve para quem nunca praticou magia antes?', a: 'Sim. A linguagem de Eduardo Souza é direta, sem rodeios ou termos desnecessários, guiando você do nível mais básico ao avançado passo a passo.' },
+      { q: 'Como aplico meu cupom de desconto promocional?', a: 'Se você recebeu um cupom ou código promocional exclusivo das redes sociais, basta clicar em comprar e inserir o código diretamente na tela de checkout da Kirvano para ter o desconto aplicado na hora!' },
+      { q: 'Como e quando recebo o grimório?', a: 'O envio é imediato! Assim que o pagamento for aprovado pela Kirvano (Pix cai na mesma hora), você recebe o link de download do PDF em alta resolução no seu e-mail.' },
+      { q: 'Tenho garantia?', a: 'Sim! Você conta com 7 dias de garantia incondicional pela plataforma Kirvano. Se por qualquer motivo não ficar satisfeito, basta um clique para receber 100% do seu dinheiro de volta.' }
+    ],
+  },
+  {
     slug: 'quimbanda-o-caminho-da-forca',
     title: 'Quimbanda: O Caminho da Força',
     subtitle: 'Grimório completo · Acesso vitalício · Entrega imediata',

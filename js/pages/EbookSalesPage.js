@@ -1,5 +1,5 @@
 import { Router } from '../router.js';
-import { ExitPopup } from '../components/ExitPopup.js';
+import { OfferModal } from '../components/OfferModal.js';
 
 /* ============================================================
    Ebook Sales Page — Dedicated Landing Page for "O Caminho da Força"
@@ -12,6 +12,9 @@ export class EbookSalesPage {
     Router.loadCSS('css/sales.css');
     this._render();
     this._initCanvas();
+    try {
+      new OfferModal({ ebookName: 'Quimbanda: O Caminho da Força' });
+    } catch (e) {}
   }
 
   _render() {

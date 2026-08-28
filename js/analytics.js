@@ -6,13 +6,17 @@ const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwcP0BOGEr4BP07e6ME
 
 export class Analytics {
   static getUTMs() {
-    return {
-      utm_source: sessionStorage.getItem('utm_source') || '',
-      utm_medium: sessionStorage.getItem('utm_medium') || '',
-      utm_campaign: sessionStorage.getItem('utm_campaign') || '',
-      utm_term: sessionStorage.getItem('utm_term') || '',
-      utm_content: sessionStorage.getItem('utm_content') || ''
-    };
+    try {
+      return {
+        utm_source: sessionStorage.getItem('utm_source') || '',
+        utm_medium: sessionStorage.getItem('utm_medium') || '',
+        utm_campaign: sessionStorage.getItem('utm_campaign') || '',
+        utm_term: sessionStorage.getItem('utm_term') || '',
+        utm_content: sessionStorage.getItem('utm_content') || ''
+      };
+    } catch (e) {
+      return { utm_source: '', utm_medium: '', utm_campaign: '', utm_term: '', utm_content: '' };
+    }
   }
 
   // Variáveis para rastrear tempo de tela

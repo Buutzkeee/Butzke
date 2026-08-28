@@ -2,7 +2,7 @@ import { Router }         from '../router.js';
 import { Navbar }         from '../components/Navbar.js';
 import { Footer }         from '../components/Footer.js';
 import { getEbookBySlug } from '../data/ebooks.js';
-import { ExitPopup }      from '../components/ExitPopup.js';
+import { OfferModal }     from '../components/OfferModal.js';
 
 export class LandingEbookPage {
   constructor(container, params) {
@@ -17,8 +17,10 @@ export class LandingEbookPage {
     Router.initReveal();
     this._timer();
     this._initFaq();
-    // Popup de saída para captura de leads de remarketing
-    new ExitPopup({ ebookName: this.ebook.title || this.slug });
+    
+    try {
+      new OfferModal({ ebookName: this.ebook.title || this.slug });
+    } catch (e) {}
   }
 
   _render() {

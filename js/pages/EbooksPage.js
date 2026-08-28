@@ -27,19 +27,20 @@ export class EbooksPage {
               ${ebooksData.map((e, i) => `
               <div class="ebook-full-card card reveal delay-${i + 1}" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; position: relative;">
                 
-                <div style="width: 100%; height: 350px; position: relative; overflow: hidden; border-bottom: 1px solid var(--gold-border-hover);">
+                <div style="width: 100%; height: 350px; position: relative; overflow: hidden; border-bottom: 1px solid var(--gold-border-hover); background: #0a0a0c;">
                   <img src="${e.image}" alt="${e.title}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                  <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 50%; background: linear-gradient(to top, var(--bg-card) 0%, transparent 100%); pointer-events: none;"></div>
+                  <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(to top, var(--bg-card) 0%, transparent 100%); pointer-events: none;"></div>
                   
+                  ${!e.hasCoverText ? `
                   <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 50px 20px 20px; pointer-events: none; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.6) 100%);">
                     <h3 style="font-family: var(--font-title); font-size: 1.8rem; color: var(--gold); text-align: center; text-transform: uppercase; text-shadow: 0 4px 15px rgba(0,0,0,1), 0 2px 5px rgba(0,0,0,0.8); line-height: 1.1; margin: 0;">
                       ${e.title.split(': ')[0]}<br><span style="font-size: 1.3rem; color: #fff; display:block; margin-top: 8px;">${e.title.split(': ')[1] || ''}</span>
                     </h3>
                     <div style="margin-top: auto; font-family: var(--font-text); font-size: 0.9rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 2px 10px rgba(0,0,0,1);">Eduardo Souza</div>
-                  </div>
+                  </div>` : ''}
 
                   <div style="position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; z-index: 2;">
-                    ${e.badge ? `<span class="badge badge-gold" style="box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-weight: 700;">${e.badge}</span>` : ''}
+                    ${e.badge ? `<span class="badge badge-gold" style="box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-weight: 700; ${e.badge === 'LANÇAMENTO' ? 'background: linear-gradient(135deg,#d4a017,#8b6508); color:#000;' : ''}">${e.badge}</span>` : ''}
                     <span class="badge badge-red" style="background: rgba(8,8,8,0.85); box-shadow: 0 4px 15px rgba(0,0,0,0.5);">${e.category}</span>
                   </div>
                 </div>

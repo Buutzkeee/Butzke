@@ -33,71 +33,83 @@ export class Router {
   }
 
   appendUTMs() {
-    // 1. Save UTMs from the current URL to session storage
-    const params = new URLSearchParams(window.location.search);
-    const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
-    
-    utmKeys.forEach(key => {
-      if (params.has(key)) {
-        sessionStorage.setItem(key, params.get(key));
-      }
-    });
-
-    // 2. Append stored UTMs to all kirvano checkout links
-    const appendToLinks = () => {
-      document.querySelectorAll('a[href^="https://pay.kirvano.com"]').forEach(link => {
-        try {
-          const url = new URL(link.href);
-          utmKeys.forEach(key => {
-            const val = sessionStorage.getItem(key);
-            if (val && !url.searchParams.has(key)) {
-              url.searchParams.append(key, val);
-            }
-          });
-          link.href = url.toString();
-        } catch (e) {
-          // ignore invalid URLs
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const utmKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content'];
+      
+      utmKeys.forEach(key => {
+        if (params.has(key)) {
+          try { sessionStorage.setItem(key, params.get(key)); } catch (e) {}
         }
       });
-    };
 
-    // Run it now and also after every route change
-    appendToLinks();
+      const appendToLinks = () => {
+        document.querySelectorAll('a[href^="https://pay.kirvano.com"]').forEach(link => {
+          try {
+            const url = new URL(link.href);
+            utmKeys.forEach(key => {
+              let val = null;
+              try { val = sessionStorage.getItem(key); } catch (e) {}
+              if (val && !url.searchParams.has(key)) {
+                url.searchParams.append(key, val);
+              }
+            });
+            link.href = url.toString();
+          } catch (e) {
+            // ignore invalid URLs
+          }
+        });
+      };
+
+      appendToLinks();
+    } catch (e) {
+      console.warn('UTM error:', e);
+    }
   }
 
   _navigate() {
-    // Get path from pathname instead of hash
-    let path = window.location.pathname;
-    
-    // If hosted on GitHub pages without custom domain, remove the repo name /Butzke
-    if (window.location.hostname.includes('.github.io') && path.startsWith('/Butzke')) {
-      path = path.replace('/Butzke', '') || '/';
-    }
-
-    let PageClass = null;
-    let params = {};
-
-    for (const [pattern, cls] of Object.entries(this.routes)) {
-      const result = this._match(pattern, path);
-      if (result !== null) {
-        PageClass = cls;
-        params = result;
-        break;
+    try {
+      let path = window.location.pathname;
+      
+      if (window.location.hostname.includes('.github.io') && path.startsWith('/Butzke')) {
+        path = path.replace('/Butzke', '') || '/';
       }
+
+      let PageClass = null;
+      let params = {};
+
+      for (const [pattern, cls] of Object.entries(this.routes)) {
+        const result = this._match(pattern, path);
+        if (result !== null) {
+          PageClass = cls;
+          params = result;
+          break;
+        }
+      }
+
+      if (!PageClass) PageClass = this.routes['/'];
+
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      this.app.innerHTML = '';
+
+      if (PageClass) {
+        try {
+          new PageClass(this.app, params);
+        } catch (pageErr) {
+          console.error('Error rendering page:', pageErr);
+        }
+      }
+      
+      setTimeout(() => this.appendUTMs(), 100);
+
+      try {
+        Analytics.trackPageview();
+      } catch (analyticsErr) {
+        console.warn('Analytics pageview error:', analyticsErr);
+      }
+    } catch (err) {
+      console.error('Navigation error:', err);
     }
-
-    if (!PageClass) PageClass = this.routes['/'];
-
-    window.scrollTo({ top: 0, behavior: 'instant' });
-    this.app.innerHTML = '';
-
-    if (PageClass) new PageClass(this.app, params);
-    
-    // re-append UTMs after rendering new view
-    setTimeout(() => this.appendUTMs(), 100);
-
-    // Disparar o Pageview para a nova rota
-    Analytics.trackPageview();
   }
 
   _match(pattern, path) {

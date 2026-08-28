@@ -90,14 +90,16 @@ export class LinkBioPage {
           </div>
 
           ${ebooksData.map(e => `
-          <div class="link-card ${e.featured ? 'featured' : ''}" style="margin-bottom: 14px;">
-            <a href="${e.paymentLink}"
-               target="_blank" rel="noopener"
+          <div class="link-card ${e.badge === 'LANÇAMENTO' ? 'lancamento' : (e.featured ? 'featured' : '')}" style="margin-bottom: 14px;">
+            <a href="${e.slug === 'goetia-a-arte-da-soberania' ? '/ebook/goetia-a-arte-da-soberania' : e.paymentLink}"
+               ${e.slug === 'goetia-a-arte-da-soberania' ? '' : 'target="_blank" rel="noopener"'}
                class="link-btn">
               <div class="btn-icon" style="font-size:2rem">${e.icon}</div>
               <div class="btn-content">
+                ${e.badge === 'LANÇAMENTO' ? `<span class="lancamento-pill">✦ LANÇAMENTO ✦</span>` : ''}
                 <span class="btn-title">${e.title}</span>
                 <span class="btn-subtitle">${e.subtitle}</span>
+                ${e.priceTo ? `<span style="display:inline-block; font-size:0.75rem; color:var(--gold-bright); margin-top:2px; font-weight:600;">${e.priceFrom ? `<span style="text-decoration:line-through; opacity:0.6; margin-right:4px;">R$ ${e.priceFrom.toFixed(2).replace('.', ',')}</span>` : ''}R$ ${e.priceTo.toFixed(2).replace('.', ',')}</span>` : ''}
               </div>
               <div class="btn-arrow">→</div>
             </a>
