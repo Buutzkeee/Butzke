@@ -439,7 +439,7 @@ export class GoetiaSalesPage {
           Você continuará refém das circunstâncias ou assumirá a <span class="text-gold">Sua Soberania?</span>
         </h2>
         <p style="color: #bbb; font-size: 1.05rem; margin-bottom: 36px; line-height: 1.6;" class="reveal delay-2">
-          O Lemegeton é o conhecimento que moldou impérios e atravessou eras. Clique no botão abaixo para desbloquear seu acesso imediato por apenas <strong>R$ 97,00</strong>.
+          O Lemegeton é o conhecimento que moldou impérios e atravessou eras. Clique no botão abaixo para desbloquear seu acesso imediato por apenas <strong>R$ ${e.priceTo.toFixed(2).replace('.', ',')}</strong>.
         </p>
         <div class="reveal delay-3">
           <a href="${e.paymentLink}" target="_blank" class="btn btn-primary btn-lg btn-shimmer" id="final-buy-cta" style="padding: 22px 48px; font-size: 1.2rem; font-weight: 700; box-shadow: 0 10px 40px rgba(234,171,94,0.4);">

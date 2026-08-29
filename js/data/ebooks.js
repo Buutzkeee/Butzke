@@ -17,10 +17,10 @@ export const ebooksData = [
       'Adaptação moderna do Círculo e Triângulo Mágico — sem gastar rios de dinheiro em paramentos',
       'A Alquimia da Soberania: Como comandar as forças espirituais com honra, firmeza e sem perigo'
     ],
-    priceFrom: 197.0,
-    priceTo: 97.0,
+    priceFrom: 97.0,
+    priceTo: 49.90,
     pages: '90+',
-    paymentLink: 'https://pay.kirvano.com/4d6663ed-5853-46de-9ed8-ab730dd21278',
+    paymentLink: 'https://pay.kirvano.com/f06834f8-f660-43f0-9307-f162c5e35932',
     badge: 'LANÇAMENTO',
     category: 'Goetia & Alta Magia',
     image: '/assets/img/goetia.jpg',
