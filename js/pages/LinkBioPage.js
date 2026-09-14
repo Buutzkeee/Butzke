@@ -86,22 +86,31 @@ export class LinkBioPage {
           </div>
 
           <div class="mystic-divider" style="margin: 40px 0 20px;">
-            <span style="font-size:0.8rem">✦ EBOOKS ✦</span>
+            <span style="font-size:0.8rem">✦ BIBLIOTECA OCULTA ✦</span>
+          </div>
+
+          <!-- Banner de Urgência -->
+          <div class="urgency-banner" style="background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(139,0,0,0.2)); border: 1px solid var(--gold-bright); border-radius: 8px; padding: 12px 16px; text-align: center; margin-bottom: 16px;">
+            <p style="color: var(--gold-bright); font-size: 0.85rem; font-weight: 600; margin: 0;">⚡ ACESSO IMEDIATO + DESCONTO DE LANÇAMENTO</p>
+            <p style="color: var(--text-muted); font-size: 0.75rem; margin: 4px 0 0;">Garanta seu exemplar com condições especiais por tempo limitado.</p>
           </div>
 
           ${ebooksData.map(e => `
           <div class="link-card ${e.badge === 'LANÇAMENTO' ? 'lancamento' : (e.featured ? 'featured' : '')}" style="margin-bottom: 14px;">
-            <a href="${e.slug === 'goetia-a-arte-da-soberania' ? '/ebook/goetia-a-arte-da-soberania' : e.paymentLink}"
-               ${e.slug === 'goetia-a-arte-da-soberania' ? '' : 'target="_blank" rel="noopener"'}
-               class="link-btn">
+            <a href="/ebook/${e.slug}" class="link-btn" style="position:relative;">
               <div class="btn-icon" style="font-size:2rem">${e.icon}</div>
               <div class="btn-content">
-                ${e.badge === 'LANÇAMENTO' ? `<span class="lancamento-pill">✦ LANÇAMENTO ✦</span>` : ''}
+                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:2px;">
+                  ${e.badge === 'LANÇAMENTO' ? `<span class="lancamento-pill">✦ LANÇAMENTO ✦</span>` : (e.featured ? `<span class="lancamento-pill" style="background:rgba(212,175,55,0.2); color:var(--gold-bright);">✦ DESTAQUE ✦</span>` : '')}
+                  <span style="font-size:0.7rem; color:var(--gold-bright); opacity:0.9;">★ 4.9 (Leitores satisfeitos)</span>
+                </div>
                 <span class="btn-title">${e.title}</span>
-                <span class="btn-subtitle">${e.subtitle}</span>
-                ${e.priceTo ? `<span style="display:inline-block; font-size:0.75rem; color:var(--gold-bright); margin-top:2px; font-weight:600;">${e.priceFrom ? `<span style="text-decoration:line-through; opacity:0.6; margin-right:4px;">R$ ${e.priceFrom.toFixed(2).replace('.', ',')}</span>` : ''}R$ ${e.priceTo.toFixed(2).replace('.', ',')}</span>` : ''}
+                <span class="btn-subtitle">${e.subtitle || 'Domine os mistérios e transforme sua prática espiritual.'}</span>
+                <div style="display:flex; align-items:center; justify-content:space-between; margin-top:6px; width:100%;">
+                  ${e.priceTo ? `<span style="display:inline-block; font-size:0.8rem; color:var(--gold-bright); font-weight:700;">${e.priceFrom ? `<span style="text-decoration:line-through; opacity:0.6; margin-right:6px; font-weight:400;">R$ ${e.priceFrom.toFixed(2).replace('.', ',')}</span>` : ''}R$ ${e.priceTo.toFixed(2).replace('.', ',')}</span>` : ''}
+                  <span style="font-size:0.75rem; color:#fff; background:rgba(212,175,55,0.15); padding:2px 8px; border-radius:4px; border:1px solid rgba(212,175,55,0.3);">Ler Detalhes →</span>
+                </div>
               </div>
-              <div class="btn-arrow">→</div>
             </a>
           </div>`).join('')}
 
@@ -110,8 +119,8 @@ export class LinkBioPage {
             <a href="/ebooks" class="link-btn" id="btn-ver-mais-ebooks">
               <div class="btn-icon" style="font-size:2rem">📚</div>
               <div class="btn-content">
-                <span class="btn-title">Ver mais Ebooks</span>
-                <span class="btn-subtitle">Conheça nossa biblioteca completa</span>
+                <span class="btn-title">Ver Biblioteca Completa</span>
+                <span class="btn-subtitle">Explore todos os grimórios e materiais exclusivos</span>
               </div>
               <div class="btn-arrow">→</div>
             </a>

@@ -470,29 +470,33 @@ export class GoetiaSalesPage {
     });
   }
 
-  /* ---- CRONÔMETRO DE ESCASSEZ ---- */
+  /* ---- CRONÔMETRO REAL (localStorage) ---- */
   _timer() {
-    let totalSec = 3 * 3600 + 47 * 60 + 22; // 3h 47m 22s
-    const th = document.getElementById('th');
-    const tm = document.getElementById('tm');
-    const ts = document.getElementById('ts');
-
-    if (!th || !tm || !ts) return;
-
+    const key = 'btz_timer_' + this.slug;
+    let end = parseInt(localStorage.getItem(key));
+    if (!end || end < Date.now()) {
+      end = Date.now() + (23 * 3600 + 59 * 60 + 59) * 1000;
+      localStorage.setItem(key, end);
+    }
+    const pad = n => String(n).padStart(2, '0');
     const tick = () => {
-      if (totalSec <= 0) totalSec = 4 * 3600; // loop
-      const h = Math.floor(totalSec / 3600);
-      const m = Math.floor((totalSec % 3600) / 60);
-      const s = totalSec % 60;
+      const left = Math.max(0, end - Date.now());
+      const h = Math.floor(left / 3600000);
+      const m = Math.floor((left % 3600000) / 60000);
+      const s = Math.floor((left % 60000) / 1000);
+      const th = document.getElementById('th');
+      const tm = document.getElementById('tm');
+      const ts = document.getElementById('ts');
 
-      th.textContent = String(h).padStart(2, '0');
-      tm.textContent = String(m).padStart(2, '0');
-      ts.textContent = String(s).padStart(2, '0');
-      totalSec--;
+      if (!th && !tm && !ts) return; // Stop if page changed
+
+      if (th) th.textContent = pad(h);
+      if (tm) tm.textContent = pad(m);
+      if (ts) ts.textContent = pad(s);
+
+      if (left > 0) this._timerTO = setTimeout(tick, 1000);
     };
-
     tick();
-    this._interval = setInterval(tick, 1000);
   }
 
   _notFound() {

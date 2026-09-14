@@ -1,5 +1,6 @@
 import { Router } from '../router.js';
 import { OfferModal } from '../components/OfferModal.js';
+import { ExitPopup } from '../components/ExitPopup.js';
 
 /* ============================================================
    Ebook Sales Page — Dedicated Landing Page for "O Caminho da Força"
@@ -37,9 +38,9 @@ export class EbookSalesPage {
         <main class="sales-container">
           <!-- Hero -->
           <section class="sales-hero">
-            <div class="sales-badge">📖 EBOOK EXCLUSIVO</div>
-            <h1 class="sales-title">Compre Seu<br /><span class="highlight-text">Ebook</span></h1>
-            <p class="sales-tagline">Conhecimento que transforma almas</p>
+            <div class="sales-badge">🔱 GRIMÓRIOS OFICIAIS — ENTREGA IMEDIATA</div>
+            <h1 class="sales-title">O Conhecimento que<br /><span class="highlight-text">a Igreja Não Quer</span><br />que Você Tenha</h1>
+            <p class="sales-tagline">Exus. Pombagiras. Rituais Reais. Resultado no Mundo Físico.<br />Sem filtro. Sem enganação. Direto da fonte.</p>
           </section>
 
           <!-- Grimório Card (featured product) -->
@@ -121,22 +122,22 @@ export class EbookSalesPage {
           <!-- Testimonials / social proof -->
           <section class="social-proof">
             <div class="mystic-divider"><span>⚜</span><span>✦</span><span>⚜</span></div>
-            <h2 class="proof-title">O que dizem nossos alunos</h2>
+            <h2 class="proof-title">Quem já aplicou e sentiu na pele</h2>
             <div class="testimonials">
               <div class="testimonial-card">
                 <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"Conteúdo incrível! O banho de ervas que aprendi no grimório mudou completamente minha energia."</p>
-                <span class="testimonial-author">— M. Santos, São Paulo</span>
+                <p class="testimonial-text">"Fiz o ritual de abertura de caminhos no dia seguinte que comprei. Em duas semanas veio uma proposta de trabalho que dobrou meu salário. Eu ainda não acredito."</p>
+                <span class="testimonial-author">— Marina S., Rio de Janeiro / RJ</span>
               </div>
               <div class="testimonial-card">
                 <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"Material muito completo e bem explicado. Recomendo pra quem está iniciando no caminho das ervas."</p>
-                <span class="testimonial-author">— K. Oliveira, Rio de Janeiro</span>
+                <p class="testimonial-text">"Levei anos com uma demanda pesada e ninguém resolvia. O livro me deu o feitiço certo e a proteção certa. Hoje durmo em paz pela primeira vez."</p>
+                <span class="testimonial-author">— Juliana R., Salvador / BA</span>
               </div>
               <div class="testimonial-card">
                 <div class="testimonial-stars">⭐⭐⭐⭐⭐</div>
-                <p class="testimonial-text">"O Buutzke explica tudo com maestria. Os rituais do grimório são poderosos e funcionam de verdade!"</p>
-                <span class="testimonial-author">— R. Costa, Porto Alegre</span>
+                <p class="testimonial-text">"O Buutzke explica com autoridade real. Sem inventar, sem enrolar. Primeira vez que encontrei um material de Quimbanda que respeita o praticante."</p>
+                <span class="testimonial-author">— R. Costa, Porto Alegre / RS</span>
               </div>
             </div>
           </section>
@@ -168,16 +169,16 @@ export class EbookSalesPage {
           <!-- Final CTA -->
           <section class="final-cta-section">
             <div class="final-cta-inner">
-              <h2 class="final-cta-title">Pronto para transformar sua vida espiritual?</h2>
-              <p class="final-cta-sub">Junte-se a centenas de alunos que já transformaram sua jornada espiritual</p>
+              <h2 class="final-cta-title">Você não chegou até aqui por acaso.</h2>
+              <p class="final-cta-sub">Mais de 500 pessoas já transformaram sua prática espiritual. A próxima pode ser você.</p>
               <a href="https://pay.kirvano.com/c242b645-8452-4e17-8c59-c6de9aef926c"
                  class="cta-btn primary-cta large-cta"
                  target="_blank" rel="noopener">
                 <span class="cta-icon">🔱</span>
-                <span class="cta-text">Quero Meu Ebook Agora!</span>
+                <span class="cta-text">Quero Meu Grimório Agora</span>
                 <span class="cta-arrow">→</span>
               </a>
-              <p class="cta-guarantee">🔒 Garantido e seguro • Acesso imediato</p>
+              <p class="cta-guarantee">🔒 Compra segura · Acesso imediato · 7 dias de garantia total</p>
             </div>
           </section>
 

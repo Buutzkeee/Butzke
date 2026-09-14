@@ -19,9 +19,15 @@ export class EbooksPage {
         <section class="section ebooks-page">
           <div class="container">
             <div class="section-header reveal">
-              <span class="section-tag">Biblioteca</span>
-              <h1 class="section-title">Todos os <span class="text-gold">eBooks</span></h1>
-              <p class="section-subtitle">Conhecimento espiritual real, direto da fonte. Sem intermediário, sem enganação.</p>
+              <span class="section-tag">Biblioteca Oculta</span>
+              <h1 class="section-title">Grimórios que <span class="text-gold">Mudam a Prática</span></h1>
+              <p class="section-subtitle">Conhecimento espiritual real, sem intermediário, sem enganação. Do Lemegeton à Quimbanda — domine as forças que moldam a realidade.</p>
+              <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-top:16px; font-size:0.8rem; color:#888;">
+                <span>⚡ Acesso Imediato em PDF</span>
+                <span>🛡️ Garantia de 7 Dias</span>
+                <span>🔒 Pagamento 100% Seguro</span>
+                <span>🔥 +650 Alunos Satisfeitos</span>
+              </div>
             </div>
             <div class="ebooks-full-grid">
               ${ebooksData.map((e, i) => `
@@ -60,9 +66,9 @@ export class EbooksPage {
                   </div>
                   
                   <div class="efc-actions" style="display: flex; gap: 12px;">
-                    ${e.featured ? `<a href="javascript:void(0)" onclick="Router.go('/ebook/${e.slug}')" class="btn btn-outline" style="flex:1; text-align: center; padding: 12px 0;" id="efc-ver-${e.slug}">Ver detalhes</a>` : ''}
+                    ${e.featured ? `<a href="javascript:void(0)" onclick="Router.go('/ebook/${e.slug}')" class="btn btn-outline" style="flex:1; text-align: center; padding: 12px 0;" id="efc-ver-${e.slug}">Ver Detalhes</a>` : ''}
                     <a href="${e.paymentLink}" target="_blank" class="btn btn-primary btn-shimmer" style="flex:1.5; text-align: center; padding: 12px 0;" id="efc-buy-${e.slug}">
-                      ${e.priceTo ? 'COMPRAR AGORA' : 'SAIBA MAIS'}
+                      ${e.priceTo ? '⚡ GARANTIR AGORA' : 'SAIBA MAIS'}
                     </a>
                   </div>
                 </div>

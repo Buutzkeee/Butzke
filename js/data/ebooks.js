@@ -5,7 +5,7 @@ export const ebooksData = [
   {
     slug: 'goetia-a-arte-da-soberania',
     title: 'Goetia: A Arte da Soberania',
-    subtitle: 'Lemegeton Clavicula Salomonis · O Grimório Prático Definitivo',
+    subtitle: 'A Magia Salomônica sem Medo, sem Dogmas — Domine as 72 Forças e Assuma a Soberania da Sua Realidade',
     shortDesc: 'O guia definitivo para desmistificar as 72 forças goéticas, evocar resultados no plano físico e assumir a soberania absoluta da sua realidade.',
     heroText: 'O Lemegeton Revelado: A Chave de Salomão Sem Mitologias, Sem Medo e Sem Complicações para Dominar as 72 Forças da Goetia.',
     topics: ['Lemegeton & Salomão', 'Os 72 Daemons Goéticos', 'Evocação Segura Passo a Passo', 'Soberania & Prosperidade'],
@@ -54,7 +54,7 @@ export const ebooksData = [
   {
     slug: 'quimbanda-o-caminho-da-forca',
     title: 'Quimbanda: O Caminho da Força',
-    subtitle: 'Grimório completo · Acesso vitalício · Entrega imediata',
+    subtitle: 'Os Segredos que o Terreiro Guarda — Amor, Dinheiro e Proteção na Palma da Sua Mão',
     shortDesc: 'O grimório proibido da Quimbanda. Rituais, feitiços e a chave dos Exus e Pombagiras.',
     heroText: 'O grimório proibido que a esquerda espiritual nunca quis que caísse nas suas mãos.',
     topics: ['História & Origens', 'Exus & Guardiões', 'Pombagiras', 'Fundamentos'],
@@ -102,7 +102,7 @@ export const ebooksData = [
   {
     slug: 'segredos-das-encruzilhadas',
     title: 'Quimbanda: Segredos das Encruzilhadas',
-    subtitle: 'Volume II — Edição Exclusiva',
+    subtitle: 'Volume II — Para Quem Já Sabe que Exu Resolve. Rituais Avançados e Fundamentos Reais.',
     shortDesc: 'A Cosmologia Completa, os Reinos dos Exus, Rituais Avançados e o Código Ético da Esquerda Espiritual.',
     heroText: 'A Quimbanda não é para quem busca poder sobre os outros. É para quem busca poder sobre si mesmo.',
     topics: ['Cosmologia', 'Exus e Pombagiras', 'Rituais Avançados', 'Ética e Fundamentos'],
@@ -146,7 +146,7 @@ export const ebooksData = [
   {
     slug: 'grimorio-das-ervas',
     title: 'O Grimório das Ervas Sagradas',
-    subtitle: 'Magia, Rituais e o Poder Oculto da Natureza',
+    subtitle: 'A Alquimia das Plantas que Nenhuma Consulta te Ensina — Limpar, Blindar e Prosperar',
     shortDesc: 'Aprenda a alquimia sagrada que transforma uma simples folha em um instrumento de poder divino.',
     heroText: 'Descubra o poder oculto das ervas sagradas e a magia da natureza para limpar, blindar e prosperar. Sem folha, não há Orixá.',
     topics: ['Fitomagia', 'Banhos Rituais', 'Perfumes Sagrados', 'Orixás e Caboclos'],
