@@ -1,78 +1,170 @@
-import { Navbar } from '../components/Navbar.js';
-import { Footer } from '../components/Footer.js';
+import { Navbar }    from '../components/Navbar.js';
+import { Footer }    from '../components/Footer.js';
 import { ebooksData } from '../data/ebooks.js';
+import { Router }    from '../router.js';
 
 export class ObrigadoPage {
   constructor(container) {
     this.container = container;
+    Router.loadCSS('/css/obrigado.css?v=' + Date.now());
     this.render();
   }
+
 
   render() {
     const navbarHtml = Navbar.render('obrigado');
     const footerHtml = Footer.render();
-    
-    // Pegando os dados do Grimório das Ervas da base de dados
-    const grimorio = ebooksData.find(e => e.slug === 'grimorio-das-ervas');
+
+    // Detecta qual ebook foi comprado via query param (ex: ?ebook=slug)
+    const params = new URLSearchParams(window.location.search);
+    const boughtSlug = params.get('ebook') || '';
+
+    // Todos os ebooks para cross-sell (excluindo o que foi comprado)
+    const otherEbooks = ebooksData.filter(e => e.slug !== boughtSlug && e.priceTo);
 
     this.container.innerHTML = `
       ${navbarHtml}
-      
-      <main class="page-content">
-        <!-- Obrigado Hero -->
-        <section class="section obrigado-hero" style="min-height: 50vh; display: flex; align-items: center; text-align: center; background: radial-gradient(circle at center, rgba(204,0,0,0.1) 0%, #080808 70%);">
-          <div class="container">
-            <h1 class="section-title reveal" style="font-size: clamp(2rem, 5vw, 3.5rem); margin-bottom: 20px;">
+
+      <main class="page-content obrigado-page">
+
+        <!-- ══ HERO OBRIGADO ══ -->
+        <section class="obg-hero">
+          <div class="obg-hero-orb obg-orb1"></div>
+          <div class="obg-hero-orb obg-orb2"></div>
+          <div class="container obg-hero-inner">
+            <div class="obg-check-wrap reveal">
+              <div class="obg-check">✓</div>
+            </div>
+            <h1 class="obg-h1 reveal delay-1">
               Compra <span class="text-gold">Aprovada!</span>
             </h1>
-            <p class="reveal delay-1" style="font-size: 1.1rem; color: #ccc; max-width: 600px; margin: 0 auto 30px;">
-              Seu acesso já foi enviado para o e-mail cadastrado na hora da compra. Verifique sua caixa de entrada (e a de spam) nos próximos 2 minutos.
+            <p class="obg-sub reveal delay-2">
+              Seu acesso já foi enviado para o <strong>e-mail cadastrado</strong> no momento da compra.<br>
+              Verifique sua caixa de entrada e a de spam nos próximos 2 minutos.
             </p>
-            <div class="reveal delay-2" style="font-size: 3rem; margin-bottom: 20px;">📦</div>
-            <h3 class="reveal delay-2 text-gold" style="text-transform: uppercase; letter-spacing: 2px; font-size: 1rem;">
-              Mas antes de fechar essa página...
-            </h3>
-          </div>
-        </section>
-
-        <!-- Oferta Exclusiva (Cross-sell) -->
-        <section class="section section-alt" style="padding-top: 20px; padding-bottom: 80px;">
-          <div class="container">
-            <div class="upsell-container" style="background: var(--bg-card); border: 1px solid var(--gold-border); border-radius: var(--radius); padding: 40px; display: grid; grid-template-columns: auto 1fr; gap: 40px; align-items: center; box-shadow: var(--shadow-card);">
-              
-              <div class="upsell-img reveal">
-                <img src="${grimorio.image}" alt="${grimorio.title}" style="width: 100%; max-width: 320px; border-radius: var(--radius-sm); border: 1px solid var(--gold-border-hover); box-shadow: 0 0 20px rgba(204,0,0,0.2); display: block;">
+            <div class="obg-steps reveal delay-3">
+              <div class="obg-step">
+                <span class="obg-step-num">1</span>
+                <span>Acesse seu e-mail</span>
               </div>
-              
-              <div class="upsell-info reveal delay-1">
-                <div style="display: inline-block; background: rgba(255,51,0,0.1); border: 1px solid var(--gold); color: var(--gold); padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 16px;">
-                  Oferta Única
-                </div>
-                <h2 style="font-size: 2rem; margin-bottom: 16px;">Potencialize seus <span class="text-red">Resultados</span></h2>
-                <p style="color: #aaa; font-size: 1rem; margin-bottom: 24px; line-height: 1.6;">
-                  Já que você decidiu transformar a sua realidade, não pare pela metade. Conheça o <strong>${grimorio.title}</strong>, um acervo profundo e secreto para quem deseja manipular o axé vegetal com precisão.
-                </p>
-                
-                <ul style="margin-bottom: 30px;">
-                  <li style="margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px;">
-                     <span class="text-gold">✦</span> <span>Banhos de descarrego, prosperidade e atração.</span>
-                  </li>
-                  <li style="margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px;">
-                     <span class="text-gold">✦</span> <span>Pós mágicos para defesa e ataque na Quimbanda.</span>
-                  </li>
-                  <li style="display: flex; align-items: flex-start; gap: 10px;">
-                     <span class="text-gold">✦</span> <span>Fundamentos práticos sem mistificação.</span>
-                  </li>
-                </ul>
-
-                <a href="${grimorio.paymentLink}" class="btn btn-primary btn-lg btn-shimmer" style="display: block; text-align: center; width: 100%;">
-                  ADICIONAR AO MEU ACERVO - R$ ${grimorio.priceTo.toFixed(2).replace('.', ',')}
-                </a>
+              <div class="obg-step-arrow">→</div>
+              <div class="obg-step">
+                <span class="obg-step-num">2</span>
+                <span>Clique no link de acesso</span>
               </div>
-
+              <div class="obg-step-arrow">→</div>
+              <div class="obg-step">
+                <span class="obg-step-num">3</span>
+                <span>Baixe seu PDF e aproveite!</span>
+              </div>
             </div>
           </div>
         </section>
+
+        <!-- ══ CUPOM BUTZKE ══ -->
+        <section class="section obg-cupom-section">
+          <div class="container">
+            <div class="obg-cupom-box reveal">
+              <div class="obg-cupom-left">
+                <div class="obg-cupom-tag">🎁 PRESENTE EXCLUSIVO PARA VOCÊ</div>
+                <h2 class="obg-cupom-title">Sua próxima compra com <span class="text-gold">10% de desconto</span></h2>
+                <p class="obg-cupom-desc">
+                  Como agradecimento pela sua confiança, você ganhou um cupom exclusivo para usar na sua próxima compra em qualquer ebook da coleção.
+                </p>
+                <p class="obg-cupom-instrucoes">
+                  👉 Na tela de checkout da Kirvano, insira o cupom abaixo e o desconto é aplicado automaticamente:
+                </p>
+              </div>
+              <div class="obg-cupom-right">
+                <div class="obg-cupom-code-label">SEU CUPOM EXCLUSIVO</div>
+                <div class="obg-cupom-code" id="cupom-code">BUTZKE</div>
+                <button class="obg-copy-btn" id="copy-cupom-btn" onclick="
+                  navigator.clipboard.writeText('BUTZKE').then(() => {
+                    const btn = document.getElementById('copy-cupom-btn');
+                    btn.textContent = '✓ Copiado!';
+                    btn.classList.add('copied');
+                    setTimeout(() => { btn.textContent = '📋 Copiar Cupom'; btn.classList.remove('copied'); }, 2000);
+                  });
+                ">📋 Copiar Cupom</button>
+                <div class="obg-cupom-valid">Válido para qualquer ebook da coleção</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ══ CROSS-SELL: OUTROS EBOOKS ══ -->
+        ${otherEbooks.length > 0 ? `
+        <section class="section section-alt obg-crosssell">
+          <div class="container">
+            <div class="section-header reveal">
+              <div class="lsec-tag">COMPLETE SEU ACERVO ESPIRITUAL</div>
+              <h2 class="section-title">Antes de fechar esta página — <span class="text-gold">oferta especial</span></h2>
+              <p class="section-subtitle">
+                Você acabou de dar um passo importante na sua jornada espiritual. Que tal ir ainda mais fundo?<br>
+                Use o cupom <strong class="text-gold">BUTZKE</strong> e garanta 10% de desconto em qualquer um abaixo.
+              </p>
+            </div>
+
+            <div class="obg-ebooks-grid">
+              ${otherEbooks.map((e, i) => `
+              <div class="obg-ebook-card card reveal delay-${(i % 3) + 1}" id="obg-card-${i}">
+                <div class="obg-ebook-badge">${e.badge || 'EXCLUSIVO'}</div>
+                <div class="obg-ebook-img-wrap">
+                  <img src="${e.image}" alt="${e.title}" class="obg-ebook-img" loading="lazy">
+                  <div class="obg-ebook-img-overlay">
+                    <span class="obg-ebook-icon">${e.icon || '📖'}</span>
+                  </div>
+                </div>
+                <div class="obg-ebook-info">
+                  <div class="obg-ebook-cat">${e.category}</div>
+                  <h3 class="obg-ebook-title">${e.title}</h3>
+                  <p class="obg-ebook-desc">${e.shortDesc}</p>
+
+                  <div class="obg-ebook-features">
+                    ${e.features.slice(0, 3).map(f => `
+                    <div class="obg-feat-item">
+                      <span class="text-gold">✦</span>
+                      <span>${f}</span>
+                    </div>`).join('')}
+                  </div>
+
+                  <div class="obg-ebook-price-area">
+                    <div class="obg-ebook-from">De R$ ${e.priceFrom.toFixed(2).replace('.', ',')}</div>
+                    <div class="obg-ebook-price">
+                      <span class="obg-price-currency">R$</span>
+                      <span class="obg-price-num">${e.priceTo.toFixed(2).replace('.', ',')}</span>
+                    </div>
+                    <div class="obg-cupom-hint">
+                      🏷️ Use cupom <strong>BUTZKE</strong> e pague ainda menos
+                    </div>
+                  </div>
+
+                  <a href="${e.paymentLink}" target="_blank" class="btn btn-primary btn-lg btn-shimmer obg-ebook-btn" id="obg-ebook-btn-${i}">
+                    Garantir Este Ebook Agora
+                  </a>
+                  <a href="/ebook/${e.slug}" class="obg-ver-mais">Ver página completa →</a>
+                </div>
+              </div>`).join('')}
+            </div>
+          </div>
+        </section>
+        ` : ''}
+
+        <!-- ══ MENSAGEM FINAL ══ -->
+        <section class="section obg-final">
+          <div class="container" style="max-width:700px;text-align:center">
+            <div class="ornament">✦ ✦ ✦</div>
+            <h2 class="section-title" style="margin: 24px 0">
+              Que sua jornada seja <span class="text-gold">iluminada</span>
+            </h2>
+            <p style="color:#aaa;line-height:1.8;margin-bottom:32px">
+              O conhecimento que você acabou de adquirir foi reunido com respeito, estudo e dedicação.<br>
+              Aplique-o com fé, com ética e com o coração aberto. Os resultados virão.
+            </p>
+            <a href="/ebooks" class="btn btn-outline">Ver Todos os eBooks</a>
+          </div>
+        </section>
+
       </main>
 
       ${footerHtml}
@@ -80,7 +172,7 @@ export class ObrigadoPage {
 
     Navbar.init();
 
-    // Intersection Observer para as animações de fade-in
+    // Reveal animations
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -88,14 +180,11 @@ export class ObrigadoPage {
           observer.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.1 });
-    
-    this.container.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }, { threshold: 0.08 });
 
-    // Scroll to top automatically
+    this.container.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     window.scrollTo({ top: 0, behavior: 'instant' });
-    
-    // Analytics
+
     if (window.Analytics) {
       window.Analytics.sendData('VISITA', 'Acessou a Página', 'Obrigado (Pós-Venda)');
     }

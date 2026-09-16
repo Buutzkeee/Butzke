@@ -144,6 +144,57 @@ export const ebooksData = [
     ],
   },
   {
+    slug: 'eres-os-guardioes-mirins-da-umbanda',
+    title: 'Erês: Os Guardiões Mirins da Umbanda',
+    subtitle: 'Um estudo sobre a Linha das Crianças: origem, simbolismo, trabalhos e o significado espiritual dos Erês nos terreiros',
+    shortDesc: 'Descubra a força espiritual mais alegre e poderosa da Umbanda. Os Erês curam, abrem caminhos e trazem a pureza que o adulto esqueceu — e este livro revela como se conectar com eles.',
+    heroText: 'A Linha das Crianças Revelada: O que o Terreiro Sabe e Raramente Ensina Sobre os Guardiões Mirins da Umbanda.',
+    topics: ['Origem & História', 'Erês & Orixás', 'Trabalhos & Rituais', 'Simbolismo Espiritual'],
+    features: [
+      'A origem sagrada dos Erês na cosmologia da Umbanda e sua ligação com os Orixás',
+      'Os diferentes tipos de Erês — suas personalidades, cores, oferendas e missões espirituais',
+      'Como identificar se um Erê está presente no seu campo energético ou caminho espiritual',
+      'Rituais e oferendas corretas para honrar os Guardiões Mirins com respeito e eficácia',
+      'A simbologia das gargalhadas, das brincadeiras e dos doces como linguagem espiritual',
+      'O poder de cura e abertura de caminhos que os Erês carregam — e como pedir com fé',
+      'Depoimentos e histórias reais de manifestações e trabalhos com a Linha das Crianças',
+      'Guia completo em PDF — acesso vitalício no celular, tablet e PC'
+    ],
+    priceFrom: 97.0,
+    priceTo: 19.00,
+    pages: '80+',
+    paymentLink: 'https://pay.kirvano.com/6137269b-9ecf-4638-bdbf-b7a3d2ad2f8c',
+    badge: 'LANÇAMENTO',
+    category: 'Umbanda & Erês',
+    image: '/assets/img/eres.jpg',
+    imageHome: '/assets/img/eres_home.jpg',
+    hasCoverText: false,
+    icon: '🎠',
+    featured: true,
+    chapters: [
+      { num: 'I',   title: 'Salve as Crianças!',              desc: 'A saudação que abre os caminhos: quem são os Erês, de onde vêm e por que são considerados os mensageiros mais puros do astral.' },
+      { num: 'II',  title: 'A Linha das Crianças',            desc: 'A estrutura espiritual que sustenta os Erês, sua posição na hierarquia de Umbanda e a relação sagrada com cada Orixá.' },
+      { num: 'III', title: 'Os Guardiões e Seus Mistérios',   desc: 'Os principais Erês, suas cores, características, preferências e como cada um atua no campo espiritual e material.' },
+      { num: 'IV',  title: 'Identificando a Presença do Erê', desc: 'Sinais espirituais, sonhos, coincidências e manifestações que indicam que um Erê está atuando na sua vida ou na sua missão.' },
+      { num: 'V',   title: 'Rituais, Oferendas e Trabalhos',  desc: 'O passo a passo correto para preparar oferendas, realizar pedidos e criar uma relação espiritual sólida e respeitosa com os Guardiões Mirins.' },
+      { num: 'VI',  title: 'Cura, Alegria e Abertura de Caminhos', desc: 'A força terapêutica dos Erês: como a leveza, a brincadeira e a pureza infantil se transformam em instrumentos poderosos de transformação espiritual.' },
+      { num: '✦',   title: 'Bônus: Guia de Pontos Cantados', desc: 'Seleção especial de pontos cantados para abrir a gira, chamar os Erês e encerrar os trabalhos com respeito e alegria.' }
+    ],
+    testimonials: [
+      { text: 'Nunca imaginei que um ebook me faria chorar de emoção. A forma como o Eduardo explica os Erês é como se eu finalmente entendesse por que tenho essa conexão com a Linha das Crianças desde criança. Fiz a primeira oferenda e senti uma leveza que não sentia há anos.', name: 'Aline M.', location: 'São Paulo / SP' },
+      { text: 'Pratico Umbanda há 10 anos e ainda aprendi muito. O capítulo sobre como identificar a presença do Erê e os rituais corretos de oferenda é ouro puro. Material de qualidade e profundidade rara.', name: 'Padre Ronaldo F.', location: 'Salvador / BA' },
+      { text: 'Comprei para entender o Erê que incorpora na minha mãe e saí muito mais preparada para assistir e ajudar. A explicação das diferenças entre os tipos de Erê e suas missões é algo que nenhum livro popular explica. Valeu muito cada centavo.', name: 'Carla S.', location: 'Recife / PE' }
+    ],
+    faqs: [
+      { q: 'Preciso ser médium ou umbandista para aproveitar o material?', a: 'Não. Este ebook foi escrito tanto para praticantes de Umbanda quanto para curiosos, familiares de médiuns e qualquer pessoa que sinta atração espiritual pela Linha das Crianças. A linguagem é acessível e respeitosa.' },
+      { q: 'Os rituais ensinados são seguros?', a: 'Sim. Todos os trabalhos e oferendas apresentados no material foram selecionados com base em fundamentos tradicionais da Umbanda, com foco em respeito, ética e segurança espiritual.' },
+      { q: 'Como recebo o material?', a: 'O acesso é imediato! Assim que o pagamento for aprovado (Pix é instantâneo), você recebe o link de download do PDF no seu e-mail. Acesse pelo celular, tablet ou computador — para sempre.' },
+      { q: 'Como aplico meu cupom de desconto?', a: 'Se você recebeu um cupom exclusivo (como o cupom BUTZKE), basta clicar em comprar e inserir o código diretamente na tela de checkout da Kirvano para ter o desconto aplicado na hora!' },
+      { q: 'Tenho garantia?', a: 'Sim! Você conta com 7 dias de garantia incondicional pela plataforma Kirvano. Se por qualquer motivo não ficar satisfeito, é só um clique para receber 100% do seu dinheiro de volta. Sem burocracia, sem perguntas.' },
+      { q: 'Esse material é diferente do que encontro de graça na internet?', a: 'Completamente. O conteúdo reúne estudos aprofundados, experiências de terreiro e uma curadoria que vai muito além do que circula em grupos e vídeos superficiais. É estudo de verdade, com respeito e profundidade.' }
+    ],
+  },
+  {
     slug: 'grimorio-das-ervas',
     title: 'O Grimório das Ervas Sagradas',
     subtitle: 'A Alquimia das Plantas que Nenhuma Consulta te Ensina — Limpar, Blindar e Prosperar',

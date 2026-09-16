@@ -1,0 +1,436 @@
+/* =====================================================
+   ObrigadoPage — Pós-Venda CSS
+   Dark Mystical Theme | Red × Gold
+   ===================================================== */
+
+/* ══ HERO ══ */
+.obg-hero {
+  position: relative;
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: radial-gradient(ellipse at 50% 0%, rgba(204,0,0,0.12) 0%, transparent 65%),
+              radial-gradient(ellipse at 20% 80%, rgba(255,51,0,0.06) 0%, transparent 50%),
+              #080808;
+  overflow: hidden;
+  padding: 120px 24px 80px;
+}
+
+.obg-hero-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: orbFloat 8s ease-in-out infinite;
+}
+.obg-orb1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(255,51,0,0.08) 0%, transparent 70%);
+  top: -150px; left: -150px;
+  animation-delay: 0s;
+}
+.obg-orb2 {
+  width: 400px; height: 400px;
+  background: radial-gradient(circle, rgba(204,0,0,0.06) 0%, transparent 70%);
+  bottom: -100px; right: -100px;
+  animation-delay: -4s;
+}
+@keyframes orbFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%       { transform: translateY(-20px) scale(1.05); }
+}
+
+.obg-hero-inner {
+  position: relative;
+  z-index: 2;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.obg-check-wrap {
+  margin-bottom: 28px;
+}
+.obg-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #ff1a1a 0%, #cc0000 100%);
+  box-shadow: 0 0 40px rgba(255,51,0,0.35), 0 0 80px rgba(255,51,0,0.15);
+  font-size: 2.5rem;
+  color: #fff;
+  font-weight: 700;
+  animation: checkPulse 2s ease-in-out infinite;
+}
+@keyframes checkPulse {
+  0%, 100% { box-shadow: 0 0 40px rgba(255,51,0,0.35), 0 0 80px rgba(255,51,0,0.15); }
+  50%       { box-shadow: 0 0 60px rgba(255,51,0,0.55), 0 0 120px rgba(255,51,0,0.25); }
+}
+
+.obg-h1 {
+  font-family: var(--font-title);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+.obg-sub {
+  font-size: 1.1rem;
+  color: #aaa;
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+.obg-sub strong { color: var(--text); }
+
+.obg-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.obg-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+.obg-step-num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gold-dim);
+  border: 1px solid var(--gold-border);
+  color: var(--gold);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.obg-step-arrow {
+  font-size: 1.4rem;
+  color: var(--gold);
+  opacity: 0.5;
+}
+
+/* ══ CUPOM BUTZKE ══ */
+.obg-cupom-section {
+  background: var(--bg-surface);
+  padding: 80px 24px;
+}
+
+.obg-cupom-box {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 48px;
+  align-items: center;
+  background: linear-gradient(135deg, #111 0%, #1a1a1a 100%);
+  border: 1px solid rgba(255,215,0,0.3);
+  border-radius: var(--radius);
+  padding: 48px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 60px rgba(255,215,0,0.05), var(--shadow-card);
+}
+.obg-cupom-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255,215,0,0.6), transparent);
+}
+.obg-cupom-box::after {
+  content: '🎁';
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  font-size: 8rem;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+.obg-cupom-tag {
+  display: inline-block;
+  background: rgba(255,215,0,0.1);
+  border: 1px solid rgba(255,215,0,0.3);
+  color: gold;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+}
+
+.obg-cupom-title {
+  font-family: var(--font-title);
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  color: var(--text);
+  margin-bottom: 14px;
+  line-height: 1.3;
+}
+
+.obg-cupom-desc,
+.obg-cupom-instrucoes {
+  color: #aaa;
+  font-size: 1rem;
+  line-height: 1.7;
+  margin-bottom: 12px;
+}
+
+.obg-cupom-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  min-width: 220px;
+}
+
+.obg-cupom-code-label {
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.obg-cupom-code {
+  font-family: 'Courier New', monospace;
+  font-size: 2.2rem;
+  font-weight: 900;
+  letter-spacing: 6px;
+  color: gold;
+  background: rgba(255,215,0,0.08);
+  border: 2px dashed rgba(255,215,0,0.4);
+  border-radius: var(--radius-sm);
+  padding: 16px 32px;
+  text-align: center;
+  user-select: all;
+  animation: cupomGlow 3s ease-in-out infinite;
+}
+@keyframes cupomGlow {
+  0%, 100% { box-shadow: 0 0 0px rgba(255,215,0,0.1); }
+  50%       { box-shadow: 0 0 20px rgba(255,215,0,0.25); }
+}
+
+.obg-copy-btn {
+  background: linear-gradient(135deg, #b8860b, #daa520);
+  color: #111;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 12px 24px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  border: none;
+  transition: all 0.3s ease;
+  width: 100%;
+  text-align: center;
+}
+.obg-copy-btn:hover { transform: scale(1.04); box-shadow: 0 4px 20px rgba(218,165,32,0.3); }
+.obg-copy-btn.copied { background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; }
+
+.obg-cupom-valid {
+  font-size: 0.78rem;
+  color: #555;
+  text-align: center;
+}
+
+/* ══ CROSS-SELL EBOOKS ══ */
+.obg-crosssell {
+  padding: 100px 24px;
+}
+
+.obg-ebooks-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 32px;
+  margin-top: 56px;
+}
+
+.obg-ebook-card {
+  background: var(--bg-card);
+  border: 1px solid var(--gold-border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  position: relative;
+}
+.obg-ebook-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.6), 0 0 30px rgba(255,51,0,0.1);
+  border-color: var(--gold-border-hover);
+}
+
+.obg-ebook-badge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 3;
+  background: linear-gradient(135deg, #ff1a1a, #cc0000);
+  color: #fff;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  box-shadow: 0 2px 12px rgba(204,0,0,0.4);
+}
+
+.obg-ebook-img-wrap {
+  position: relative;
+  height: 220px;
+  overflow: hidden;
+  background: #0d0d0d;
+}
+.obg-ebook-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.5s ease;
+}
+.obg-ebook-card:hover .obg-ebook-img { transform: scale(1.05); }
+.obg-ebook-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.8) 100%);
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+}
+.obg-ebook-icon { font-size: 2rem; }
+
+.obg-ebook-info {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px;
+  flex: 1;
+}
+
+.obg-ebook-cat {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  font-weight: 600;
+}
+
+.obg-ebook-title {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  color: var(--text);
+  line-height: 1.3;
+}
+
+.obg-ebook-desc {
+  font-size: 0.9rem;
+  color: #888;
+  line-height: 1.6;
+}
+
+.obg-ebook-features {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 14px 0;
+  margin: 4px 0;
+}
+.obg-feat-item {
+  display: flex;
+  gap: 10px;
+  font-size: 0.85rem;
+  color: #bbb;
+  line-height: 1.4;
+  align-items: flex-start;
+}
+
+.obg-ebook-price-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 0;
+}
+.obg-ebook-from {
+  font-size: 0.85rem;
+  color: #555;
+  text-decoration: line-through;
+}
+.obg-ebook-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+.obg-price-currency {
+  font-size: 1rem;
+  color: var(--gold);
+  font-weight: 700;
+}
+.obg-price-num {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--text);
+  font-family: var(--font-title);
+}
+
+.obg-cupom-hint {
+  font-size: 0.78rem;
+  color: gold;
+  background: rgba(255,215,0,0.07);
+  border: 1px solid rgba(255,215,0,0.2);
+  border-radius: 6px;
+  padding: 6px 12px;
+  text-align: center;
+  margin-top: 4px;
+}
+
+.obg-ebook-btn {
+  width: 100%;
+  text-align: center;
+  margin-top: auto;
+}
+
+.obg-ver-mais {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  transition: color 0.2s;
+}
+.obg-ver-mais:hover { color: var(--gold); }
+
+/* ══ FINAL ══ */
+.obg-final {
+  text-align: center;
+  padding: 80px 24px;
+}
+
+/* ══ RESPONSIVE ══ */
+@media (max-width: 768px) {
+  .obg-cupom-box {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 32px 24px;
+  }
+  .obg-cupom-box::after { font-size: 5rem; }
+  .obg-step-arrow { display: none; }
+  .obg-steps { flex-direction: column; }
+  .obg-ebooks-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .obg-hero { padding: 100px 16px 60px; }
+  .obg-cupom-code { font-size: 1.6rem; letter-spacing: 4px; padding: 14px 24px; }
+}
