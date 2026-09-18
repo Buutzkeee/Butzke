@@ -29,6 +29,8 @@ export class BibliotecaPage {
     this.pdfTotalPages = 1;
     this.pdfRotation = 0; // 0, 90, 180, 270 graus
     this.pdfScale = 1.25;
+    this.pdfMobileZoom = 1.0; // Zoom proporcional para celular
+    this.showReaderSidebar = false; // Sidebar colapsável (não obstrui leitura)
     this.pdfRendering = false;
     this.pdfPagePending = null;
     this.pdfRenderTask = null;
@@ -388,7 +390,7 @@ export class BibliotecaPage {
         </p>
 
         <div style="display:flex; justify-content:center; gap:16px; flex-wrap:wrap; margin-bottom:40px;">
-          <a href="#planos" class="btn btn-primary btn-lg btn-shimmer" style="padding:16px 32px; font-size:1rem;">
+          <a href="https://pay.kirvano.com/45e4e673-3e4e-4ec6-8d24-19717ab0aa0b" target="_blank" class="btn btn-primary btn-lg btn-shimmer" style="padding:16px 32px; font-size:1rem; text-decoration:none;">
             ⚡ ASSINAR O REPOSITÓRIO
           </a>
           <button class="btn btn-outline btn-lg" id="btn-open-login" style="padding:16px 28px; font-size:0.95rem; border-color:#d4a017; color:#f5c842;">
@@ -428,9 +430,9 @@ export class BibliotecaPage {
                 <p class="repo-card-desc">${b.description}</p>
                 <div class="repo-card-footer">
                   <span class="repo-card-meta">📄 ${b.pages} páginas</span>
-                  <button class="btn btn-outline btn-sm btn-locked-book" style="font-size:0.78rem; padding:6px 12px; border-color:rgba(212,160,23,0.3); color:#f5c842;">
+                  <a href="https://pay.kirvano.com/45e4e673-3e4e-4ec6-8d24-19717ab0aa0b" target="_blank" class="btn btn-outline btn-sm btn-locked-book" style="font-size:0.78rem; padding:6px 12px; border-color:rgba(212,160,23,0.3); color:#f5c842; text-decoration:none; display:inline-flex; align-items:center;">
                     🔒 Desbloquear
-                  </button>
+                  </a>
                 </div>
               </div>
             </div>
@@ -461,7 +463,7 @@ export class BibliotecaPage {
               <li><span>✓</span> Novos títulos e atualizações adicionados todo mês</li>
               <li><span>✓</span> Suporte e liberação de acesso imediata</li>
             </ul>
-            <a href="https://pay.kirvano.com" target="_blank" class="plano-btn" id="btn-assinar-mensal">
+            <a href="https://pay.kirvano.com/45e4e673-3e4e-4ec6-8d24-19717ab0aa0b" target="_blank" class="plano-btn" id="btn-assinar-mensal">
               ASSINAR PLANO MENSAL
             </a>
           </div>
@@ -479,7 +481,7 @@ export class BibliotecaPage {
               <li><span style="color:#f5c842;">✓</span> Canal direto de perguntas no Oráculo do Acervo</li>
               <li><span style="color:#f5c842;">✓</span> Badge exclusiva de Membro Veterano no Círculo</li>
             </ul>
-            <a href="https://pay.kirvano.com" target="_blank" class="plano-btn featured" id="btn-assinar-anual">
+            <a href="https://pay.kirvano.com/45e4e673-3e4e-4ec6-8d24-19717ab0aa0b" target="_blank" class="plano-btn featured" id="btn-assinar-anual">
               ⭐ QUERO O PASSE ANUAL
             </a>
           </div>
@@ -840,7 +842,7 @@ export class BibliotecaPage {
     `;
   }
 
-  /* ---- MODAL: LEITOR DE LIVROS INTERATIVO COM ROTAÇÃO E PÁGINAS ---- */
+  /* ---- MODAL: LEITOR DE LIVROS INTERATIVO (OTIMIZADO PARA CELULAR E DESKTOP) ---- */
   _renderReaderModal() {
     if (!this.activeReaderBook) return '';
 
@@ -850,159 +852,148 @@ export class BibliotecaPage {
     return `
       <div class="reader-modal" id="reader-modal">
         <!-- BARRA SUPERIOR DO LEITOR -->
-        <div class="reader-header" style="height:auto; min-height:60px; padding:10px 20px; flex-wrap:wrap; gap:12px; border-bottom:1px solid rgba(212,160,23,0.3); background:#0c0c10;">
-          <div class="reader-title-area" style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:1.4rem;">📖</span>
-            <div>
-              <h2 class="reader-book-title" style="font-size:1.05rem; margin:0; color:#f5c842; font-family:var(--font-title);">${b.title}</h2>
-              <span style="font-size:0.72rem; color:var(--text-muted);">${b.category} • Acervo Supabase</span>
+        <div class="reader-header">
+          <div class="reader-title-area">
+            <span style="font-size:1.3rem; flex-shrink:0;">📖</span>
+            <div class="reader-title-info">
+              <h2 class="reader-book-title" title="${b.title}">${b.title}</h2>
+              <span class="reader-book-subtitle">${b.category} • Repositório Supabase</span>
             </div>
           </div>
 
           ${isPdf ? `
-            <!-- CONTROLES COMPLETOS DE NAVEGAÇÃO E ROTAÇÃO -->
-            <div class="reader-controls" style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-              <!-- Paginação -->
-              <div style="display:flex; align-items:center; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:2px 8px; gap:6px;">
-                <button class="reader-btn-icon" id="pdf-btn-prev" title="Página Anterior (Seta Esquerda)" style="padding:4px 8px; font-size:0.8rem; background:transparent; border:none; color:#fff; cursor:pointer;">
+            <!-- CONTROLES DESKTOP (Ocultos no celular via CSS) -->
+            <div class="reader-desktop-controls">
+              <!-- Paginação Desktop -->
+              <div class="reader-control-group">
+                <button class="reader-btn-icon" id="pdf-btn-prev" title="Página Anterior (Seta Esquerda)">
                   ◀ Anterior
                 </button>
-                <span style="font-size:0.8rem; color:#aaa; display:flex; align-items:center; gap:4px;">
-                  Pág <input type="number" id="pdf-input-page" min="1" max="${this.pdfTotalPages || 1}" value="${this.pdfPageNum || 1}" style="width:42px; text-align:center; background:#000; border:1px solid rgba(212,160,23,0.4); color:#f5c842; border-radius:4px; font-weight:bold; padding:2px 4px; font-size:0.8rem; outline:none;"> de <strong id="pdf-total-pages" style="color:#fff;">${this.pdfTotalPages || 1}</strong>
+                <span class="reader-page-indicator">
+                  Pág <input type="number" id="pdf-input-page" min="1" max="${this.pdfTotalPages || 1}" value="${this.pdfPageNum || 1}"> de <strong id="pdf-total-pages">${this.pdfTotalPages || 1}</strong>
                 </span>
-                <button class="reader-btn-icon" id="pdf-btn-next" title="Próxima Página (Seta Direita)" style="padding:4px 8px; font-size:0.8rem; background:transparent; border:none; color:#fff; cursor:pointer;">
+                <button class="reader-btn-icon" id="pdf-btn-next" title="Próxima Página (Seta Direita)">
                   Próxima ▶
                 </button>
               </div>
 
-              <!-- Rotação de Páginas -->
-              <button class="reader-btn-icon" id="pdf-btn-rotate" title="Girar Página 90° no sentido horário (Tecla R)" style="background:rgba(212,160,23,0.15); border:1px solid #d4a017; color:#f5c842; font-weight:600; display:flex; align-items:center; gap:5px; padding:6px 12px; border-radius:8px; cursor:pointer;">
+              <!-- Rotação Desktop -->
+              <button class="reader-btn-icon reader-btn-rotate" id="pdf-btn-rotate" title="Girar Página 90° no sentido horário (Tecla R)">
                 <span>🔄 Girar 90°</span>
-                <span id="pdf-rot-badge" style="background:rgba(0,0,0,0.5); font-size:0.68rem; padding:1px 5px; border-radius:10px; color:#fff;">${this.pdfRotation}°</span>
+                <span id="pdf-rot-badge" class="reader-badge-rot">${this.pdfRotation}°</span>
               </button>
 
-              <!-- Zoom -->
-              <div style="display:flex; align-items:center; background:rgba(255,255,255,0.06); border:1px solid rgba(255,255,255,0.12); border-radius:8px; padding:2px 6px; gap:4px;">
-                <button class="reader-btn-icon" id="pdf-btn-zoom-out" title="Diminuir Zoom" style="background:transparent; border:none; color:#fff; cursor:pointer; padding:4px 8px; font-size:0.85rem;">🔍 -</button>
-                <span id="pdf-zoom-val" style="font-size:0.75rem; color:#d4a017; font-weight:600; min-width:38px; text-align:center;">${Math.round(this.pdfScale * 100)}%</span>
-                <button class="reader-btn-icon" id="pdf-btn-zoom-in" title="Aumentar Zoom" style="background:transparent; border:none; color:#fff; cursor:pointer; padding:4px 8px; font-size:0.85rem;">🔍 +</button>
-                <button class="reader-btn-icon" id="pdf-btn-zoom-fit" title="Ajustar 100%" style="background:transparent; border:none; color:#bbb; cursor:pointer; padding:4px 6px; font-size:0.75rem; border-left:1px solid rgba(255,255,255,0.1);">⛶ 100%</button>
+              <!-- Zoom Desktop -->
+              <div class="reader-control-group">
+                <button class="reader-btn-icon" id="pdf-btn-zoom-out" title="Diminuir Zoom">🔍 -</button>
+                <span id="pdf-zoom-val" class="reader-zoom-val">${Math.round(this.pdfScale * 100)}%</span>
+                <button class="reader-btn-icon" id="pdf-btn-zoom-in" title="Aumentar Zoom">🔍 +</button>
+                <button class="reader-btn-icon" id="pdf-btn-zoom-fit" title="Ajustar 100%">⛶ 100%</button>
               </div>
 
-              <!-- Ações Extras -->
-              <a href="${b.pdfUrl}" target="_blank" class="reader-btn-icon" title="Abrir PDF original em nova aba" style="text-decoration:none; display:flex; align-items:center; gap:4px; font-size:0.78rem; padding:6px 10px; border-radius:8px; color:#ccc;">
-                ⬇ Abrir Aba
+              <!-- Detalhes do Manuscrito (Desktop) -->
+              <button class="reader-btn-icon" id="pdf-btn-toggle-sidebar" title="Ver Informações do Manuscrito">
+                ℹ Detalhes
+              </button>
+
+              <!-- Abrir Aba -->
+              <a href="${b.pdfUrl}" target="_blank" class="reader-btn-icon" title="Abrir PDF original em nova aba" style="text-decoration:none;">
+                ⬇ Nova Aba
               </a>
 
-              <button class="reader-btn-icon" id="reader-close" style="color:#ff6666; font-weight:700; font-size:1rem; padding:6px 12px; border-radius:8px; border-color:rgba(255,51,0,0.3); background:rgba(255,51,0,0.1); cursor:pointer;" title="Fechar Leitor (Esc)">✕</button>
+              <!-- Fechar Leitor -->
+              <button class="reader-btn-icon reader-btn-close" id="reader-close" title="Fechar Leitor (Esc)">✕</button>
+            </div>
+
+            <!-- Ações Topo no Celular -->
+            <div class="reader-mobile-header-actions">
+              <button class="reader-mobile-top-btn" id="pdf-btn-rotate-top-m" title="Girar 90°">🔄 90°</button>
+              <button class="reader-mobile-top-btn close-btn" id="reader-close-m" title="Fechar">✕ Fechar</button>
             </div>
           ` : `
             <div class="reader-controls">
               <button class="reader-btn-icon" id="reader-font-dec" title="Diminuir Fonte">A-</button>
               <button class="reader-btn-icon" id="reader-font-inc" title="Aumentar Fonte">A+</button>
-              <button class="reader-btn-icon" id="reader-close" style="color:#ff6666;" title="Fechar Leitor">✕</button>
+              <button class="reader-btn-icon reader-btn-close" id="reader-close" title="Fechar Leitor">✕</button>
             </div>
           `}
         </div>
 
-        <!-- CORPO DO LEITOR -->
-        <div class="reader-body" style="flex:1; display:flex; overflow:hidden; background:#070709;">
-          <!-- SIDEBAR LATERAL (ÍNDICE & ATALHOS) -->
-          <div class="reader-sidebar" style="width:260px; background:#0e0e13; border-right:1px solid rgba(255,255,255,0.06); padding:18px; overflow-y:auto; display:flex; flex-direction:column; gap:16px;">
-            <div>
-              <div style="font-size:0.72rem; color:#d4a017; font-family:var(--font-title); letter-spacing:1px; margin-bottom:8px; text-transform:uppercase;">
-                Sobre o Manuscrito
-              </div>
-              <p style="font-size:0.8rem; color:#aaa; line-height:1.4; margin:0 0 10px 0;">
-                ${b.description}
-              </p>
-              <div style="font-size:0.72rem; color:#666; background:rgba(255,255,255,0.03); padding:8px 10px; border-radius:6px;">
-                Arquivo: <code>${b.fileName || 'manuscrito.pdf'}</code><br>
-                Bucket: <code>${b.bucket || 'Ebooks'}</code>
-              </div>
+        <!-- CORPO DO LEITOR (100% da tela dedicado à leitura) -->
+        <div class="reader-body">
+          <!-- SIDEBAR (Colapsável: oculta por padrão no desktop e sempre oculta no celular) -->
+          <div class="reader-sidebar ${this.showReaderSidebar ? 'open' : ''}" id="reader-sidebar">
+            <div class="reader-sidebar-header">
+              <span class="reader-sidebar-title">Sobre o Manuscrito</span>
+              <button class="reader-sidebar-close" id="btn-close-sidebar" title="Ocultar barra">✕</button>
+            </div>
+            <p class="reader-sidebar-desc">${b.description}</p>
+            <div class="reader-sidebar-meta">
+              Arquivo: <code>${b.fileName || 'manuscrito.pdf'}</code><br>
+              Bucket: <code>${b.bucket || 'Ebooks'}</code>
             </div>
 
-            ${isPdf ? `
-              <div>
-                <div style="font-size:0.72rem; color:#d4a017; font-family:var(--font-title); letter-spacing:1px; margin-bottom:8px; text-transform:uppercase;">
-                  ⚡ Atalhos do Teclado
-                </div>
-                <div style="font-size:0.74rem; color:#bbb; display:flex; flex-direction:column; gap:6px; line-height:1.4;">
-                  <div><kbd style="background:#1a1a24; padding:2px 6px; border-radius:4px; border:1px solid #333; color:#f5c842;">←</kbd> Página anterior</div>
-                  <div><kbd style="background:#1a1a24; padding:2px 6px; border-radius:4px; border:1px solid #333; color:#f5c842;">→</kbd> Próxima página</div>
-                  <div><kbd style="background:#1a1a24; padding:2px 6px; border-radius:4px; border:1px solid #333; color:#f5c842;">R</kbd> Girar 90° página</div>
-                  <div><kbd style="background:#1a1a24; padding:2px 6px; border-radius:4px; border:1px solid #333; color:#f5c842;">Esc</kbd> Fechar leitor</div>
-                </div>
-              </div>
-
-              <div style="margin-top:auto; padding-top:14px; border-top:1px solid rgba(255,255,255,0.06);">
-                <button id="pdf-btn-force-iframe" class="btn btn-outline btn-sm" style="width:100%; font-size:0.72rem; padding:6px; border-color:rgba(255,255,255,0.2); color:#bbb;">
-                  🖥️ Alternar p/ Leitor Nativo
-                </button>
-              </div>
-            ` : `
-              <div>
-                <div style="font-size:0.72rem; color:#d4a017; font-family:var(--font-title); letter-spacing:1px; margin-bottom:10px; text-transform:uppercase;">
-                  Capítulos
-                </div>
-                ${b.chapters.map((c, i) => `
-                  <div class="reader-chapter-item ${i === this.activeReaderChapter ? 'active' : ''}" data-idx="${i}">
-                    ${c.title}
-                  </div>
-                `).join('')}
-              </div>
-            `}
+            <div class="reader-sidebar-title" style="margin-top:14px;">⚡ Atalhos do Teclado</div>
+            <div class="reader-shortcuts">
+              <div><kbd>←</kbd> Página anterior</div>
+              <div><kbd>→</kbd> Próxima página</div>
+              <div><kbd>R</kbd> Girar 90° página</div>
+              <div><kbd>Esc</kbd> Fechar leitor</div>
+            </div>
           </div>
 
-          <!-- ÁREA PRINCIPAL DE VISUALIZAÇÃO -->
-          <div class="reader-content" style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; align-items:center; justify-content:flex-start; position:relative;">
+          <!-- ÁREA PRINCIPAL DE LEITURA (Ampla, centralizada e fluida) -->
+          <div class="reader-content" id="reader-content-scroll">
             ${isPdf ? `
               <!-- Loading Indicator -->
-              <div id="pdf-loading-indicator" style="display:flex; flex-direction:column; align-items:center; justify-content:center; padding:60px 20px; color:#f5c842;">
+              <div id="pdf-loading-indicator" class="pdf-loading-box">
                 <div class="loader-symbol" style="font-size:2.6rem; animation:spin 1.5s infinite linear;">✦</div>
-                <p style="margin-top:14px; font-size:0.92rem; font-family:var(--font-title);">Abrindo manuscrito do Supabase...</p>
-                <span style="font-size:0.75rem; color:var(--text-muted);">Decodificando páginas e aplicando rotação...</span>
+                <p style="margin-top:14px; font-size:0.92rem; font-family:var(--font-title); color:#f5c842;">Abrindo manuscrito do Supabase...</p>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Decodificando páginas com alta definição...</span>
               </div>
 
-              <!-- Error Indicator / Orientação Supabase -->
-              <div id="pdf-error-indicator" style="display:none; text-align:center; padding:30px; background:rgba(20,20,28,0.9); border:1px solid rgba(212,160,23,0.3); border-radius:12px; max-width:620px; margin:40px auto; box-shadow:0 15px 40px rgba(0,0,0,0.8);">
-                <div style="font-size:2.5rem; margin-bottom:12px;">🛡️</div>
-                <h3 style="font-family:var(--font-title); color:#f5c842; font-size:1.2rem; margin-bottom:8px;">
-                  Visualização do Documento
+              <!-- Error Indicator / Fallback caso necessário -->
+              <div id="pdf-error-indicator" style="display:none;" class="pdf-error-box">
+                <div style="font-size:2rem; margin-bottom:8px;">🛡️</div>
+                <h3 style="font-family:var(--font-title); color:#f5c842; font-size:1.1rem; margin-bottom:8px;">
+                  Abrir Documento
                 </h3>
-                <div id="pdf-error-details" style="font-size:0.85rem; color:#ccc; line-height:1.6; margin-bottom:20px;">
-                  Se o PDF não abriu diretamente no canvas, pode ser devido à política de acesso privado do Supabase Storage.<br>
-                  Você pode abrir imediatamente em nova aba ou acionar o leitor embutido abaixo:
-                </div>
-                <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-                  <a href="${b.pdfUrl}" target="_blank" class="btn btn-primary" style="padding:10px 20px; font-size:0.85rem;">
-                    ⬇ Abrir PDF em Nova Aba
-                  </a>
-                  <button id="btn-show-iframe-now" class="btn btn-outline" style="padding:10px 18px; font-size:0.85rem; border-color:#d4a017; color:#f5c842;">
-                    🖥️ Usar Visualizador Embutido
-                  </button>
-                </div>
+                <p style="font-size:0.82rem; color:#ccc; margin-bottom:16px;">
+                  Clique abaixo para visualizar o PDF completo em nova aba:
+                </p>
+                <a href="${b.pdfUrl}" target="_blank" class="btn btn-primary btn-sm" style="padding:10px 24px; font-size:0.85rem;">
+                  ⬇ Abrir PDF em Nova Aba
+                </a>
               </div>
 
               <!-- Canvas Interativo -->
-              <div id="pdf-canvas-container" style="display:flex; justify-content:center; align-items:center; width:100%; min-height:500px; padding:10px 0;">
-                <canvas id="pdf-render-canvas" style="display:none; background:#ffffff; box-shadow:0 15px 50px rgba(0,0,0,0.85); border-radius:4px; max-width:100%; height:auto;"></canvas>
+              <div id="pdf-canvas-container" class="pdf-canvas-wrapper">
+                <canvas id="pdf-render-canvas"></canvas>
               </div>
-
-              <!-- Iframe Fallback (oculto por padrão) -->
-              <iframe id="pdf-fallback-iframe" src="${b.pdfUrl}#toolbar=1" style="display:none; width:100%; height:82vh; border:none; border-radius:8px; background:#000;"></iframe>
             ` : `
-              <div style="max-width:800px; width:100%; font-size:${this.readerFontSize}px; line-height:1.9;">
+              <div style="max-width:800px; width:100%; font-size:${this.readerFontSize}px; line-height:1.9; padding:20px;">
                 <h2 style="font-size:1.5rem; color:#f5c842; font-family:var(--font-title); margin-bottom:20px;">${b.title}</h2>
-                <p>${ch.preview}</p>
-                <p>O domínio das correntes de força exige retidão, disciplina e silêncio. Neste manuscrito exclusivo do repositório, cada instrução foi preservada conforme a tradição ancestral.</p>
-                <div style="background:rgba(212,160,23,0.08); border-left:3px solid #d4a017; padding:18px 24px; border-radius:0 10px 10px 0; margin:30px 0; font-style:italic; color:#f5c842;">
-                  "O verdadeiro adepto guarda o segredo com a mesma fidelidade com que o fogo consome a matéria."
-                </div>
+                <p>${b.chapters[0]?.preview || b.description}</p>
               </div>
             `}
           </div>
         </div>
+
+        ${isPdf ? `
+          <!-- BARRA FLUTUANTE INFERIOR TOUCH PARA CELULAR (Ergonomia total para o polegar) -->
+          <div class="reader-mobile-bar">
+            <button class="reader-mobile-btn" id="pdf-btn-prev-m" title="Página Anterior">◀ Ant</button>
+            <div class="reader-mobile-counter">
+              <span id="pdf-mobile-page-num">${this.pdfPageNum || 1}</span> / <span id="pdf-mobile-page-total">${this.pdfTotalPages || 1}</span>
+            </div>
+            <button class="reader-mobile-btn" id="pdf-btn-next-m" title="Próxima Página">Próx ▶</button>
+            <button class="reader-mobile-btn highlight" id="pdf-btn-rotate-m" title="Girar 90 Graus">
+              🔄 <span id="pdf-rot-badge-m">${this.pdfRotation}°</span>
+            </button>
+            <button class="reader-mobile-btn" id="pdf-btn-zoom-out-m" title="Diminuir Zoom">🔍 -</button>
+            <button class="reader-mobile-btn" id="pdf-btn-zoom-in-m" title="Aumentar Zoom">🔍 +</button>
+          </div>
+        ` : ''}
       </div>
     `;
   }
@@ -1447,20 +1438,44 @@ export class BibliotecaPage {
   }
 
   _bindReaderControls() {
-    // Fechar leitor
+    const closeReader = () => {
+      if (this.pdfKeyHandler) {
+        window.removeEventListener('keydown', this.pdfKeyHandler);
+        this.pdfKeyHandler = null;
+      }
+      if (this.pdfRenderTask) {
+        try { this.pdfRenderTask.cancel(); } catch (e) {}
+      }
+      this.activeReaderBook = null;
+      this.pdfDoc = null;
+      this.showReaderSidebar = false;
+      this._render();
+    };
+
+    // Fechar leitor (Desktop e Celular)
     const btnClose = document.getElementById('reader-close');
-    if (btnClose) {
-      btnClose.addEventListener('click', () => {
-        if (this.pdfKeyHandler) {
-          window.removeEventListener('keydown', this.pdfKeyHandler);
-          this.pdfKeyHandler = null;
-        }
-        if (this.pdfRenderTask) {
-          try { this.pdfRenderTask.cancel(); } catch (e) {}
-        }
-        this.activeReaderBook = null;
-        this.pdfDoc = null;
-        this._render();
+    if (btnClose) btnClose.addEventListener('click', closeReader);
+
+    const btnCloseM = document.getElementById('reader-close-m');
+    if (btnCloseM) btnCloseM.addEventListener('click', closeReader);
+
+    // Alternar detalhes da sidebar no desktop
+    const btnToggleSidebar = document.getElementById('pdf-btn-toggle-sidebar');
+    const sidebarEl = document.getElementById('reader-sidebar');
+    if (btnToggleSidebar && sidebarEl) {
+      btnToggleSidebar.addEventListener('click', () => {
+        this.showReaderSidebar = !this.showReaderSidebar;
+        sidebarEl.classList.toggle('open', this.showReaderSidebar);
+        btnToggleSidebar.style.background = this.showReaderSidebar ? 'rgba(212,160,23,0.25)' : 'transparent';
+      });
+    }
+
+    const btnCloseSidebar = document.getElementById('btn-close-sidebar');
+    if (btnCloseSidebar && sidebarEl) {
+      btnCloseSidebar.addEventListener('click', () => {
+        this.showReaderSidebar = false;
+        sidebarEl.classList.remove('open');
+        if (btnToggleSidebar) btnToggleSidebar.style.background = 'transparent';
       });
     }
 
@@ -1500,29 +1515,33 @@ export class BibliotecaPage {
 
   /* ---- CONTROLES DO LEITOR DE PDF (VIRADA DE PÁGINA, ROTAÇÃO 90°, ZOOM) ---- */
   _initPdfControls() {
-    // 1. Botão Página Anterior
+    // 1. Virar Página Anterior (Desktop e Celular)
+    const prevPage = () => {
+      if (this.pdfPageNum > 1) {
+        this.pdfPageNum--;
+        this._queueRenderPage(this.pdfPageNum);
+      }
+    };
     const btnPrev = document.getElementById('pdf-btn-prev');
-    if (btnPrev) {
-      btnPrev.addEventListener('click', () => {
-        if (this.pdfPageNum > 1) {
-          this.pdfPageNum--;
-          this._queueRenderPage(this.pdfPageNum);
-        }
-      });
-    }
+    if (btnPrev) btnPrev.addEventListener('click', prevPage);
 
-    // 2. Botão Próxima Página
+    const btnPrevM = document.getElementById('pdf-btn-prev-m');
+    if (btnPrevM) btnPrevM.addEventListener('click', prevPage);
+
+    // 2. Virar Próxima Página (Desktop e Celular)
+    const nextPage = () => {
+      if (this.pdfPageNum < this.pdfTotalPages) {
+        this.pdfPageNum++;
+        this._queueRenderPage(this.pdfPageNum);
+      }
+    };
     const btnNext = document.getElementById('pdf-btn-next');
-    if (btnNext) {
-      btnNext.addEventListener('click', () => {
-        if (this.pdfPageNum < this.pdfTotalPages) {
-          this.pdfPageNum++;
-          this._queueRenderPage(this.pdfPageNum);
-        }
-      });
-    }
+    if (btnNext) btnNext.addEventListener('click', nextPage);
 
-    // 3. Input de salto direto de página
+    const btnNextM = document.getElementById('pdf-btn-next-m');
+    if (btnNextM) btnNextM.addEventListener('click', nextPage);
+
+    // 3. Input de salto direto de página (Desktop)
     const inputPage = document.getElementById('pdf-input-page');
     if (inputPage) {
       const handleJump = () => {
@@ -1541,18 +1560,25 @@ export class BibliotecaPage {
       });
     }
 
-    // 4. ROTAÇÃO DE PÁGINAS (Girar 90° no sentido horário: 0° -> 90° -> 180° -> 270° -> 0°)
+    // 4. ROTAÇÃO DE PÁGINAS (90° no sentido horário: 0° -> 90° -> 180° -> 270° -> 0°)
+    const rotatePage = () => {
+      this.pdfRotation = (this.pdfRotation + 90) % 360;
+      const b1 = document.getElementById('pdf-rot-badge');
+      if (b1) b1.textContent = `${this.pdfRotation}°`;
+      const b2 = document.getElementById('pdf-rot-badge-m');
+      if (b2) b2.textContent = `${this.pdfRotation}°`;
+      this._queueRenderPage(this.pdfPageNum);
+    };
     const btnRotate = document.getElementById('pdf-btn-rotate');
-    if (btnRotate) {
-      btnRotate.addEventListener('click', () => {
-        this.pdfRotation = (this.pdfRotation + 90) % 360;
-        const rotBadge = document.getElementById('pdf-rot-badge');
-        if (rotBadge) rotBadge.textContent = `${this.pdfRotation}°`;
-        this._queueRenderPage(this.pdfPageNum);
-      });
-    }
+    if (btnRotate) btnRotate.addEventListener('click', rotatePage);
 
-    // 5. Zoom In / Out / 100%
+    const btnRotateM = document.getElementById('pdf-btn-rotate-m');
+    if (btnRotateM) btnRotateM.addEventListener('click', rotatePage);
+
+    const btnRotateTopM = document.getElementById('pdf-btn-rotate-top-m');
+    if (btnRotateTopM) btnRotateTopM.addEventListener('click', rotatePage);
+
+    // 5. Zoom Desktop (In / Out / 100%)
     const btnZoomIn = document.getElementById('pdf-btn-zoom-in');
     if (btnZoomIn) {
       btnZoomIn.addEventListener('click', () => {
@@ -1580,62 +1606,59 @@ export class BibliotecaPage {
       });
     }
 
-    // 6. Alternar para Leitor Iframe Nativo
-    const toggleIframe = () => {
-      const canvasCont = document.getElementById('pdf-canvas-container');
-      const iframe = document.getElementById('pdf-fallback-iframe');
-      const errorInd = document.getElementById('pdf-error-indicator');
-      const loading = document.getElementById('pdf-loading-indicator');
+    // Zoom Celular
+    const btnZoomInM = document.getElementById('pdf-btn-zoom-in-m');
+    if (btnZoomInM) {
+      btnZoomInM.addEventListener('click', () => {
+        this.pdfMobileZoom = Math.min(2.5, +( (this.pdfMobileZoom || 1.0) + 0.25 ).toFixed(2));
+        this._queueRenderPage(this.pdfPageNum);
+      });
+    }
 
-      if (iframe) {
-        const isHidden = iframe.style.display === 'none';
-        iframe.style.display = isHidden ? 'block' : 'none';
-        if (canvasCont) canvasCont.style.display = isHidden ? 'none' : 'flex';
-        if (errorInd) errorInd.style.display = 'none';
-        if (loading) loading.style.display = 'none';
-      }
-    };
+    const btnZoomOutM = document.getElementById('pdf-btn-zoom-out-m');
+    if (btnZoomOutM) {
+      btnZoomOutM.addEventListener('click', () => {
+        this.pdfMobileZoom = Math.max(0.75, +( (this.pdfMobileZoom || 1.0) - 0.25 ).toFixed(2));
+        this._queueRenderPage(this.pdfPageNum);
+      });
+    }
 
-    const btnForceIframe = document.getElementById('pdf-btn-force-iframe');
-    if (btnForceIframe) btnForceIframe.addEventListener('click', toggleIframe);
-
-    const btnShowIframeNow = document.getElementById('btn-show-iframe-now');
-    if (btnShowIframeNow) btnShowIframeNow.addEventListener('click', toggleIframe);
-
-    // 7. Atalhos de Teclado
+    // 6. Atalhos de Teclado
     if (this.pdfKeyHandler) {
       window.removeEventListener('keydown', this.pdfKeyHandler);
     }
     this.pdfKeyHandler = (e) => {
       if (!this.activeReaderBook) return;
-
-      // Se o usuário estiver digitando no input de página, não intercepta
       if (document.activeElement && document.activeElement.tagName === 'INPUT') return;
 
       if (e.key === 'ArrowRight' || e.key === 'PageDown') {
         e.preventDefault();
-        if (this.pdfPageNum < this.pdfTotalPages) {
-          this.pdfPageNum++;
-          this._queueRenderPage(this.pdfPageNum);
-        }
+        nextPage();
       } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
         e.preventDefault();
-        if (this.pdfPageNum > 1) {
-          this.pdfPageNum--;
-          this._queueRenderPage(this.pdfPageNum);
-        }
+        prevPage();
       } else if (e.key === 'r' || e.key === 'R') {
         e.preventDefault();
-        this.pdfRotation = (this.pdfRotation + 90) % 360;
-        const rotBadge = document.getElementById('pdf-rot-badge');
-        if (rotBadge) rotBadge.textContent = `${this.pdfRotation}°`;
-        this._queueRenderPage(this.pdfPageNum);
+        rotatePage();
       } else if (e.key === 'Escape') {
-        const closeBtn = document.getElementById('reader-close');
+        const closeBtn = document.getElementById('reader-close') || document.getElementById('reader-close-m');
         if (closeBtn) closeBtn.click();
       }
     };
     window.addEventListener('keydown', this.pdfKeyHandler);
+
+    // 7. Redimensionamento de Tela (Auto-ajuste quando o usuário gira o celular)
+    if (!this._resizeBound) {
+      this._resizeBound = true;
+      let resizeTimer = null;
+      window.addEventListener('resize', () => {
+        if (!this.activeReaderBook || !this.pdfDoc) return;
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          this._queueRenderPage(this.pdfPageNum);
+        }, 200);
+      });
+    }
   }
 
   _updateZoomBadge() {
@@ -1649,6 +1672,7 @@ export class BibliotecaPage {
     const loading = document.getElementById('pdf-loading-indicator');
     const errorEl = document.getElementById('pdf-error-indicator');
     const totalEl = document.getElementById('pdf-total-pages');
+    const totalElM = document.getElementById('pdf-mobile-page-total');
     const inputPage = document.getElementById('pdf-input-page');
 
     if (!canvas || !this.activeReaderBook) return;
@@ -1677,6 +1701,7 @@ export class BibliotecaPage {
       this.pdfRotation = 0;
 
       if (totalEl) totalEl.textContent = this.pdfTotalPages;
+      if (totalElM) totalElM.textContent = this.pdfTotalPages;
       if (inputPage) {
         inputPage.max = this.pdfTotalPages;
         inputPage.value = 1;
@@ -1690,10 +1715,6 @@ export class BibliotecaPage {
       console.warn('Leitor direto via Canvas avisou:', err.message);
       if (loading) loading.style.display = 'none';
       if (errorEl) errorEl.style.display = 'block';
-
-      // Mostra também fallback embutido se canvas falhou
-      const iframe = document.getElementById('pdf-fallback-iframe');
-      if (iframe) iframe.style.display = 'block';
     }
   }
 
@@ -1711,10 +1732,22 @@ export class BibliotecaPage {
 
     try {
       const page = await this.pdfDoc.getPage(num);
-      const viewport = page.getViewport({ scale: this.pdfScale, rotation: this.pdfRotation });
 
-      // Suporte para tela retina de alta definição
-      const outputScale = window.devicePixelRatio || 1;
+      // No celular (< 860px), dimensiona perfeitamente para a largura da tela
+      const isMobile = window.innerWidth <= 860;
+      let activeScale = this.pdfScale;
+
+      if (isMobile) {
+        const unscaledViewport = page.getViewport({ scale: 1.0, rotation: this.pdfRotation });
+        const availableWidth = Math.max(280, window.innerWidth - 16);
+        const fitScale = availableWidth / unscaledViewport.width;
+        activeScale = fitScale * (this.pdfMobileZoom || 1.0);
+      }
+
+      const viewport = page.getViewport({ scale: activeScale, rotation: this.pdfRotation });
+
+      // Suporte para retina display (limitado a 2.5 para alta performance)
+      const outputScale = Math.min(window.devicePixelRatio || 1, 2.5);
       canvas.width = Math.floor(viewport.width * outputScale);
       canvas.height = Math.floor(viewport.height * outputScale);
       canvas.style.width = Math.floor(viewport.width) + 'px';
@@ -1744,18 +1777,33 @@ export class BibliotecaPage {
       this.pdfRendering = false;
     }
 
-    // Sincroniza controles
+    // Sincroniza controles (Desktop e Celular)
     const inputPage = document.getElementById('pdf-input-page');
     if (inputPage) inputPage.value = num;
+
+    const mobilePageNum = document.getElementById('pdf-mobile-page-num');
+    if (mobilePageNum) mobilePageNum.textContent = num;
+
+    const mobilePageTotal = document.getElementById('pdf-mobile-page-total');
+    if (mobilePageTotal) mobilePageTotal.textContent = this.pdfTotalPages || 1;
 
     const btnPrev = document.getElementById('pdf-btn-prev');
     if (btnPrev) btnPrev.style.opacity = (num <= 1) ? '0.4' : '1';
 
+    const btnPrevM = document.getElementById('pdf-btn-prev-m');
+    if (btnPrevM) btnPrevM.style.opacity = (num <= 1) ? '0.4' : '1';
+
     const btnNext = document.getElementById('pdf-btn-next');
     if (btnNext) btnNext.style.opacity = (num >= this.pdfTotalPages) ? '0.4' : '1';
 
+    const btnNextM = document.getElementById('pdf-btn-next-m');
+    if (btnNextM) btnNextM.style.opacity = (num >= this.pdfTotalPages) ? '0.4' : '1';
+
     const rotBadge = document.getElementById('pdf-rot-badge');
     if (rotBadge) rotBadge.textContent = `${this.pdfRotation}°`;
+
+    const rotBadgeM = document.getElementById('pdf-rot-badge-m');
+    if (rotBadgeM) rotBadgeM.textContent = `${this.pdfRotation}°`;
   }
 
   _queueRenderPage(num) {

@@ -326,7 +326,7 @@
 .reader-modal {
   position: fixed;
   inset: 0;
-  background: rgba(5,5,7,0.94);
+  background: rgba(5,5,7,0.96);
   backdrop-filter: blur(16px);
   z-index: 10000;
   display: flex;
@@ -335,32 +335,142 @@
 }
 
 .reader-header {
-  height: 60px;
-  background: #0f0f13;
-  border-bottom: 1px solid rgba(212,160,23,0.25);
+  min-height: 56px;
+  background: #0c0c10;
+  border-bottom: 1px solid rgba(212,160,23,0.3);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+  gap: 12px;
+  padding: 8px 18px;
+  z-index: 10003;
 }
 
 .reader-title-area {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.reader-title-info {
+  min-width: 0;
 }
 
 .reader-book-title {
   font-family: var(--font-title);
   color: #f5c842;
-  font-size: 1.05rem;
+  font-size: 1rem;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-.reader-controls {
+.reader-book-subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.reader-desktop-controls {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.reader-control-group {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 2px 8px;
+  gap: 6px;
+}
+
+.reader-page-indicator {
+  font-size: 0.8rem;
+  color: #aaa;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.reader-page-indicator input {
+  width: 42px;
+  text-align: center;
+  background: #000;
+  border: 1px solid rgba(212,160,23,0.4);
+  color: #f5c842;
+  border-radius: 4px;
+  font-weight: bold;
+  padding: 2px 4px;
+  font-size: 0.8rem;
+  outline: none;
+}
+
+.reader-btn-rotate {
+  background: rgba(212,160,23,0.15) !important;
+  border: 1px solid #d4a017 !important;
+  color: #f5c842 !important;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.reader-badge-rot {
+  background: rgba(0,0,0,0.6);
+  font-size: 0.68rem;
+  padding: 1px 5px;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.reader-zoom-val {
+  font-size: 0.75rem;
+  color: #d4a017;
+  font-weight: 600;
+  min-width: 38px;
+  text-align: center;
+}
+
+.reader-btn-close {
+  color: #ff6666 !important;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-color: rgba(255,51,0,0.3) !important;
+  background: rgba(255,51,0,0.1) !important;
+}
+
+.reader-mobile-header-actions {
+  display: none;
+  align-items: center;
+  gap: 8px;
+}
+
+.reader-mobile-top-btn {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15);
+  color: #fff;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.reader-mobile-top-btn.close-btn {
+  background: rgba(255,51,0,0.18);
+  border-color: rgba(255,51,0,0.35);
+  color: #ff8888;
 }
 
 .reader-btn-icon {
@@ -370,8 +480,11 @@
   padding: 6px 12px;
   border-radius: 6px;
   cursor: pointer;
-  font-size: 0.85rem;
+  font-size: 0.82rem;
   transition: 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 .reader-btn-icon:hover {
@@ -384,55 +497,131 @@
   flex: 1;
   display: flex;
   overflow: hidden;
+  position: relative;
 }
 
+/* Sidebar colapsável: oculta por padrão para dar 100% de tela ao documento */
 .reader-sidebar {
   width: 280px;
-  background: #0d0d10;
-  border-right: 1px solid rgba(255,255,255,0.06);
+  background: #0d0d12;
+  border-right: 1px solid rgba(255,255,255,0.08);
   padding: 20px;
   overflow-y: auto;
+  display: none;
+  position: relative;
+  z-index: 10;
 }
 
-.reader-chapter-item {
-  padding: 10px 14px;
-  border-radius: 8px;
-  margin-bottom: 6px;
+.reader-sidebar.open {
+  display: block;
+  animation: fadeIn 0.2s ease;
+}
+
+.reader-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.reader-sidebar-title {
+  font-size: 0.72rem;
+  color: #d4a017;
+  font-family: var(--font-title);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.reader-sidebar-close {
+  background: transparent;
+  border: none;
+  color: #888;
+  font-size: 1rem;
   cursor: pointer;
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  transition: 0.2s;
-  border-left: 2px solid transparent;
 }
 
-.reader-chapter-item:hover, .reader-chapter-item.active {
-  background: rgba(212,160,23,0.08);
+.reader-sidebar-close:hover {
   color: #fff;
-  border-left-color: #d4a017;
+}
+
+.reader-sidebar-desc {
+  font-size: 0.8rem;
+  color: #aaa;
+  line-height: 1.4;
+  margin: 0 0 10px 0;
+}
+
+.reader-sidebar-meta {
+  font-size: 0.72rem;
+  color: #666;
+  background: rgba(255,255,255,0.03);
+  padding: 8px 10px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+}
+
+.reader-shortcuts {
+  font-size: 0.74rem;
+  color: #bbb;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  line-height: 1.4;
+}
+
+.reader-shortcuts kbd {
+  background: #1a1a24;
+  padding: 2px 6px;
+  border-radius: 4px;
+  border: 1px solid #333;
+  color: #f5c842;
 }
 
 .reader-content {
   flex: 1;
   overflow-y: auto;
-  padding: 40px 60px;
-  max-width: 860px;
-  margin: 0 auto;
-  line-height: 1.9;
-  font-size: 1.08rem;
-  color: #e5e5ea;
+  overflow-x: hidden;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  width: 100%;
 }
 
-.reader-content h2 {
-  font-family: var(--font-title);
-  color: #d4a017;
-  font-size: 1.8rem;
-  margin-bottom: 24px;
-  border-bottom: 1px solid rgba(212,160,23,0.2);
-  padding-bottom: 12px;
+.pdf-canvas-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  padding: 10px 0;
 }
 
-.reader-content p {
-  margin-bottom: 20px;
+#pdf-render-canvas {
+  background: #ffffff;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.9);
+  border-radius: 4px;
+  display: none;
+}
+
+.pdf-loading-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  color: #f5c842;
+}
+
+.pdf-error-box {
+  text-align: center;
+  padding: 24px;
+  background: rgba(20,20,28,0.9);
+  border: 1px solid rgba(212,160,23,0.3);
+  border-radius: 12px;
+  max-width: 500px;
+  margin: 30px auto;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.8);
 }
 
 /* Círculo de Conversas / Chat */
@@ -873,20 +1062,135 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 860px) {
   .membros-topbar {
     flex-direction: column;
     align-items: flex-start;
+    gap: 14px;
   }
   .reader-sidebar {
-    display: none;
+    display: none !important;
   }
   .reader-content {
-    padding: 20px;
+    padding: 10px 6px 75px 6px !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
   }
   .chat-msg-row {
     max-width: 95%;
   }
+  .reader-desktop-controls {
+    display: none !important;
+  }
+  .reader-mobile-header-actions {
+    display: flex !important;
+  }
+  .reader-mobile-bar {
+    display: flex !important;
+  }
+  .reader-header {
+    padding: 8px 12px !important;
+    min-height: 50px !important;
+  }
+  .reader-book-title {
+    font-size: 0.88rem !important;
+    max-width: 170px !important;
+  }
+  .pdf-canvas-wrapper {
+    width: 100% !important;
+    padding: 6px 0 !important;
+  }
+  #pdf-render-canvas {
+    max-width: 100% !important;
+    height: auto !important;
+    margin: 0 auto !important;
+    border-radius: 4px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.95);
+  }
+}
+
+@media (max-width: 480px) {
+  .repo-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+  .planos-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (min-width: 861px) {
+  .reader-mobile-bar {
+    display: none !important;
+  }
+  .reader-desktop-controls {
+    display: flex !important;
+  }
+  .reader-mobile-header-actions {
+    display: none !important;
+  }
+}
+
+/* Barra Flutuante Inferior para Leitura no Celular */
+.reader-mobile-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 56px;
+  background: rgba(10, 10, 14, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-top: 1px solid rgba(212,160,23,0.35);
+  z-index: 10005;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0 8px;
+  gap: 4px;
+  box-shadow: 0 -4px 25px rgba(0,0,0,0.9);
+}
+
+.reader-mobile-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: #fff;
+  padding: 7px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  touch-action: manipulation;
+  transition: 0.15s ease;
+  user-select: none;
+}
+
+.reader-mobile-btn.highlight {
+  background: rgba(212,160,23,0.18);
+  border-color: #d4a017;
+  color: #f5c842;
+}
+
+.reader-mobile-btn:active {
+  background: rgba(212,160,23,0.3);
+  border-color: #f5c842;
+  transform: scale(0.96);
+}
+
+.reader-mobile-counter {
+  font-size: 0.82rem;
+  color: #f5c842;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 4px;
+  white-space: nowrap;
 }
 
 /* =====================================================
