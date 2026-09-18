@@ -170,19 +170,22 @@ class SupabaseServiceClass {
       return { success: true, user: memberUser };
     }
 
-    // 3. Verificação nos Membros Criados pelo Admin (armazenados localmente caso o Supabase não esteja conectado)
-    const localMembers = this.getCreatedMembersList();
+    // 3. Verificação nos Membros Criados pelo Admin (com checagem de expiração)
+    const localMembers = await this.getCreatedMembersList();
     const found = localMembers.find(m => m.email.toLowerCase() === trimmedEmail && m.password === cleanPassword);
 
     if (found) {
       if (found.status === 'bloqueado') {
         throw new Error('Seu acesso está bloqueado pelo administrador.');
       }
+      if (found.isExpired && trimmedEmail !== 'gabriel.tsanjos@gmail.com') {
+        throw new Error(`Sua assinatura expirou em ${found.expiresAtFormatted}. Para reativar seu acesso, renove pelo link: https://pay.kirvano.com/45e4e673-3e4e-4ec6-8d24-19717ab0aa0b`);
+      }
       const memberUser = {
         id: found.id,
         email: found.email,
         name: found.name,
-        role: found.role || 'member',
+        role: trimmedEmail === 'gabriel.tsanjos@gmail.com' ? 'admin' : (found.role || 'member'),
         plan: found.plan || 'Membro Ativo',
         status: found.status || 'ativo',
         avatar: '🔱',
@@ -223,49 +226,162 @@ class SupabaseServiceClass {
   }
 
   // =====================================================
-  // GESTÃO DE USUÁRIOS / CLIENTES PELO ADMIN
+  // GESTÃO DE USUÁRIOS / CLIENTES PELO ADMIN COM EXPIRAÇÃO
   // =====================================================
 
-  getCreatedMembersList() {
-    try {
-      const list = localStorage.getItem('buutzke_admin_members');
-      if (list) return JSON.parse(list);
-    } catch (e) {}
+  _enrichMemberExpiration(m) {
+    if (m.plan === 'Acesso Vitalício' || m.expiresAt === 'vitalicio' || m.expires_at === 'vitalicio') {
+      return {
+        ...m,
+        daysRemaining: 9999,
+        isExpired: false,
+        isExpiringSoon: false,
+        expiresAtFormatted: '♾️ Vitalício',
+        status: m.status === 'bloqueado' ? 'bloqueado' : 'ativo'
+      };
+    }
 
-    // Lista padrão inicial com membros de exemplo
-    const initial = [
-      {
-        id: 'mbr_01',
-        name: 'Rafael Guimarães',
-        email: 'rafael.oculto@gmail.com',
-        password: 'membrobuutzke',
-        plan: 'Passe Anual',
-        status: 'ativo',
-        createdAt: '15/09/2026'
-      },
-      {
-        id: 'mbr_02',
-        name: 'Camila Alvarenga',
-        email: 'camila.alvarenga@yahoo.com',
-        password: 'membrobuutzke',
-        plan: 'Assinatura Mensal',
-        status: 'ativo',
-        createdAt: '17/09/2026'
-      }
-    ];
-    localStorage.setItem('buutzke_admin_members', JSON.stringify(initial));
-    return initial;
+    let expDate = null;
+    if (m.expiresAt && m.expiresAt !== 'vitalicio') {
+      expDate = new Date(m.expiresAt);
+    } else if (m.expires_at && m.expires_at !== 'vitalicio') {
+      expDate = new Date(m.expires_at);
+    } else if (m.createdAt || m.created_at) {
+      const created = new Date(m.createdAt || m.created_at);
+      const days = (m.plan && m.plan.includes('Anual')) ? 365 : 30;
+      expDate = new Date(created.getTime() + days * 24 * 60 * 60 * 1000);
+    } else {
+      expDate = new Date(Date.now() + 30 * 24 * 60 * 60 * 1000);
+    }
+
+    let daysRemaining = 0;
+    let isExpired = false;
+    let isExpiringSoon = false;
+
+    if (expDate && !isNaN(expDate.getTime())) {
+      const diffMs = expDate.getTime() - Date.now();
+      daysRemaining = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+      isExpired = daysRemaining < 0;
+      isExpiringSoon = daysRemaining >= 0 && daysRemaining <= 5;
+    }
+
+    let status = m.status || 'ativo';
+    if (status !== 'bloqueado') {
+      if (isExpired) status = 'expirado';
+      else if (isExpiringSoon) status = 'expirando';
+      else status = 'ativo';
+    }
+
+    return {
+      ...m,
+      expiresAt: expDate ? expDate.toISOString().split('T')[0] : null,
+      expiresAtFormatted: expDate ? expDate.toLocaleDateString('pt-BR') : 'Sem data',
+      daysRemaining,
+      isExpired,
+      isExpiringSoon,
+      status
+    };
   }
 
-  async adminCreateMember({ name, email, password, plan = 'Assinatura Mensal' }) {
+  async getCreatedMembersList() {
+    let members = [];
+    let synced = false;
+
+    // 1. Tenta buscar da tabela 'membros' no Supabase
+    if (this.client) {
+      try {
+        const { data, error } = await this.client
+          .from('membros')
+          .select('*')
+          .order('created_at', { ascending: false });
+
+        if (!error && Array.isArray(data) && data.length > 0) {
+          members = data.map(row => ({
+            id: row.id,
+            name: row.name || row.full_name || 'Iniciado',
+            email: row.email,
+            password: row.password || 'membrobuutzke',
+            plan: row.plan || 'Assinatura Mensal',
+            status: row.status || 'ativo',
+            createdAt: row.created_at ? new Date(row.created_at).toLocaleDateString('pt-BR') : new Date().toLocaleDateString('pt-BR'),
+            expiresAt: row.expires_at ? new Date(row.expires_at).toISOString().split('T')[0] : null
+          }));
+          synced = true;
+          localStorage.setItem('buutzke_admin_members', JSON.stringify(members));
+        }
+      } catch (err) {}
+    }
+
+    // 2. Se não veio do Supabase, usa o cache local
+    if (!synced) {
+      try {
+        const list = localStorage.getItem('buutzke_admin_members');
+        if (list) members = JSON.parse(list);
+      } catch (e) {}
+    }
+
+    // Se estiver vazio, inicializa com exemplos práticos
+    if (!members || members.length === 0) {
+      const now = Date.now();
+      const initial = [
+        {
+          id: 'mbr_01',
+          name: 'Rafael Guimarães',
+          email: 'rafael.oculto@gmail.com',
+          password: 'membrobuutzke',
+          plan: 'Passe Anual',
+          status: 'ativo',
+          createdAt: new Date(now - 10 * 86400000).toLocaleDateString('pt-BR'),
+          expiresAt: new Date(now + 355 * 86400000).toISOString().split('T')[0]
+        },
+        {
+          id: 'mbr_02',
+          name: 'Camila Alvarenga',
+          email: 'camila.alvarenga@yahoo.com',
+          password: 'membrobuutzke',
+          plan: 'Assinatura Mensal',
+          status: 'expirando',
+          createdAt: new Date(now - 26 * 86400000).toLocaleDateString('pt-BR'),
+          expiresAt: new Date(now + 4 * 86400000).toISOString().split('T')[0]
+        },
+        {
+          id: 'mbr_03',
+          name: 'Marcos Vinícius',
+          email: 'marcos.vinicius@gmail.com',
+          password: 'membrobuutzke',
+          plan: 'Assinatura Mensal',
+          status: 'expirado',
+          createdAt: new Date(now - 35 * 86400000).toLocaleDateString('pt-BR'),
+          expiresAt: new Date(now - 5 * 86400000).toISOString().split('T')[0]
+        }
+      ];
+      members = initial;
+      localStorage.setItem('buutzke_admin_members', JSON.stringify(initial));
+    }
+
+    return members.map(m => this._enrichMemberExpiration(m));
+  }
+
+  async adminCreateMember({ name, email, password, plan = 'Assinatura Mensal', customDays = null }) {
     const trimmedEmail = email.trim().toLowerCase();
     const cleanPassword = password.trim();
 
-    // 1. Tenta criar diretamente no Supabase Auth se o client estiver ativo
+    let days = 30;
+    if (plan === 'Passe Anual') days = 365;
+    else if (plan === 'Acesso Trimestral') days = 90;
+    else if (plan === 'Acesso Vitalício') days = null;
+
+    if (customDays && !isNaN(parseInt(customDays, 10))) {
+      days = parseInt(customDays, 10);
+    }
+
+    const expiresAt = days ? new Date(Date.now() + days * 86400000).toISOString() : 'vitalicio';
+
+    // 1. Tenta criar diretamente no Supabase Auth
     let supabaseUserId = null;
     if (this.client) {
       try {
-        const { data, error } = await this.client.auth.signUp({
+        const { data } = await this.client.auth.signUp({
           email: trimmedEmail,
           password: cleanPassword,
           options: {
@@ -273,30 +389,30 @@ class SupabaseServiceClass {
               full_name: name,
               plan: plan,
               role: 'member',
-              status: 'ativo'
+              status: 'ativo',
+              expires_at: expiresAt
             }
           }
         });
-        if (!error && data?.user) {
-          supabaseUserId = data.user.id;
-        }
-      } catch (err) {
-        console.warn('Criação via Supabase signUp avisou:', err.message);
-      }
+        if (data?.user) supabaseUserId = data.user.id;
+      } catch (err) {}
 
-      // Também grava na tabela 'membros' caso exista no banco
+      // Tenta gravar na tabela 'membros' do Supabase
       try {
         await this.client.from('membros').insert([{
-          name,
+          name: name.trim(),
           email: trimmedEmail,
-          plan,
-          status: 'ativo'
+          password: cleanPassword,
+          plan: plan,
+          status: 'ativo',
+          created_at: new Date().toISOString(),
+          expires_at: expiresAt === 'vitalicio' ? null : expiresAt
         }]);
       } catch (tableErr) {}
     }
 
     // 2. Persiste na lista do painel do Admin
-    const members = this.getCreatedMembersList();
+    let members = await this.getCreatedMembersList();
     const newMember = {
       id: supabaseUserId || 'mbr_' + Date.now(),
       name: name.trim(),
@@ -304,17 +420,50 @@ class SupabaseServiceClass {
       password: cleanPassword,
       plan: plan,
       status: 'ativo',
-      createdAt: new Date().toLocaleDateString('pt-BR')
+      createdAt: new Date().toLocaleDateString('pt-BR'),
+      expiresAt: expiresAt === 'vitalicio' ? 'vitalicio' : expiresAt.split('T')[0]
     };
 
     members.unshift(newMember);
     localStorage.setItem('buutzke_admin_members', JSON.stringify(members));
 
-    return newMember;
+    return this._enrichMemberExpiration(newMember);
+  }
+
+  async adminRenewMember(memberId, additionalDays = 30) {
+    let members = await this.getCreatedMembersList();
+    const target = members.find(m => m.id === memberId);
+    if (!target) return null;
+
+    let base = Date.now();
+    if (target.expiresAt && target.expiresAt !== 'vitalicio') {
+      const cur = new Date(target.expiresAt).getTime();
+      if (cur > base) base = cur;
+    }
+
+    const newExp = new Date(base + additionalDays * 86400000);
+    target.expiresAt = newExp.toISOString().split('T')[0];
+    target.status = 'ativo';
+
+    localStorage.setItem('buutzke_admin_members', JSON.stringify(members));
+
+    if (this.client) {
+      try {
+        await this.client
+          .from('membros')
+          .update({
+            expires_at: newExp.toISOString(),
+            status: 'ativo'
+          })
+          .eq('email', target.email);
+      } catch (e) {}
+    }
+
+    return this._enrichMemberExpiration(target);
   }
 
   async adminToggleMemberStatus(memberId) {
-    const members = this.getCreatedMembersList();
+    let members = await this.getCreatedMembersList();
     const target = members.find(m => m.id === memberId);
     if (!target) return null;
 
@@ -330,13 +479,24 @@ class SupabaseServiceClass {
       } catch (e) {}
     }
 
-    return target;
+    return this._enrichMemberExpiration(target);
   }
 
   async adminDeleteMember(memberId) {
-    let members = this.getCreatedMembersList();
+    let members = await this.getCreatedMembersList();
+    const target = members.find(m => m.id === memberId);
     members = members.filter(m => m.id !== memberId);
     localStorage.setItem('buutzke_admin_members', JSON.stringify(members));
+
+    if (this.client && target) {
+      try {
+        await this.client
+          .from('membros')
+          .delete()
+          .eq('email', target.email);
+      } catch (e) {}
+    }
+
     return true;
   }
 

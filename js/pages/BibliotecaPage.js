@@ -14,6 +14,8 @@ export class BibliotecaPage {
     this.searchQuery = '';
     this.books = [];
     this.members = [];
+    this.memberFilter = 'todos'; // 'todos' | 'ativo' | 'expirando' | 'expirado' | 'bloqueado'
+    this.memberSearchQuery = '';
     this.chatMessages = [];
     this.activeReaderBook = null;
     this.activeReaderChapter = 0;
@@ -52,7 +54,7 @@ export class BibliotecaPage {
     }
 
     this.books = await SupabaseService.getRepositoryBooks();
-    this.members = SupabaseService.getCreatedMembersList();
+    this.members = await SupabaseService.getCreatedMembersList();
     this.chatMessages = await SupabaseService.getChatMessages();
     this._render();
     Navbar.init();
@@ -177,23 +179,99 @@ export class BibliotecaPage {
     `;
   }
 
-  /* ---- SUBTAB: GESTÃO DE USUÁRIOS ---- */
+  /* ---- SUBTAB: GESTÃO DE USUÁRIOS & EXPIRAÇÕES ---- */
   _renderAdminUsuarios() {
+    const totalCount = this.members.length;
+    const activeCount = this.members.filter(m => m.status === 'ativo' && !m.isExpired && !m.isExpiringSoon).length;
+    const expiringCount = this.members.filter(m => m.status === 'ativo' && m.isExpiringSoon && !m.isExpired).length;
+    const expiredCount = this.members.filter(m => m.isExpired || m.status === 'expirado').length;
+    const blockedCount = this.members.filter(m => m.status === 'bloqueado').length;
+
+    let filtered = [...this.members];
+    if (this.memberFilter === 'ativo') {
+      filtered = filtered.filter(m => m.status === 'ativo' && !m.isExpired && !m.isExpiringSoon);
+    } else if (this.memberFilter === 'expirando') {
+      filtered = filtered.filter(m => m.status === 'ativo' && m.isExpiringSoon && !m.isExpired);
+    } else if (this.memberFilter === 'expirado') {
+      filtered = filtered.filter(m => m.isExpired || m.status === 'expirado');
+    } else if (this.memberFilter === 'bloqueado') {
+      filtered = filtered.filter(m => m.status === 'bloqueado');
+    }
+
+    if (this.memberSearchQuery && this.memberSearchQuery.trim()) {
+      const q = this.memberSearchQuery.toLowerCase().trim();
+      filtered = filtered.filter(m =>
+        (m.name && m.name.toLowerCase().includes(q)) ||
+        (m.email && m.email.toLowerCase().includes(q)) ||
+        (m.plan && m.plan.toLowerCase().includes(q))
+      );
+    }
+
     return `
+      <!-- CARDS DE MÉTRICAS DE ASSINANTES -->
+      <div class="admin-metric-grid">
+        <div class="admin-metric-card" style="border-color:rgba(212,160,23,0.3);">
+          <div class="admin-metric-num" style="color:#f5c842;">${totalCount}</div>
+          <div class="admin-metric-label">Total Cadastrados</div>
+        </div>
+        <div class="admin-metric-card" style="border-color:rgba(34,197,94,0.3);">
+          <div class="admin-metric-num" style="color:#22c55e;">${activeCount}</div>
+          <div class="admin-metric-label">🟢 Assinantes Ativos</div>
+        </div>
+        <div class="admin-metric-card" style="border-color:rgba(245,200,66,0.3);">
+          <div class="admin-metric-num" style="color:#f5c842;">${expiringCount}</div>
+          <div class="admin-metric-label">⚠️ Expirando em ≤ 5 dias</div>
+        </div>
+        <div class="admin-metric-card" style="border-color:rgba(239,68,68,0.3);">
+          <div class="admin-metric-num" style="color:#ff6666;">${expiredCount}</div>
+          <div class="admin-metric-label">🔴 Assinaturas Expiradas</div>
+        </div>
+      </div>
+
+      <!-- BARRA DE CABEÇALHO & AÇÕES -->
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; margin-bottom:16px;">
         <div>
           <h3 style="font-family:var(--font-title); font-size:1.3rem; color:#fff; margin:0;">
-            Assinantes Cadastrados
+            Painel de Assinantes & Controle de Vencimentos
           </h3>
           <p style="font-size:0.85rem; color:var(--text-muted); margin:2px 0 0 0;">
-            Quando alguém comprar pela Kirvano ou WhatsApp, crie o acesso aqui para liberar a leitura.
+            Sincronizado com Supabase. Acompanhe quem está ativo, expirando e renove em 1 clique.
           </p>
         </div>
-        <button class="btn btn-primary" id="btn-open-new-member" style="font-size:0.88rem; padding:10px 20px;">
-          + Cadastrar Novo Usuário
-        </button>
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <button class="btn btn-outline" id="btn-sync-members-supabase" style="font-size:0.84rem; padding:8px 16px; border-color:#d4a017; color:#f5c842;">
+            🔄 Sincronizar Supabase
+          </button>
+          <button class="btn btn-primary" id="btn-open-new-member" style="font-size:0.88rem; padding:9px 20px;">
+            + Cadastrar Novo Usuário
+          </button>
+        </div>
       </div>
 
+      <!-- FILTROS & BUSCA -->
+      <div class="admin-filter-bar">
+        <button class="admin-filter-pill ${this.memberFilter === 'todos' ? 'active' : ''}" data-filter="todos">
+          Todos (${totalCount})
+        </button>
+        <button class="admin-filter-pill ${this.memberFilter === 'ativo' ? 'active' : ''}" data-filter="ativo">
+          🟢 Ativos (${activeCount})
+        </button>
+        <button class="admin-filter-pill ${this.memberFilter === 'expirando' ? 'active' : ''}" data-filter="expirando">
+          ⚠️ Expirando (${expiringCount})
+        </button>
+        <button class="admin-filter-pill ${this.memberFilter === 'expirado' ? 'active' : ''}" data-filter="expirado">
+          🔴 Expirados (${expiredCount})
+        </button>
+        <button class="admin-filter-pill ${this.memberFilter === 'bloqueado' ? 'active' : ''}" data-filter="bloqueado">
+          🔒 Bloqueados (${blockedCount})
+        </button>
+
+        <div style="margin-left:auto; min-width:240px; flex:1; max-width:320px;">
+          <input type="text" id="member-search-input" value="${this.memberSearchQuery || ''}" placeholder="🔍 Buscar nome, e-mail..." style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); color:#fff; padding:7px 14px; border-radius:20px; font-size:0.82rem; outline:none;">
+        </div>
+      </div>
+
+      <!-- TABELA DE MEMBROS -->
       <div class="admin-table-container">
         <table class="admin-table">
           <thead>
@@ -202,32 +280,74 @@ export class BibliotecaPage {
               <th>E-mail (Login)</th>
               <th>Senha</th>
               <th>Plano</th>
+              <th>Expiração / Validade</th>
               <th>Status</th>
-              <th>Data</th>
-              <th style="text-align:right;">Ações</th>
+              <th style="text-align:right;">Ações Rápidas</th>
             </tr>
           </thead>
           <tbody>
-            ${this.members.length === 0 ? `
-              <tr><td colspan="7" style="text-align:center; padding:30px; color:var(--text-muted);">Nenhum usuário cadastrado ainda.</td></tr>
-            ` : this.members.map(m => `
+            ${filtered.length === 0 ? `
+              <tr><td colspan="7" style="text-align:center; padding:35px; color:var(--text-muted);">Nenhum usuário encontrado para este filtro.</td></tr>
+            ` : filtered.map(m => `
               <tr>
                 <td><strong>${m.name}</strong></td>
-                <td style="color:#d4a017;">${m.email}</td>
-                <td><code style="background:rgba(255,255,255,0.06); padding:3px 6px; border-radius:4px; font-size:0.8rem;">${m.password}</code></td>
-                <td>${m.plan}</td>
+                <td style="color:#d4a017; font-family:monospace; font-size:0.85rem;">${m.email}</td>
+                <td><code style="background:rgba(255,255,255,0.06); padding:3px 6px; border-radius:4px; font-size:0.8rem; color:#fff;">${m.password}</code></td>
+                <td><span style="font-size:0.82rem; color:#ddd;">${m.plan}</span></td>
                 <td>
-                  <span class="status-badge ${m.status}">
-                    ${m.status === 'ativo' ? '● Ativo' : '✕ Bloqueado'}
-                  </span>
+                  ${m.isLifetime ? `
+                    <span class="status-badge vitalicio">♾️ Vitalício</span>
+                  ` : m.isExpired ? `
+                    <div>
+                      <span class="status-badge expirado">🔴 Expirado</span>
+                      <div style="font-size:0.72rem; color:#ff6666; margin-top:3px;">
+                        Venceu em ${m.expiresAtFormatted} (${Math.abs(m.daysRemaining || 0)}d atrás)
+                      </div>
+                    </div>
+                  ` : m.isExpiringSoon ? `
+                    <div>
+                      <span class="status-badge expirando">⚠️ Expira em ${m.daysRemaining}d</span>
+                      <div style="font-size:0.72rem; color:#f5c842; margin-top:3px;">
+                        Até ${m.expiresAtFormatted}
+                      </div>
+                    </div>
+                  ` : `
+                    <div>
+                      <span class="status-badge ativo">🟢 Válido (${m.daysRemaining}d)</span>
+                      <div style="font-size:0.72rem; color:var(--text-muted); margin-top:3px;">
+                        Até ${m.expiresAtFormatted}
+                      </div>
+                    </div>
+                  `}
                 </td>
-                <td style="color:var(--text-faint); font-size:0.8rem;">${m.createdAt}</td>
+                <td>
+                  ${m.status === 'bloqueado' ? `
+                    <span class="status-badge bloqueado">🔒 Bloqueado</span>
+                  ` : m.isExpired ? `
+                    <span class="status-badge expirado">✕ Inativo</span>
+                  ` : m.isExpiringSoon ? `
+                    <span class="status-badge expirando">● Alerta</span>
+                  ` : `
+                    <span class="status-badge ativo">● Ativo</span>
+                  `}
+                </td>
                 <td style="text-align:right; white-space:nowrap;">
-                  <button class="whatsapp-copy-btn btn-copy-member-wa" data-name="${m.name}" data-email="${m.email}" data-pass="${m.password}" title="Copiar acesso para WhatsApp">
-                    💬 Enviar
+                  <button class="admin-action-btn btn-renew-member" data-id="${m.id}" data-name="${m.name}" title="Adicionar +30 dias de acesso" style="border-color:rgba(34,197,94,0.4); color:#22c55e;">
+                    🔄 +30d
                   </button>
-                  <button class="admin-action-btn btn-toggle-status" data-id="${m.id}" title="${m.status === 'ativo' ? 'Bloquear Acesso' : 'Ativar Acesso'}">
-                    ${m.status === 'ativo' ? '🔒 Bloquear' : '🔓 Liberar'}
+                  <button class="whatsapp-copy-btn btn-copy-member-wa"
+                          data-name="${m.name}"
+                          data-email="${m.email}"
+                          data-pass="${m.password}"
+                          data-status="${m.status}"
+                          data-expired="${m.isExpired}"
+                          data-expiring="${m.isExpiringSoon}"
+                          data-expires-date="${m.expiresAtFormatted}"
+                          title="Copiar mensagem personalizada com link de renovação ou dados de acesso">
+                    💬 WhatsApp
+                  </button>
+                  <button class="admin-action-btn btn-toggle-status" data-id="${m.id}" title="${m.status === 'bloqueado' ? 'Desbloquear Acesso' : 'Bloquear Acesso'}">
+                    ${m.status === 'bloqueado' ? '🔓 Liberar' : '🔒 Bloquear'}
                   </button>
                   <button class="admin-action-btn btn-delete-member" data-id="${m.id}" style="color:#ff6666;" title="Excluir Usuário">
                     🗑️
@@ -237,6 +357,23 @@ export class BibliotecaPage {
             `).join('')}
           </tbody>
         </table>
+      </div>
+
+      <!-- CARD SUPABASE POSTGRES INFORMAÇÃO & SQL 1-CLIQUE -->
+      <div style="margin-top:24px; background:rgba(0,0,0,0.3); border:1px dashed rgba(212,160,23,0.3); border-radius:12px; padding:16px 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;">
+        <div>
+          <div style="font-size:0.85rem; font-weight:700; color:#f5c842; display:flex; align-items:center; gap:6px;">
+            <span>🗄️</span> Supabase Postgres: Tabela <code>public.membros</code>
+          </div>
+          <div style="font-size:0.78rem; color:var(--text-muted); margin-top:3px; max-width:600px;">
+            Se ainda não criou a tabela no Postgres do Supabase, você pode rodar o script SQL abaixo no SQL Editor do Supabase para manter tudo sincronizado na nuvem.
+          </div>
+        </div>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-outline btn-sm" id="btn-copy-membros-sql" style="font-size:0.78rem; border-color:rgba(212,160,23,0.5); color:#f5c842;">
+            📋 Copiar SQL da Tabela
+          </button>
+        </div>
       </div>
     `;
   }
@@ -760,7 +897,7 @@ export class BibliotecaPage {
             + Cadastrar Novo Membro
           </h3>
           <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:20px;">
-            Cria o usuário diretamente no Supabase e gera mensagem pronta para WhatsApp.
+            Cria o usuário diretamente no Supabase com data de expiração e gera mensagem pronta para WhatsApp.
           </p>
 
           <form id="form-create-member">
@@ -780,11 +917,12 @@ export class BibliotecaPage {
             </div>
 
             <div class="auth-input-group">
-              <label>Plano Contratado</label>
+              <label>Plano Contratado & Duração do Acesso</label>
               <select id="new-member-plan" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); color:#fff; padding:12px; border-radius:8px; outline:none;">
-                <option value="Assinatura Mensal">Assinatura Mensal (R$ 29,90/mês)</option>
-                <option value="Passe Anual">Passe Anual (R$ 197/ano)</option>
-                <option value="Acesso Vitalício">Acesso Vitalício VIP</option>
+                <option value="Assinatura Mensal" data-days="30">Assinatura Mensal — 30 Dias (R$ 29,90/mês)</option>
+                <option value="Plano Trimestral" data-days="90">Plano Trimestral — 90 Dias</option>
+                <option value="Passe Anual" data-days="365">Passe Anual — 365 Dias (R$ 197/ano)</option>
+                <option value="Acesso Vitalício" data-days="99999">Acesso Vitalício VIP (Sem expiração)</option>
               </select>
             </div>
 
@@ -1259,15 +1397,86 @@ export class BibliotecaPage {
         const name = document.getElementById('new-member-name').value;
         const email = document.getElementById('new-member-email').value;
         const password = document.getElementById('new-member-pass').value;
-        const plan = document.getElementById('new-member-plan').value;
+        const planSelect = document.getElementById('new-member-plan');
+        const plan = planSelect.value;
+        const days = parseInt(planSelect.options[planSelect.selectedIndex]?.dataset?.days || '30', 10);
 
-        const created = await SupabaseService.adminCreateMember({ name, email, password, plan });
-        this.members = SupabaseService.getCreatedMembersList();
+        const submitBtn = document.getElementById('btn-submit-create-member');
+        if (submitBtn) submitBtn.textContent = 'Cadastrando no Supabase...';
+
+        await SupabaseService.adminCreateMember({ name, email, password, plan, customDays: days });
+        this.members = await SupabaseService.getCreatedMembersList();
         this.showNewMemberModal = false;
         this.lastCreatedAccess = { name, email, password, plan };
         this._render();
       });
     }
+
+    // Sincronizar Supabase manualmente
+    const btnSyncSupabase = this.container.querySelector('#btn-sync-members-supabase');
+    if (btnSyncSupabase) {
+      btnSyncSupabase.addEventListener('click', async () => {
+        btnSyncSupabase.textContent = '🔄 Sincronizando...';
+        this.members = await SupabaseService.getCreatedMembersList();
+        this._render();
+      });
+    }
+
+    // Filtros de Membros
+    this.container.querySelectorAll('.admin-filter-pill').forEach(pill => {
+      pill.addEventListener('click', () => {
+        this.memberFilter = pill.dataset.filter || 'todos';
+        this._render();
+      });
+    });
+
+    // Busca de Membros
+    const memberSearch = this.container.querySelector('#member-search-input');
+    if (memberSearch) {
+      memberSearch.addEventListener('input', (e) => {
+        this.memberSearchQuery = e.target.value;
+        this._render();
+        const reInput = document.getElementById('member-search-input');
+        if (reInput) {
+          reInput.focus();
+          reInput.setSelectionRange(reInput.value.length, reInput.value.length);
+        }
+      });
+    }
+
+    // Copiar SQL da Tabela Membros
+    const btnCopySql = this.container.querySelector('#btn-copy-membros-sql');
+    if (btnCopySql) {
+      btnCopySql.addEventListener('click', () => {
+        const sql = `CREATE TABLE IF NOT EXISTS public.membros (
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name TEXT NOT NULL,
+  email TEXT NOT NULL UNIQUE,
+  password TEXT,
+  plan TEXT DEFAULT 'Assinatura Mensal',
+  status TEXT DEFAULT 'ativo',
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  expires_at TIMESTAMPTZ DEFAULT (NOW() + INTERVAL '30 days')
+);
+ALTER TABLE public.membros ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "Acesso Publico Membros" ON public.membros FOR ALL USING (true);`;
+        navigator.clipboard.writeText(sql).then(() => {
+          btnCopySql.textContent = '✓ SQL Copiado!';
+          setTimeout(() => { btnCopySql.textContent = '📋 Copiar SQL da Tabela'; }, 2000);
+        });
+      });
+    }
+
+    // Renovar +30 dias
+    this.container.querySelectorAll('.btn-renew-member').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const id = btn.dataset.id;
+        btn.textContent = '...';
+        await SupabaseService.adminRenewMember(id, 30);
+        this.members = await SupabaseService.getCreatedMembersList();
+        this._render();
+      });
+    });
 
     // Fechar box do WhatsApp
     const btnDismissWa = this.container.querySelector('#btn-dismiss-whatsapp-box');
@@ -1278,7 +1487,7 @@ export class BibliotecaPage {
       });
     }
 
-    // Copiar mensagem para WhatsApp
+    // Copiar mensagem para WhatsApp (Box superior)
     const btnCopyWa = this.container.querySelector('#btn-copy-wa-message');
     if (btnCopyWa) {
       btnCopyWa.addEventListener('click', () => {
@@ -1290,16 +1499,28 @@ export class BibliotecaPage {
       });
     }
 
-    // Botões de ação na tabela de membros
+    // Botões de ação na tabela de membros (WhatsApp inteligente com link de renovação)
     this.container.querySelectorAll('.btn-copy-member-wa').forEach(btn => {
       btn.addEventListener('click', () => {
         const name = btn.dataset.name;
         const email = btn.dataset.email;
         const pass = btn.dataset.pass;
-        const text = `🔱 Olá ${name}! Seu acesso ao Repositório BUUTZKE está liberado:\n🔗 Link: ${window.location.origin}/biblioteca\n📧 Login: ${email}\n🔑 Senha: ${pass}\nBons estudos!`;
+        const isExpired = btn.dataset.expired === 'true';
+        const isExpiring = btn.dataset.expiring === 'true';
+        const expDate = btn.dataset.expiresDate || '';
+
+        let text = '';
+        if (isExpired) {
+          text = `🔱 Olá ${name}! Notamos que seu acesso à Área de Membros e Repositório BUUTZKE expirou em ${expDate}.\n\nPara renovar seu acesso por mais 30 dias e continuar seus estudos com todos os manuscritos sagrados, acesse o link seguro da Kirvano:\n🔗 https://pay.kirvano.com/45e4e673-3e4e-4ec6-8d24-19717ab0aa0b\n\nAssim que confirmar o pagamento, seu acesso é reativado imediatamente!`;
+        } else if (isExpiring) {
+          text = `🔱 Olá ${name}! Lembramos que sua assinatura do Repositório BUUTZKE está próxima do vencimento (${expDate}).\n\nGaranta a continuidade dos seus estudos renovando pelo link seguro:\n🔗 https://pay.kirvano.com/45e4e673-3e4e-4ec6-8d24-19717ab0aa0b\n\nQualquer dúvida estou à disposição!`;
+        } else {
+          text = `🔱 Olá ${name}! Seu acesso ao Repositório BUUTZKE está liberado:\n🔗 Link: ${window.location.origin}/biblioteca\n📧 Login: ${email}\n🔑 Senha: ${pass}\n📅 Validade: até ${expDate || '30 dias'}\n\nBons estudos e bem-vindo ao Círculo!`;
+        }
+
         navigator.clipboard.writeText(text).then(() => {
           btn.textContent = '✓ Copiado';
-          setTimeout(() => { btn.textContent = '💬 Enviar'; }, 2000);
+          setTimeout(() => { btn.textContent = '💬 WhatsApp'; }, 2000);
         });
       });
     });
@@ -1308,7 +1529,7 @@ export class BibliotecaPage {
       btn.addEventListener('click', async () => {
         const id = btn.dataset.id;
         await SupabaseService.adminToggleMemberStatus(id);
-        this.members = SupabaseService.getCreatedMembersList();
+        this.members = await SupabaseService.getCreatedMembersList();
         this._render();
       });
     });
@@ -1318,7 +1539,7 @@ export class BibliotecaPage {
         if (confirm('Deseja realmente remover este usuário?')) {
           const id = btn.dataset.id;
           await SupabaseService.adminDeleteMember(id);
-          this.members = SupabaseService.getCreatedMembersList();
+          this.members = await SupabaseService.getCreatedMembersList();
           this._render();
         }
       });
