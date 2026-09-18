@@ -1445,9 +1445,9 @@ export class BibliotecaPage {
     }
 
     // Copiar SQL da Tabela Membros
-    const btnCopySql = this.container.querySelector('#btn-copy-membros-sql');
-    if (btnCopySql) {
-      btnCopySql.addEventListener('click', () => {
+    const btnCopyMembrosSql = this.container.querySelector('#btn-copy-membros-sql');
+    if (btnCopyMembrosSql) {
+      btnCopyMembrosSql.addEventListener('click', () => {
         const sql = `CREATE TABLE IF NOT EXISTS public.membros (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name TEXT NOT NULL,
@@ -1461,8 +1461,8 @@ export class BibliotecaPage {
 ALTER TABLE public.membros ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Acesso Publico Membros" ON public.membros FOR ALL USING (true);`;
         navigator.clipboard.writeText(sql).then(() => {
-          btnCopySql.textContent = '✓ SQL Copiado!';
-          setTimeout(() => { btnCopySql.textContent = '📋 Copiar SQL da Tabela'; }, 2000);
+          btnCopyMembrosSql.textContent = '✓ SQL Copiado!';
+          setTimeout(() => { btnCopyMembrosSql.textContent = '📋 Copiar SQL da Tabela'; }, 2000);
         });
       });
     }

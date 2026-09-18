@@ -1,7 +1,7 @@
 import { Router }    from '../router.js';
 import { Navbar }    from '../components/Navbar.js';
 import { Footer }    from '../components/Footer.js';
-import { ebooksData, bibliotecaBundle } from '../data/ebooks.js';
+import { ebooksData } from '../data/ebooks.js';
 
 const WA = 'https://wa.me/5551992395284';
 
@@ -139,58 +139,72 @@ export class HomePage {
     </section>`;
   }
 
-  /* ---- BUNDLE ---- */
+  /* ---- BUNDLE / REPOSITÓRIO EXCLUSIVO ---- */
   _bundle() {
-    const b = bibliotecaBundle;
-    const economia = (b.priceFrom - b.priceTo).toFixed(2).replace('.', ',');
     return `
     <section class="section bundle-home section-alt" id="biblioteca">
       <div class="container">
         <div class="bundle-box reveal" style="background: linear-gradient(135deg, #0f0f0f 0%, #161616 100%); border: 1px solid rgba(212,160,23,0.3); border-radius: 16px; padding: 52px 40px; max-width: 900px; margin: 0 auto; position: relative; overflow: hidden;">
           <div style="position:absolute; top:0; left:0; right:0; height: 2px; background: linear-gradient(90deg, transparent, rgba(212,160,23,0.6), transparent);"></div>
+          
           <div style="text-align:center;">
             <div class="section-tag" style="margin-bottom: 16px;">🔱 REPOSITÓRIO EXCLUSIVO</div>
             <h2 style="font-size: clamp(1.6rem, 4vw, 2.4rem); margin-bottom: 10px;">Área de Membros BUUTZKE</h2>
             <p style="color: var(--text-muted); margin-bottom: 32px; font-size: 0.95rem;">Assine para ter acesso ilimitado a todo o acervo de manuscritos, leituras no navegador e ao Círculo de Discussão.</p>
           </div>
 
-          <div class="bundle-items" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 32px;">
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,51,0,0.15); border-radius: 10px; padding: 20px; text-align:center;">
-              <div style="font-size: 1.8rem; margin-bottom: 8px;">🔱</div>
-              <div style="font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; color: var(--gold); margin-bottom: 4px;">QUIMBANDA</div>
-              <div style="font-size: 0.8rem; color: var(--text-muted);">O Caminho da Força</div>
-              <div style="font-size: 0.75rem; color: #444; margin-top: 6px; text-decoration: line-through;">R$ 39,90</div>
+          <!-- REPOSITÓRIO COMPLETO DE LIVROS OCULTISTAS DE BUUTZKE -->
+          <div style="background: linear-gradient(135deg, rgba(212,160,23,0.1), rgba(255,51,0,0.06)); border: 1px solid rgba(212,160,23,0.4); border-radius: 14px; padding: 26px 20px; margin-bottom: 32px; text-align:center;">
+            <div style="display:inline-flex; align-items:center; gap:6px; background:rgba(212,160,23,0.2); border:1px solid #d4a017; color:#f5c842; font-size:0.75rem; font-weight:700; letter-spacing:1px; padding:4px 14px; border-radius:20px; margin-bottom:12px;">
+              <span>✦</span> ACERVO ILIMITADO DE INICIADOS <span>✦</span>
             </div>
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,51,0,0.15); border-radius: 10px; padding: 20px; text-align:center;">
-              <div style="font-size: 1.8rem; margin-bottom: 8px;">🔯</div>
-              <div style="font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; color: var(--gold); margin-bottom: 4px;">GOETIA</div>
-              <div style="font-size: 0.8rem; color: var(--text-muted);">A Arte da Soberania</div>
-              <div style="font-size: 0.75rem; color: #444; margin-top: 6px; text-decoration: line-through;">R$ 49,90</div>
-            </div>
-            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,51,0,0.15); border-radius: 10px; padding: 20px; text-align:center;">
-              <div style="font-size: 1.8rem; margin-bottom: 8px;">🌿</div>
-              <div style="font-size: 0.75rem; font-weight: 700; letter-spacing: 1px; color: var(--gold); margin-bottom: 4px;">GRIMÓRIO DAS ERVAS</div>
-              <div style="font-size: 0.8rem; color: var(--text-muted);">Edição Expandida</div>
-              <div style="font-size: 0.75rem; color: #444; margin-top: 6px; text-decoration: line-through;">R$ 39,90</div>
+            <h3 style="font-family:var(--font-title); font-size:clamp(1.2rem, 3vw, 1.6rem); color:#fff; margin-bottom:8px;">
+              Acesso ao Repositório de Livros Ocultistas de BUUTZKE Completo
+            </h3>
+            <p style="color:var(--text-secondary); font-size:0.9rem; max-width:680px; margin:0 auto 24px auto; line-height:1.6;">
+              Estudo contínuo e aprofundado com todos os tratados, rituais e manuscritos sagrados mantidos no repositório exclusivo do Círculo.
+            </p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; text-align:left;">
+              <div style="background: rgba(0,0,0,0.45); border: 1px solid rgba(212,160,23,0.18); border-radius: 10px; padding: 16px;">
+                <div style="font-size: 1.6rem; margin-bottom: 8px;">📜</div>
+                <strong style="font-size: 0.88rem; color: #fff; display:block; margin-bottom: 3px;">Manuscritos Ocultistas</strong>
+                <span style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.35; display:block;">Acervo sagrado fechado, exclusivo para os membros do Círculo.</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.45); border: 1px solid rgba(212,160,23,0.18); border-radius: 10px; padding: 16px;">
+                <div style="font-size: 1.6rem; margin-bottom: 8px;">📱</div>
+                <strong style="font-size: 0.88rem; color: #fff; display:block; margin-bottom: 3px;">Leitor Digital Otimizado</strong>
+                <span style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.35; display:block;">Leitura avançada no celular e PC com virada de página e zoom.</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.45); border: 1px solid rgba(212,160,23,0.18); border-radius: 10px; padding: 16px;">
+                <div style="font-size: 1.6rem; margin-bottom: 8px;">💬</div>
+                <strong style="font-size: 0.88rem; color: #fff; display:block; margin-bottom: 3px;">Chat dos Membros</strong>
+                <span style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.35; display:block;">Debata dúvidas, passagens e rituais com outros praticantes.</span>
+              </div>
+              <div style="background: rgba(0,0,0,0.45); border: 1px solid rgba(212,160,23,0.18); border-radius: 10px; padding: 16px;">
+                <div style="font-size: 1.6rem; margin-bottom: 8px;">🔮</div>
+                <strong style="font-size: 0.88rem; color: #fff; display:block; margin-bottom: 3px;">Oráculo do Acervo</strong>
+                <span style="font-size: 0.76rem; color: var(--text-muted); line-height: 1.35; display:block;">Consulta direta às respostas e mistérios dos textos sagrados.</span>
+              </div>
             </div>
           </div>
 
-          <div style="background: rgba(212,160,23,0.08); border: 1px dashed rgba(212,160,23,0.3); border-radius: 10px; padding: 16px 24px; margin-bottom: 32px; text-align:center;">
-            <div style="font-size: 0.7rem; letter-spacing: 2px; font-weight: 700; color: var(--gold); margin-bottom: 6px;">🎁 BÔNUS INCLUSO GRÁTIS</div>
-            <div style="font-size: 0.9rem; color: var(--text);">Quimbanda: Segredos das Encruzilhadas (Vol. II)</div>
-            <div style="font-size: 0.78rem; color: var(--text-muted);">Avaliado em R$ 39,90 — incluso sem custo adicional</div>
-          </div>
-
+          <div style="text-align:center;">
             <div style="font-size: 0.85rem; color: #f5c842; font-family:var(--font-title); margin-bottom: 4px;">Plano de Assinatura Mensal ou Anual</div>
             <div style="font-size: 2.8rem; font-family: var(--font-title); color: #fff; font-weight: 700; line-height: 1;">R$ 29,90 <small style="font-size:1rem; color:var(--text-muted);">/ mês</small></div>
-            <div style="font-size: 0.78rem; color: #22c55e; margin: 6px 0 24px;">✓ Acesso imediato a todos os livros + Círculo de Conversas de Membros</div>
-            <a href="/biblioteca" class="btn btn-primary btn-lg btn-shimmer" id="home-bundle-cta" style="padding: 18px 48px; font-size: 1rem; letter-spacing: 1px;">
-              🔱 ACESSAR ÁREA DE MEMBROS
-            </a>
-            <div style="margin-top: 14px; display:flex; justify-content:center; gap:16px; font-size: 0.75rem; color: #666;">
+            <div style="font-size: 0.78rem; color: #22c55e; margin: 6px 0 24px;">✓ Acesso imediato a todo o acervo de livros ocultistas + Círculo de Discussão</div>
+            <div style="display:flex; justify-content:center; gap:14px; flex-wrap:wrap;">
+              <a href="https://pay.kirvano.com/45e4e673-3e4e-4ec6-8d24-19717ab0aa0b" target="_blank" class="btn btn-primary btn-lg btn-shimmer" id="home-bundle-cta" style="padding: 18px 48px; font-size: 1rem; letter-spacing: 1px; text-decoration:none;">
+                🔱 ASSINAR O REPOSITÓRIO (R$ 29,90)
+              </a>
+              <a href="/biblioteca" class="btn btn-outline btn-lg" style="padding: 18px 32px; font-size: 0.95rem; border-color: rgba(212,160,23,0.5); color: #f5c842; text-decoration:none;">
+                🗝️ ENTRAR NA ÁREA DE MEMBROS
+              </a>
+            </div>
+            <div style="margin-top: 18px; display:flex; justify-content:center; gap:16px; font-size: 0.75rem; color: #888; flex-wrap:wrap;">
               <span>⚡ Acesso imediato</span>
               <span>🛡️ 7 dias de garantia</span>
-              <span>🔒 Pagamento seguro</span>
+              <span>🔒 Pagamento seguro Kirvano</span>
             </div>
           </div>
         </div>

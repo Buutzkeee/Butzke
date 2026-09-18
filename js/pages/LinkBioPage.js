@@ -2,34 +2,44 @@ import { Router }    from '../router.js';
 import { ebooksData } from '../data/ebooks.js';
 
 const WA = 'https://wa.me/5551992395284';
+const KIRVANO_MEMBERSHIP = 'https://pay.kirvano.com/45e4e673-3e4e-4ec6-8d24-19717ab0aa0b';
 
 /* ============================================================
    Link Bio Page — Standalone, sem navbar/footer
-   Otimizado para mobile (Instagram)
+   Otimizado para máxima conversão mobile (Instagram & TikTok)
+   Foco principal: Venda do Clube de Membros + Grimórios + WhatsApp
    ============================================================ */
 export class LinkBioPage {
   constructor(container) {
     this.container = container;
-    Router.loadCSS('/css/linkbio.css');
+    this.toastTimer = null;
+    Router.loadCSS('/css/linkbio.css?v=' + Date.now());
     this._render();
     this._initCanvas();
+    this._initSocialProof();
   }
 
   _render() {
     this.container.innerHTML = `
-      <!-- Partículas animadas (CSS) -->
+      <!-- Partículas místicas animadas -->
       <div class="particles" id="particles"></div>
 
-      <!-- Chamas decorativas -->
+      <!-- Chamas decorativas nas bordas -->
       <div class="flames-container">
         <div class="flame flame-left">🕯️</div>
         <div class="flame flame-right">🕯️</div>
       </div>
 
+      <!-- Notificação flutuante de prova social -->
+      <div class="social-proof-toast" id="sp-toast">
+        <span class="sp-dot"></span>
+        <span id="sp-toast-text">Marcos R. assinou o Clube de Membros há 3 min</span>
+      </div>
+
       <!-- Conteúdo principal -->
       <main class="container">
         
-        <!-- Cabeçalho do perfil -->
+        <!-- Cabeçalho do perfil místico -->
         <header class="profile-header">
           <div class="avatar-wrapper">
             <div class="avatar-ring"></div>
@@ -39,6 +49,11 @@ export class LinkBioPage {
           <h1 class="profile-name">Buutzke</h1>
           <p class="profile-tagline">✦ Portal das Entidades ✦</p>
           <p class="profile-subtitle">Quimbanda • Magia • Espiritualidade</p>
+          
+          <div class="visit-counter" style="margin-top: 4px;">
+            <span style="color:#22c55e;">●</span>
+            <span>Mais de <strong>480 membros ativos</strong> no Círculo</span>
+          </div>
         </header>
 
         <!-- Símbolos místicos decorativos -->
@@ -46,16 +61,108 @@ export class LinkBioPage {
           <span>⚜</span><span>✦</span><span>⚜</span>
         </div>
 
-        <!-- Links / Botões -->
-        <section class="links-section" aria-label="Links principais">
+        <!-- Abas / Atalhos Rápidos -->
+        <nav class="linkbio-tabs" aria-label="Navegação rápida">
+          <a href="#sec-clube" class="linkbio-tab-pill active">🔥 Clube de Membros</a>
+          <a href="#sec-consultas" class="linkbio-tab-pill">💬 Consultas</a>
+          <a href="#sec-ebooks" class="linkbio-tab-pill">📚 Grimórios</a>
+          <a href="#sec-social" class="linkbio-tab-pill">🌐 Redes</a>
+        </nav>
 
-          <!-- Site principal -->
-          <div class="link-card" id="card-site">
-            <a href="/" class="link-btn" id="btn-site">
-              <div class="btn-icon">🌐</div>
+        <!-- =======================================================
+             SUPER DESTAQUE: CLUBE DE MEMBROS (O CÍRCULO BUUTZKE)
+             ======================================================= -->
+        <section id="sec-clube" class="vip-club-card" aria-label="Clube de Membros">
+          <div class="vip-club-header">
+            <div class="vip-badge-ribbon">
+              <span>✦</span> ACESSO VIP EXCLUSIVO <span>✦</span>
+            </div>
+            <h2 class="vip-club-title">
+              O Círculo <span>BUUTZKE</span>
+            </h2>
+            <p class="vip-club-desc">
+              Repositório secreto de manuscritos sagrados, leitor digital otimizado no celular e PC, chat privado de praticantes e oráculo dos mistérios.
+            </p>
+          </div>
+
+          <!-- Benefícios em Grid -->
+          <div class="vip-perks-grid">
+            <div class="vip-perk-box">
+              <span class="vip-perk-icon">📜</span>
+              <div class="vip-perk-text">
+                <strong>Acervo Fechado</strong>
+                <span>Manuscritos raros que não são vendidos avulso</span>
+              </div>
+            </div>
+
+            <div class="vip-perk-box">
+              <span class="vip-perk-icon">📱</span>
+              <div class="vip-perk-text">
+                <strong>Leitor Digital Próprio</strong>
+                <span>Leitura sem distrações, virada e zoom no celular</span>
+              </div>
+            </div>
+
+            <div class="vip-perk-box">
+              <span class="vip-perk-icon">💬</span>
+              <div class="vip-perk-text">
+                <strong>Chat dos Membros</strong>
+                <span>Tire dúvidas e debata rituais em tempo real</span>
+              </div>
+            </div>
+
+            <div class="vip-perk-box">
+              <span class="vip-perk-icon">🔮</span>
+              <div class="vip-perk-text">
+                <strong>Oráculo Sagrado</strong>
+                <span>Consulta direta aos ensinamentos do acervo</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Preço Promocional do Clube -->
+          <div class="vip-price-container">
+            <div>
+              <span class="vip-price-original">De R$ 59,90</span>
+              <span class="vip-price-current">R$ 29,90</span>
+              <span class="vip-price-period">/mês</span>
+            </div>
+            <span class="vip-price-daily">⚡ Apenas R$ 0,99 por dia • Acesso Imediato</span>
+          </div>
+
+          <!-- Botões de Ação do Clube -->
+          <div class="vip-cta-container">
+            <a href="${KIRVANO_MEMBERSHIP}" target="_blank" class="vip-btn-main" id="btn-linkbio-assinar-clube">
+              <span>⚡</span> ENTRAR NO CLUBE DE MEMBROS
+            </a>
+            <a href="/biblioteca" class="vip-btn-login" id="btn-linkbio-ja-membro">
+              <span>🗝️</span> Já é assinante? Entrar na Biblioteca
+            </a>
+          </div>
+
+          <!-- Selos de Confiança -->
+          <div class="vip-guarantees">
+            <span>✓ Liberação Imediata</span>
+            <span>✓ Cancele quando quiser</span>
+            <span>✓ Compra 100% Segura</span>
+          </div>
+        </section>
+
+        <!-- =======================================================
+             CONSULTAS & TRABALHOS ESPIRITUAIS
+             ======================================================= -->
+        <section id="sec-consultas" class="links-section" aria-label="Consultas">
+          <div class="mystic-divider" style="margin: 20px 0 16px;">
+            <span style="font-size:0.8rem">✦ ATENDIMENTO & CONSULTAS ✦</span>
+          </div>
+
+          <!-- WhatsApp Direto -->
+          <div class="link-card featured" id="card-whatsapp">
+            <a href="${WA}" class="link-btn" target="_blank">
+              <div class="btn-icon">💬</div>
               <div class="btn-content">
-                <span class="btn-title">Meu Site Oficial</span>
-                <span class="btn-subtitle">Explore meu portal espiritual</span>
+                <span class="btn-title">Agendar Consulta com Buutzke</span>
+                <span class="btn-subtitle">Atendimento espiritual direto pelo WhatsApp</span>
               </div>
               <div class="btn-arrow">→</div>
             </a>
@@ -67,70 +174,88 @@ export class LinkBioPage {
               <div class="btn-icon">🔮</div>
               <div class="btn-content">
                 <span class="btn-title">Peça Sua Entidade</span>
-                <span class="btn-subtitle">Conexão espiritual direta</span>
+                <span class="btn-subtitle">Conexão espiritual e revelação das suas entidades</span>
               </div>
               <div class="btn-arrow">→</div>
             </a>
           </div>
+        </section>
 
-          <!-- WhatsApp -->
-          <div class="link-card" id="card-whatsapp">
-            <a href="${WA}" class="link-btn" target="_blank">
-              <div class="btn-icon">💬</div>
-              <div class="btn-content">
-                <span class="btn-title">Agendar Consulta</span>
-                <span class="btn-subtitle">Fale diretamente comigo pelo WhatsApp</span>
-              </div>
-              <div class="btn-arrow">→</div>
-            </a>
-          </div>
-
-          <div class="mystic-divider" style="margin: 40px 0 20px;">
-            <span style="font-size:0.8rem">✦ BIBLIOTECA OCULTA ✦</span>
+        <!-- =======================================================
+             GRIMÓRIOS & EBOOKS INDIVIDUAIS
+             ======================================================= -->
+        <section id="sec-ebooks" class="links-section" aria-label="Grimórios Individuais">
+          <div class="mystic-divider" style="margin: 30px 0 16px;">
+            <span style="font-size:0.8rem">✦ GRIMÓRIOS & LIVROS DIGITAIS ✦</span>
           </div>
 
           <!-- Banner de Urgência -->
-          <div class="urgency-banner" style="background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(139,0,0,0.2)); border: 1px solid var(--gold-bright); border-radius: 8px; padding: 12px 16px; text-align: center; margin-bottom: 16px;">
-            <p style="color: var(--gold-bright); font-size: 0.85rem; font-weight: 600; margin: 0;">⚡ ACESSO IMEDIATO + DESCONTO DE LANÇAMENTO</p>
-            <p style="color: var(--text-muted); font-size: 0.75rem; margin: 4px 0 0;">Garanta seu exemplar com condições especiais por tempo limitado.</p>
+          <div class="urgency-banner" style="background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(139,0,0,0.2)); border: 1px solid var(--gold-bright); border-radius: 10px; padding: 12px 16px; text-align: center; margin-bottom: 16px;">
+            <p style="color: var(--gold-bright); font-size: 0.85rem; font-weight: 700; margin: 0;">⚡ ADQUIRA SEU EXEMPLAR COM ACESSO VITALÍCIO</p>
+            <p style="color: var(--text-muted); font-size: 0.74rem; margin: 4px 0 0;">Download imediato em PDF para ler no celular, tablet ou computador.</p>
           </div>
 
           ${ebooksData.map(e => `
-          <div class="link-card ${e.badge === 'LANÇAMENTO' ? 'lancamento' : (e.featured ? 'featured' : '')}" style="margin-bottom: 14px;">
-            <a href="/ebook/${e.slug}" class="link-btn" style="position:relative;">
-              <div class="btn-icon" style="font-size:2rem">${e.icon}</div>
-              <div class="btn-content">
-                <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:2px;">
-                  ${e.badge === 'LANÇAMENTO' ? `<span class="lancamento-pill">✦ LANÇAMENTO ✦</span>` : (e.featured ? `<span class="lancamento-pill" style="background:rgba(212,175,55,0.2); color:var(--gold-bright);">✦ DESTAQUE ✦</span>` : '')}
-                  <span style="font-size:0.7rem; color:var(--gold-bright); opacity:0.9;">★ 4.9 (Leitores satisfeitos)</span>
+            <div class="link-card ${e.badge === 'LANÇAMENTO' ? 'lancamento' : (e.featured ? 'featured' : '')}" style="margin-bottom: 12px;">
+              <a href="/ebook/${e.slug}" class="link-btn" style="position:relative;">
+                <div class="btn-icon" style="font-size:2rem">${e.icon}</div>
+                <div class="btn-content">
+                  <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:2px;">
+                    ${e.badge === 'LANÇAMENTO' ? `<span class="lancamento-pill">✦ LANÇAMENTO ✦</span>` : (e.featured ? `<span class="lancamento-pill" style="background:rgba(212,175,55,0.2); color:var(--gold-bright);">✦ DESTAQUE ✦</span>` : '')}
+                    <span style="font-size:0.7rem; color:var(--gold-bright); opacity:0.9;">★ 4.9 (Praticantes Satisfeitos)</span>
+                  </div>
+                  <span class="btn-title">${e.title}</span>
+                  <span class="btn-subtitle">${e.subtitle || 'Domine os mistérios e transforme sua prática espiritual.'}</span>
+                  <div style="display:flex; align-items:center; justify-content:space-between; margin-top:8px; width:100%;">
+                    ${e.priceTo ? `
+                      <span style="font-size:0.84rem; color:var(--gold-bright); font-weight:700;">
+                        ${e.priceFrom ? `<span style="text-decoration:line-through; opacity:0.6; margin-right:6px; font-weight:400; font-size:0.75rem;">R$ ${e.priceFrom.toFixed(2).replace('.', ',')}</span>` : ''}
+                        R$ ${e.priceTo.toFixed(2).replace('.', ',')}
+                      </span>
+                    ` : ''}
+                    <span style="font-size:0.75rem; color:#fff; background:rgba(212,175,55,0.18); padding:3px 10px; border-radius:6px; border:1px solid rgba(212,175,55,0.35); font-weight:600;">
+                      Ver Detalhes →
+                    </span>
+                  </div>
                 </div>
-                <span class="btn-title">${e.title}</span>
-                <span class="btn-subtitle">${e.subtitle || 'Domine os mistérios e transforme sua prática espiritual.'}</span>
-                <div style="display:flex; align-items:center; justify-content:space-between; margin-top:6px; width:100%;">
-                  ${e.priceTo ? `<span style="display:inline-block; font-size:0.8rem; color:var(--gold-bright); font-weight:700;">${e.priceFrom ? `<span style="text-decoration:line-through; opacity:0.6; margin-right:6px; font-weight:400;">R$ ${e.priceFrom.toFixed(2).replace('.', ',')}</span>` : ''}R$ ${e.priceTo.toFixed(2).replace('.', ',')}</span>` : ''}
-                  <span style="font-size:0.75rem; color:#fff; background:rgba(212,175,55,0.15); padding:2px 8px; border-radius:4px; border:1px solid rgba(212,175,55,0.3);">Ler Detalhes →</span>
-                </div>
-              </div>
-            </a>
-          </div>`).join('')}
+              </a>
+            </div>
+          `).join('')}
 
-          <!-- Ver mais Ebooks -->
-          <div class="link-card" style="margin-bottom: 14px;">
+          <!-- Botão para Loja Completa -->
+          <div class="link-card" style="margin-top: 4px;">
             <a href="/ebooks" class="link-btn" id="btn-ver-mais-ebooks">
-              <div class="btn-icon" style="font-size:2rem">📚</div>
+              <div class="btn-icon">📚</div>
               <div class="btn-content">
-                <span class="btn-title">Ver Biblioteca Completa</span>
-                <span class="btn-subtitle">Explore todos os grimórios e materiais exclusivos</span>
+                <span class="btn-title">Ver Catálogo Completo de Livros</span>
+                <span class="btn-subtitle">Conheça todos os títulos e rituais disponíveis</span>
+              </div>
+              <div class="btn-arrow">→</div>
+            </a>
+          </div>
+        </section>
+
+        <!-- =======================================================
+             SITE OFICIAL & REDES SOCIAIS
+             ======================================================= -->
+        <section id="sec-social" class="links-section" aria-label="Site e Redes Sociais">
+          <div class="mystic-divider" style="margin: 30px 0 16px;">
+            <span style="font-size:0.8rem">✦ PORTAL & REDES OFICIAIS ✦</span>
+          </div>
+
+          <!-- Site Principal -->
+          <div class="link-card" id="card-site">
+            <a href="/" class="link-btn" id="btn-site">
+              <div class="btn-icon">🌐</div>
+              <div class="btn-content">
+                <span class="btn-title">Site Oficial BUUTZKE</span>
+                <span class="btn-subtitle">Acesse artigos, história e a página inicial</span>
               </div>
               <div class="btn-arrow">→</div>
             </a>
           </div>
 
-          <!-- Redes sociais -->
-          <div class="mystic-divider" style="margin: 40px 0 20px;">
-            <span style="font-size:0.8rem">✦ REDES SOCIAIS ✦</span>
-          </div>
-
+          <!-- Redes Sociais -->
           <div class="social-row">
             <div class="social-card" id="card-instagram">
               <a href="https://www.instagram.com/buutzke" class="social-btn" target="_blank" aria-label="Instagram">
@@ -161,15 +286,67 @@ export class LinkBioPage {
           </div>
         </section>
 
-        <!-- Rodapé -->
+        <!-- Rodapé místico -->
         <footer class="site-footer">
           <div class="mystic-divider"><span>⚜</span><span>✦</span><span>⚜</span></div>
-          <p class="footer-text">✦ Que as entidades te guiem ✦</p>
+          <p class="footer-text">✦ Que as entidades iluminem seu caminho ✦</p>
           <p class="footer-copy">© 2026 Buutzke — Todos os direitos reservados</p>
         </footer>
 
       </main>
     `;
+
+    this._bindTabScroll();
+  }
+
+  _bindTabScroll() {
+    this.container.querySelectorAll('.linkbio-tab-pill').forEach(pill => {
+      pill.addEventListener('click', (e) => {
+        const targetId = pill.getAttribute('href');
+        if (targetId && targetId.startsWith('#')) {
+          e.preventDefault();
+          const el = document.querySelector(targetId);
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            this.container.querySelectorAll('.linkbio-tab-pill').forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+          }
+        }
+      });
+    });
+  }
+
+  _initSocialProof() {
+    const messages = [
+      '✨ Rafael M. (SP) entrou no Clube de Membros há 4 min',
+      '✨ Juliana R. (BA) adquiriu Quimbanda: O Caminho da Força',
+      '✨ Thiago S. (PR) assinou o Repositório Secreto há 7 min',
+      '✨ Marcelo V. (RJ) entrou no Círculo de Membros há 11 min',
+      '✨ Lucas B. (MG) garantiu o Grimório de Goetia',
+      '✨ Carolina F. (RS) assinou o Clube de Membros há 15 min'
+    ];
+
+    const toast = document.getElementById('sp-toast');
+    const toastText = document.getElementById('sp-toast-text');
+    if (!toast || !toastText) return;
+
+    let index = 0;
+    const showToast = () => {
+      toastText.textContent = messages[index % messages.length];
+      index++;
+      toast.classList.add('visible');
+
+      setTimeout(() => {
+        toast.classList.remove('visible');
+      }, 4500);
+    };
+
+    // Primeiro toast após 4 segundos
+    setTimeout(showToast, 4000);
+
+    // Próximos toasts a cada 16 segundos
+    if (this.toastTimer) clearInterval(this.toastTimer);
+    this.toastTimer = setInterval(showToast, 16000);
   }
 
   _initCanvas() {
@@ -180,7 +357,7 @@ export class LinkBioPage {
   _initParticles() {
     const container = document.getElementById('particles');
     if (!container) return;
-    const count = window.innerWidth < 500 ? 18 : 30;
+    const count = window.innerWidth < 500 ? 18 : 28;
     for (let i = 0; i < count; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
@@ -199,7 +376,7 @@ export class LinkBioPage {
   }
 
   _initClickCounters() {
-    document.querySelectorAll('.link-card, .social-card').forEach(btn => {
+    document.querySelectorAll('.link-card, .social-card, .vip-club-card').forEach(btn => {
       btn.addEventListener('click', (e) => {
         btn.classList.remove('click-pop');
         void btn.offsetWidth;
@@ -220,6 +397,7 @@ export class LinkBioPage {
   }
 
   _spawnClickParticles(x, y) {
+    if (!x || !y) return;
     for (let i = 0; i < 8; i++) {
       const s = document.createElement('div');
       s.style.cssText = `
