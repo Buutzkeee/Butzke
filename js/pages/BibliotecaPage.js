@@ -31,6 +31,7 @@ export class BibliotecaPage {
     this.pdfScale = 1.25;
     this.pdfMobileZoom = 1.0; // Zoom proporcional para celular
     this.showReaderSidebar = false; // Sidebar colapsável (não obstrui leitura)
+    this.showReaderChat = false; // Chat de membros dentro do leitor
     this.pdfRendering = false;
     this.pdfPagePending = null;
     this.pdfRenderTask = null;
@@ -539,6 +540,12 @@ export class BibliotecaPage {
         ${this.currentTab === 'chat' ? this._renderTabChat() : ''}
         ${this.currentTab === 'oraculo' ? this._renderTabOraculo() : ''}
       </div>
+
+      ${this.currentTab !== 'chat' ? `
+        <button class="floating-chat-fab" id="fab-open-chat" title="Abrir Círculo de Conversas dos Membros">
+          💬 Chat dos Membros <span style="background:rgba(0,0,0,0.4); padding:2px 7px; border-radius:12px; font-size:0.75rem;">${this.chatMessages.length}</span>
+        </button>
+      ` : ''}
     `;
   }
 
@@ -891,6 +898,11 @@ export class BibliotecaPage {
                 <button class="reader-btn-icon" id="pdf-btn-zoom-fit" title="Ajustar 100%">⛶ 100%</button>
               </div>
 
+              <!-- Chat dos Membros no Leitor (Desktop) -->
+              <button class="reader-btn-icon" id="pdf-btn-toggle-chat" title="Chat dos Membros" style="background:${this.showReaderChat ? 'rgba(212,160,23,0.25)' : 'rgba(255,255,255,0.06)'}; border-color:${this.showReaderChat ? '#d4a017' : 'rgba(255,255,255,0.12)'}; color:#f5c842;">
+                💬 Chat <span class="reader-badge-rot" style="background:rgba(212,160,23,0.3); color:#f5c842;">${this.chatMessages.length}</span>
+              </button>
+
               <!-- Detalhes do Manuscrito (Desktop) -->
               <button class="reader-btn-icon" id="pdf-btn-toggle-sidebar" title="Ver Informações do Manuscrito">
                 ℹ Detalhes
@@ -907,6 +919,9 @@ export class BibliotecaPage {
 
             <!-- Ações Topo no Celular -->
             <div class="reader-mobile-header-actions">
+              <button class="reader-mobile-top-btn" id="pdf-btn-chat-top-m" title="Chat dos Membros" style="background:${this.showReaderChat ? 'rgba(212,160,23,0.3)' : 'rgba(255,255,255,0.08)'}; border-color:${this.showReaderChat ? '#d4a017' : 'rgba(255,255,255,0.15)'}; color:#f5c842;">
+                💬 (${this.chatMessages.length})
+              </button>
               <button class="reader-mobile-top-btn" id="pdf-btn-rotate-top-m" title="Girar 90°">🔄 90°</button>
               <button class="reader-mobile-top-btn close-btn" id="reader-close-m" title="Fechar">✕ Fechar</button>
             </div>
@@ -977,6 +992,47 @@ export class BibliotecaPage {
               </div>
             `}
           </div>
+
+          <!-- DRAWER DE CHAT DOS MEMBROS (DENTRO DO LEITOR) -->
+          <div class="reader-chat-drawer ${this.showReaderChat ? 'open' : ''}" id="reader-chat-drawer">
+            <div class="reader-chat-header">
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span class="chat-status-dot"></span>
+                <span style="font-family:var(--font-title); font-size:0.92rem; color:#f5c842;">💬 Chat do Círculo</span>
+              </div>
+              <button class="reader-chat-close" id="btn-close-reader-chat" title="Fechar Chat">✕</button>
+            </div>
+
+            <div class="reader-chat-messages" id="reader-chat-messages-box">
+              ${this.chatMessages.length === 0 ? `
+                <div style="text-align:center; padding:30px 10px; color:var(--text-muted); font-size:0.82rem;">
+                  Nenhuma mensagem ainda. Escreva uma pergunta ou reflexão sobre este manuscrito!
+                </div>
+              ` : this.chatMessages.map(m => `
+                <div class="reader-chat-msg ${m.userName === this.user?.name ? 'mine' : ''}">
+                  <div class="reader-chat-msg-author">
+                    <span>${m.userName}</span>
+                    <span class="reader-chat-msg-time">${m.time}</span>
+                  </div>
+                  <div class="reader-chat-msg-text">${m.text}</div>
+                </div>
+              `).join('')}
+            </div>
+
+            ${this.user ? `
+              <form class="reader-chat-input-bar" id="reader-chat-form">
+                <input type="text" id="reader-chat-input-text" placeholder="Comente ou tire dúvidas..." autocomplete="off">
+                <button type="submit" class="reader-chat-send">Enviar</button>
+              </form>
+            ` : `
+              <div style="padding:12px; text-align:center; background:rgba(212,160,23,0.08); border-top:1px solid rgba(212,160,23,0.2);">
+                <p style="font-size:0.75rem; color:#ccc; margin:0 0 8px 0;">Chat exclusivo para membros ativos.</p>
+                <a href="https://pay.kirvano.com/45e4e673-3e4e-4ec6-8d24-19717ab0aa0b" target="_blank" class="btn btn-primary btn-sm" style="font-size:0.75rem; padding:6px 14px; text-decoration:none;">
+                  ⚡ Assinar Acesso
+                </a>
+              </div>
+            `}
+          </div>
         </div>
 
         ${isPdf ? `
@@ -989,6 +1045,9 @@ export class BibliotecaPage {
             <button class="reader-mobile-btn" id="pdf-btn-next-m" title="Próxima Página">Próx ▶</button>
             <button class="reader-mobile-btn highlight" id="pdf-btn-rotate-m" title="Girar 90 Graus">
               🔄 <span id="pdf-rot-badge-m">${this.pdfRotation}°</span>
+            </button>
+            <button class="reader-mobile-btn" id="pdf-btn-chat-m" title="Chat dos Membros" style="background:rgba(212,160,23,0.18); border-color:#d4a017; color:#f5c842;">
+              💬 Chat
             </button>
             <button class="reader-mobile-btn" id="pdf-btn-zoom-out-m" title="Diminuir Zoom">🔍 -</button>
             <button class="reader-mobile-btn" id="pdf-btn-zoom-in-m" title="Aumentar Zoom">🔍 +</button>
@@ -1339,11 +1398,38 @@ export class BibliotecaPage {
       });
     }
 
+    // Botão Flutuante de Chat (FAB)
+    const fabChat = this.container.querySelector('#fab-open-chat');
+    if (fabChat) {
+      fabChat.addEventListener('click', () => {
+        this.currentTab = 'chat';
+        this._render();
+        const chatBox = document.getElementById('chat-messages-box');
+        if (chatBox) {
+          setTimeout(() => { chatBox.scrollTop = chatBox.scrollHeight; }, 60);
+        }
+      });
+    }
+
+    // Auto-scroll do chat na aba de conversas
+    if (this.currentTab === 'chat') {
+      const chatBox = document.getElementById('chat-messages-box');
+      if (chatBox) {
+        setTimeout(() => { chatBox.scrollTop = chatBox.scrollHeight; }, 60);
+      }
+    }
+
     // Tabs do Membro Comum
     this.container.querySelectorAll('.membros-tab-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         this.currentTab = btn.dataset.tab;
         this._render();
+        if (this.currentTab === 'chat') {
+          const chatBox = document.getElementById('chat-messages-box');
+          if (chatBox) {
+            setTimeout(() => { chatBox.scrollTop = chatBox.scrollHeight; }, 60);
+          }
+        }
       });
     });
 
@@ -1383,6 +1469,10 @@ export class BibliotecaPage {
         if (newMsg) {
           this.chatMessages.push(newMsg);
           this._render();
+          const chatBox = document.getElementById('chat-messages-box');
+          if (chatBox) {
+            setTimeout(() => { chatBox.scrollTop = chatBox.scrollHeight; }, 50);
+          }
         }
       });
     }
@@ -1449,6 +1539,7 @@ export class BibliotecaPage {
       this.activeReaderBook = null;
       this.pdfDoc = null;
       this.showReaderSidebar = false;
+      this.showReaderChat = false;
       this._render();
     };
 
@@ -1476,6 +1567,74 @@ export class BibliotecaPage {
         this.showReaderSidebar = false;
         sidebarEl.classList.remove('open');
         if (btnToggleSidebar) btnToggleSidebar.style.background = 'transparent';
+      });
+    }
+
+    // Alternar Drawer de Chat dentro do leitor (Desktop e Celular)
+    const toggleChatDrawer = () => {
+      this.showReaderChat = !this.showReaderChat;
+      const drawer = document.getElementById('reader-chat-drawer');
+      if (drawer) {
+        drawer.classList.toggle('open', this.showReaderChat);
+        if (this.showReaderChat) {
+          const msgsBox = document.getElementById('reader-chat-messages-box');
+          if (msgsBox) {
+            setTimeout(() => { msgsBox.scrollTop = msgsBox.scrollHeight; }, 60);
+          }
+        }
+      }
+      const btnChat = document.getElementById('pdf-btn-toggle-chat');
+      if (btnChat) btnChat.style.background = this.showReaderChat ? 'rgba(212,160,23,0.25)' : 'rgba(255,255,255,0.06)';
+      const btnChatM = document.getElementById('pdf-btn-chat-m');
+      if (btnChatM) btnChatM.style.background = this.showReaderChat ? 'rgba(212,160,23,0.35)' : 'rgba(255,255,255,0.06)';
+    };
+
+    const btnToggleChat = document.getElementById('pdf-btn-toggle-chat');
+    if (btnToggleChat) btnToggleChat.addEventListener('click', toggleChatDrawer);
+
+    const btnChatTopM = document.getElementById('pdf-btn-chat-top-m');
+    if (btnChatTopM) btnChatTopM.addEventListener('click', toggleChatDrawer);
+
+    const btnChatM = document.getElementById('pdf-btn-chat-m');
+    if (btnChatM) btnChatM.addEventListener('click', toggleChatDrawer);
+
+    const btnCloseReaderChat = document.getElementById('btn-close-reader-chat');
+    if (btnCloseReaderChat) {
+      btnCloseReaderChat.addEventListener('click', () => {
+        this.showReaderChat = false;
+        const drawer = document.getElementById('reader-chat-drawer');
+        if (drawer) drawer.classList.remove('open');
+      });
+    }
+
+    // Formulário de envio de mensagem dentro do leitor
+    const readerChatForm = document.getElementById('reader-chat-form');
+    if (readerChatForm) {
+      readerChatForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const input = document.getElementById('reader-chat-input-text');
+        const text = input ? input.value : '';
+        if (!text || !text.trim()) return;
+        input.value = '';
+
+        const newMsg = await SupabaseService.sendChatMessage(text, this.user);
+        if (newMsg) {
+          this.chatMessages.push(newMsg);
+          const msgsBox = document.getElementById('reader-chat-messages-box');
+          if (msgsBox) {
+            const row = document.createElement('div');
+            row.className = `reader-chat-msg mine`;
+            row.innerHTML = `
+              <div class="reader-chat-msg-author">
+                <span>${newMsg.userName}</span>
+                <span class="reader-chat-msg-time">${newMsg.time}</span>
+              </div>
+              <div class="reader-chat-msg-text">${newMsg.text}</div>
+            `;
+            msgsBox.appendChild(row);
+            msgsBox.scrollTop = msgsBox.scrollHeight;
+          }
+        }
       });
     }
 
