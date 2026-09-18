@@ -1,5 +1,7 @@
 /* =====================================================
    BUUTZKE — Custom Analytics Tracker (Google Sheets)
+   + Meta Pixel Events
+   + TikTok Pixel Events
    ===================================================== */
 
 const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwcP0BOGEr4BP07e6MEvUObrklvIc-65lxNsceO3pupTpVwCz-mKhZGnf-uvXRSLNKC0Q/exec';
@@ -7,12 +9,14 @@ const WEBHOOK_URL = 'https://script.google.com/macros/s/AKfycbwcP0BOGEr4BP07e6ME
 export class Analytics {
   static getUTMs() {
     try {
+      // sessionStorage primeiro; localStorage como fallback para aba reaberta
+      const get = key => sessionStorage.getItem(key) || localStorage.getItem(key) || '';
       return {
-        utm_source: sessionStorage.getItem('utm_source') || '',
-        utm_medium: sessionStorage.getItem('utm_medium') || '',
-        utm_campaign: sessionStorage.getItem('utm_campaign') || '',
-        utm_term: sessionStorage.getItem('utm_term') || '',
-        utm_content: sessionStorage.getItem('utm_content') || ''
+        utm_source:   get('utm_source'),
+        utm_medium:   get('utm_medium'),
+        utm_campaign: get('utm_campaign'),
+        utm_term:     get('utm_term'),
+        utm_content:  get('utm_content'),
       };
     } catch (e) {
       return { utm_source: '', utm_medium: '', utm_campaign: '', utm_term: '', utm_content: '' };
@@ -38,8 +42,6 @@ export class Analytics {
       ...this.getUTMs()
     };
 
-    // Enfileira as requisições com 400ms de intervalo para evitar que o Google Sheets engula dados 
-    // por tentar salvar 3 linhas no exato mesmo milissegundo (Race Condition do Apps Script).
     this.fetchQueue = this.fetchQueue.then(() => {
       return new Promise(resolve => {
         try {
@@ -59,50 +61,41 @@ export class Analytics {
 
   static getPageName(path) {
     if (path === '/' || path === '') return 'Home';
-    if (path.includes('/ebooks')) return 'Página Geral de eBooks';
+    if (path === '/biblioteca') return 'Biblioteca BUUTZKE (Bundle)';
+    if (path.includes('/ebooks')) return 'Pagina Geral de eBooks';
     if (path.includes('/ebook/')) {
       const name = path.split('/').pop().replace(/-/g, ' ');
       return 'Vendas: ' + name.charAt(0).toUpperCase() + name.slice(1);
     }
+    if (path.includes('/obrigado')) return 'Obrigado (Pos-Compra)';
     if (path.includes('/atendimentos')) return 'Atendimentos Espirituais';
     if (path.includes('/sobre')) return 'Sobre o Criador';
-    if (path.includes('/linkbio')) return 'Árvore de Links (Bio)';
+    if (path.includes('/linkbio')) return 'Arvore de Links (Bio)';
     return path;
   }
 
   static trackTimeOnPreviousPage() {
     if (!this.currentPagePath) return;
-    
     const timeSpentSeconds = Math.round((Date.now() - this.pageEntryTime) / 1000);
-    
-    // Só envia se ficou mais de 3 segundos
     if (timeSpentSeconds > 3) {
       const pageName = this.getPageName(this.currentPagePath);
-      
       this.sendData(
-        'TEMPO DE TELA', 
-        'Saiu da Página', 
-        `Ficou ${timeSpentSeconds} segundos na página: ${pageName}`,
-        this.currentPagePath // Força a URL do evento a ser da página anterior
+        'TEMPO DE TELA',
+        'Saiu da Pagina',
+        'Ficou ' + timeSpentSeconds + ' segundos na pagina: ' + pageName,
+        this.currentPagePath
       );
     }
   }
 
   static trackPageview() {
-    // 1. Registra o tempo que a pessoa passou na página ANTERIOR
     if (this.currentPagePath && this.currentPagePath !== window.location.pathname) {
       this.trackTimeOnPreviousPage();
     }
-
-    // 2. Avisa que entrou na NOVA página
     const pageName = this.getPageName(window.location.pathname);
-    this.sendData('VISITA', 'Acessou a Página', pageName);
-
-    // 3. Reseta o relógio para a NOVA página
+    this.sendData('VISITA', 'Acessou a Pagina', pageName);
     this.currentPagePath = window.location.pathname;
     this.pageEntryTime = Date.now();
-    
-    // 4. Inicia o rastreador de fechamento de aba (só 1 vez)
     if (!this.timeTrackerInitialized) {
       window.addEventListener('beforeunload', () => this.trackTimeOnPreviousPage());
       this.timeTrackerInitialized = true;
@@ -110,34 +103,103 @@ export class Analytics {
   }
 
   static initClickTracker() {
-    // Intercepta todos os cliques do site globalmente
     document.body.addEventListener('click', (e) => {
-      // Procura se o clique foi em um botão (btn) ou um link (a)
       const target = e.target.closest('a, button, .btn');
       if (!target) return;
-
       let label = target.textContent.trim().substring(0, 50);
-      if (!label) label = 'Ícone ou Imagem';
+      if (!label) label = 'Icone ou Imagem';
       const destination = target.href || '';
 
-      // Trata especialmente cliques na página de LinkBio
       if (window.location.pathname === '/linkbio') {
-        this.sendData('CLIQUE_LINKBIO', 'Acessou Link da Bio', `Botão: "${label.replace(/\s+/g, ' ')}" -> ${destination}`);
+        this.sendData('CLIQUE_LINKBIO', 'Acessou Link da Bio', 'Botao: "' + label.replace(/\s+/g, ' ') + '" -> ' + destination);
         return;
       }
 
-      // Classifica o tipo de clique para ficar bonito na planilha
       if (destination.includes('kirvano.com')) {
-        this.sendData('CONVERSÃO', 'Foi para o Checkout (Kirvano)', `Botão: "${label.replace(/\s+/g, ' ')}"`);
+        this.trackInitiateCheckout(label);
+        this.sendData('CONVERSAO', 'Foi para o Checkout (Kirvano)', 'Botao: "' + label.replace(/\s+/g, ' ') + '"');
       } else if (destination.includes('wa.me')) {
-        this.sendData('CONVERSÃO', 'Chamou no WhatsApp', `Botão: "${label.replace(/\s+/g, ' ')}"`);
+        this.sendData('CONVERSAO', 'Chamou no WhatsApp', 'Botao: "' + label.replace(/\s+/g, ' ') + '"');
       } else if (destination.includes('instagram.com')) {
-        this.sendData('CLIQUE', 'Saiu para o Instagram', `Botão: "${label.replace(/\s+/g, ' ')}"`);
+        this.sendData('CLIQUE', 'Saiu para o Instagram', 'Botao: "' + label.replace(/\s+/g, ' ') + '"');
       } else if (destination.startsWith('http') && !destination.includes(window.location.host)) {
-        this.sendData('CLIQUE', 'Saiu para Link Externo', `Botão: "${label.replace(/\s+/g, ' ')}" -> ${destination}`);
+        this.sendData('CLIQUE', 'Saiu para Link Externo', 'Botao: "' + label.replace(/\s+/g, ' ') + '" -> ' + destination);
       } else {
-        this.sendData('NAVEGAÇÃO', 'Navegou no Site', `Clicou em: "${label.replace(/\s+/g, ' ')}"`);
+        this.sendData('NAVEGACAO', 'Navegou no Site', 'Clicou em: "' + label.replace(/\s+/g, ' ') + '"');
       }
     });
+  }
+
+  /* =========================================================
+     PIXEL EVENTS — Meta Pixel + TikTok Pixel
+     - trackViewContent: ao acessar landing page de ebook
+     - trackInitiateCheckout: ao clicar em ir para checkout
+     - trackPurchase: na pagina /obrigado
+  ========================================================= */
+
+  static trackViewContent(ebookTitle, price) {
+    ebookTitle = ebookTitle || '';
+    price = price || 0;
+    try {
+      if (typeof fbq === 'function') {
+        fbq('track', 'ViewContent', {
+          content_name: ebookTitle,
+          content_type: 'product',
+          value: price,
+          currency: 'BRL',
+        });
+      }
+      if (typeof ttq !== 'undefined') {
+        ttq.track('ViewContent', {
+          content_name: ebookTitle,
+          value: price,
+          currency: 'BRL',
+        });
+      }
+      console.log('[Pixel] ViewContent:', ebookTitle, 'R$', price);
+    } catch (e) {}
+  }
+
+  static trackInitiateCheckout(buttonLabel) {
+    buttonLabel = buttonLabel || '';
+    try {
+      if (typeof fbq === 'function') {
+        fbq('track', 'InitiateCheckout', {
+          content_name: buttonLabel,
+          content_type: 'product',
+        });
+      }
+      if (typeof ttq !== 'undefined') {
+        ttq.track('InitiateCheckout', {
+          content_name: buttonLabel,
+        });
+      }
+      console.log('[Pixel] InitiateCheckout:', buttonLabel);
+    } catch (e) {}
+  }
+
+  static trackPurchase(ebookSlug, value) {
+    ebookSlug = ebookSlug || '';
+    value = value || 0;
+    try {
+      var contentName = ebookSlug || 'ebook-buutzke';
+      if (typeof fbq === 'function') {
+        fbq('track', 'Purchase', {
+          content_name: contentName,
+          content_type: 'product',
+          value: value,
+          currency: 'BRL',
+        });
+      }
+      if (typeof ttq !== 'undefined') {
+        ttq.track('CompletePayment', {
+          content_name: contentName,
+          value: value,
+          currency: 'BRL',
+        });
+      }
+      this.sendData('CONVERSAO', 'COMPRA CONFIRMADA', 'Ebook: ' + contentName + ' | Valor: R$ ' + value);
+      console.log('[Pixel] Purchase:', contentName, 'R$', value);
+    } catch (e) {}
   }
 }

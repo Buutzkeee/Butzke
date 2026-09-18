@@ -1,74 +1,28 @@
 /* ===============================
-   eBooks Data
+   eBooks Data — BUUTZKE 2.0
+   Atualizado com conteúdo real dos PDFs
    =============================== */
 export const ebooksData = [
-  {
-    slug: 'goetia-a-arte-da-soberania',
-    title: 'Goetia: A Arte da Soberania',
-    subtitle: 'A Magia Salomônica sem Medo, sem Dogmas — Domine as 72 Forças e Assuma a Soberania da Sua Realidade',
-    shortDesc: 'O guia definitivo para desmistificar as 72 forças goéticas, evocar resultados no plano físico e assumir a soberania absoluta da sua realidade.',
-    heroText: 'O Lemegeton Revelado: A Chave de Salomão Sem Mitologias, Sem Medo e Sem Complicações para Dominar as 72 Forças da Goetia.',
-    topics: ['Lemegeton & Salomão', 'Os 72 Daemons Goéticos', 'Evocação Segura Passo a Passo', 'Soberania & Prosperidade'],
-    features: [
-      'O Grimório Prático Definitivo em alta resolução (PDF vitalício para celular, tablet e PC)',
-      'O Guia Completo dos 72 Daemons Goéticos: Atribuições, Selos e Objetivos Práticos',
-      'O Método de Evocação Seguro em 7 Passos: Do banimento à licença para partir',
-      'Como evocar para Dinheiro, Prosperidade nos Negócios, Proteção e Autoridade Pessoal',
-      'Adaptação moderna do Círculo e Triângulo Mágico — sem gastar rios de dinheiro em paramentos',
-      'A Alquimia da Soberania: Como comandar as forças espirituais com honra, firmeza e sem perigo'
-    ],
-    priceFrom: 97.0,
-    priceTo: 49.90,
-    pages: '90+',
-    paymentLink: 'https://pay.kirvano.com/f06834f8-f660-43f0-9307-f162c5e35932',
-    badge: 'LANÇAMENTO',
-    category: 'Goetia & Alta Magia',
-    image: '/assets/img/goetia.jpg',
-    imageHome: '/assets/img/goetia_home.jpg',
-    hasCoverText: true,
-    icon: '🔯',
-    featured: true,
-    chapters: [
-      { num: 'I',   title: 'A Chave Oculta de Salomão',       desc: 'A verdadeira história do Lemegeton, a desmistificação do terror medieval e o retorno à Alta Magia Prática.' },
-      { num: 'II',  title: 'A Estrutura das 72 Forças',       desc: 'Quem são os Daemons da Goetia, suas hierarquias, reinos, naturezas e como escolher o espírito exato para sua necessidade.' },
-      { num: 'III', title: 'O Templo e os Instrumentos',      desc: 'O Círculo de Proteção, o Triângulo de Evocação, o Selo Secreto de Salomão e as ferramentas adaptadas para praticar em casa.' },
-      { num: 'IV',  title: 'O Ritual de Evocação Passo a Passo', desc: 'Protocolo completo de abertura, invocação da autoridade divina, chamada do espírito, comunicação e licença para partir.' },
-      { num: 'V',   title: 'Objetivos Materiais & Espirituais', desc: 'Aplicações reais para riqueza, fechamento de contratos, magnetismo pessoal, inteligência acelerada e corte de demandas.' },
-      { num: 'VI',  title: 'A Arte da Soberania Pessoal',     desc: 'O código ético do mago: como manter o equilíbrio psicológico, evitar armadilhas de ego e sustentar as conquistas materiais.' },
-      { num: '✦',   title: 'Bônus de Lançamento',             desc: 'Tabela de Correspondências Planetárias, Compilado dos 72 Selos em Alta Resolução e Guia de Blindagem Salomoniana.' }
-    ],
-    testimonials: [
-      { text: 'A clareza com que o Eduardo desmistificou a Goetia é surreal. Sempre tive receio de praticar por causa dos mitos da internet, mas o passo a passo com o selo de proteção me deu 100% de segurança. Fiz meu primeiro pacto de trabalho para negócios e fechei o maior contrato da minha empresa.', name: 'Guilherme B.', location: 'São Paulo / SP' },
-      { text: 'O capítulo sobre os 72 daemons e a adaptação do triângulo para quem não tem espaço ou rios de dinheiro em paramentos vale mais que qualquer curso de mil reais. Material de altíssimo nível!', name: 'Renata V.', location: 'Porto Alegre / RS' },
-      { text: 'Direto ao ponto, com respeito e autoridade. A Goetia finalmente explicada como uma arte de soberania e poder pessoal, e não de medo. Simplesmente obrigatório.', name: 'Matheus L.', location: 'Belo Horizonte / MG' }
-    ],
-    faqs: [
-      { q: 'A prática da Goetia é perigosa?', a: 'Não quando realizada com os fundamentos corretos e respeito às leis de proteção. Este grimório ensina detalhadamente o Círculo de Proteção, o Selo de Salomão e o banimento seguro, garantindo que você pratique com total soberania e tranquilidade.' },
-      { q: 'Preciso de ferramentas medievais caras ou um templo gigante?', a: 'Não. O grimório foi elaborado para o praticante moderno, ensinando como consagrar seus instrumentos e montar o triângulo e o círculo em qualquer espaço com elementos acessíveis e eficazes.' },
-      { q: 'Serve para quem nunca praticou magia antes?', a: 'Sim. A linguagem de Eduardo Souza é direta, sem rodeios ou termos desnecessários, guiando você do nível mais básico ao avançado passo a passo.' },
-      { q: 'Como aplico meu cupom de desconto promocional?', a: 'Se você recebeu um cupom ou código promocional exclusivo das redes sociais, basta clicar em comprar e inserir o código diretamente na tela de checkout da Kirvano para ter o desconto aplicado na hora!' },
-      { q: 'Como e quando recebo o grimório?', a: 'O envio é imediato! Assim que o pagamento for aprovado pela Kirvano (Pix cai na mesma hora), você recebe o link de download do PDF em alta resolução no seu e-mail.' },
-      { q: 'Tenho garantia?', a: 'Sim! Você conta com 7 dias de garantia incondicional pela plataforma Kirvano. Se por qualquer motivo não ficar satisfeito, basta um clique para receber 100% do seu dinheiro de volta.' }
-    ],
-  },
   {
     slug: 'quimbanda-o-caminho-da-forca',
     title: 'Quimbanda: O Caminho da Força',
     subtitle: 'Os Segredos que o Terreiro Guarda — Amor, Dinheiro e Proteção na Palma da Sua Mão',
-    shortDesc: 'O grimório proibido da Quimbanda. Rituais, feitiços e a chave dos Exus e Pombagiras.',
-    heroText: 'O grimório proibido que a esquerda espiritual nunca quis que caísse nas suas mãos.',
-    topics: ['História & Origens', 'Exus & Guardiões', 'Pombagiras', 'Fundamentos'],
+    shortDesc: '20 feitiços reais com ingredientes e passo a passo — para proteção, dinheiro, amor e força pessoal. O guia prático que a Quimbanda nunca explicou de forma tão direta.',
+    heroText: 'O guia prático da Quimbanda: 20 feitiços com ingredientes reais e passo a passo detalhado para amor, dinheiro, proteção e força pessoal.',
+    topics: ['História & Origens', 'Exus & Guardiões', 'Pombagiras', 'Feitiços Práticos'],
     features: [
+      '20 Feitiços Reais com Ingredientes e Passo a Passo — Proteção, Dinheiro, Amor e Força Pessoal',
+      'A verdade sobre Exus e Pombagiras — quem são, o que fazem e como se conectar',
+      'Banho de Descarrego com Sal Grosso e Arruda, Vela de Proteção para o Lar, Banho de Alecrim',
+      'Vela para Abertura de Caminhos, Ritual do Mel com Canela, Papel Escrito para Oportunidade',
+      'Oferenda para Pombagira, Banho de Rosas para Sedução, Ritual para Reconquistar',
+      'Ritual da Encruzilhada — Pedido Direto a Exu e Firmeza de Exu em Casa',
+      'Ritual para Cortar Demanda, Tirar Mau-Olhado e Proteção no Trabalho',
       'Grimório completo em PDF — leitura vitalícia em qualquer aparelho',
-      'Rituais passo a passo para amor, dinheiro, proteção e abertura de caminhos',
-      'A verdade sobre Exus e Pombagiras — sem o preconceito das igrejas',
-      'Feitiços simples que funcionam mesmo para quem nunca praticou nada',
-      'A Tríade da Manifestação — o método secreto para materializar pedidos',
-      'Como se blindar de inveja, mau-olhado, macumba e trabalhos feitos',
     ],
     priceFrom: 197.0,
     priceTo: 39.9,
-    pages: '100+',
+    pages: '22',
     paymentLink: 'https://pay.kirvano.com/c242b645-8452-4e17-8c59-c6de9aef926c',
     badge: 'MAIS VENDIDO',
     category: 'Quimbanda & Exu',
@@ -78,12 +32,13 @@ export const ebooksData = [
     icon: '🔱',
     featured: true,
     chapters: [
-      { num: 'I',   title: 'O Mistério Revelado',       desc: 'Desconstruindo preconceitos. As origens, a história e os cinco pilares da verdadeira Quimbanda.' },
-      { num: 'II',  title: 'A Força dos Guardiões',     desc: 'Exus e Pombagiras — quem são, suas linhas, suas histórias e como firmar aliança com eles.' },
-      { num: 'III', title: 'Direcionamento Espiritual', desc: 'A Quimbanda como ferramenta de autoconhecimento e a Tríade da Manifestação.' },
-      { num: 'IV',  title: 'Feitiços que Funcionam',    desc: 'Banhos, velas e oferendas para amor, dinheiro, proteção e vitória sobre inimigos.' },
-      { num: 'V',   title: 'O Caminho Continua',        desc: 'Como manter sua espiritualidade viva e continuar evoluindo depois do primeiro ritual.' },
-      { num: '✦',   title: 'Bônus: Tríade da Manifestação', desc: 'O método completo para transformar fé, oferenda e ação em resultados que se veem com os olhos.' },
+      { num: 'I',   title: 'O Que a Quimbanda Realmente É',       desc: 'Desconstruindo preconceitos. As origens africanas, os Cinco Pilares e por que Exus e Pombagiras não são o que a internet diz.' },
+      { num: 'II',  title: 'Conhecendo Seus Guardiões',            desc: 'Tranca Ruas, Caveira, Tiriri, Marabô, Maria Padilha, Sete Saias — quem são, suas histórias e como se conectar com cada um.' },
+      { num: 'III', title: 'Proteção e Limpeza',                   desc: 'Banho de Descarrego com Arruda, Vela de Proteção para o Lar, Banho de Alecrim e Defumação para Limpar o Ambiente.' },
+      { num: 'IV',  title: 'Dinheiro e Oportunidades',             desc: 'Vela para Abertura de Caminhos com Exu, Ritual do Mel com Canela para Atrair Dinheiro, Papel Escrito para Emprego.' },
+      { num: 'V',   title: 'Amor e Relacionamentos',               desc: 'Oferenda para Pombagira, Banho de Rosas para Sedução, Vela para Reconquistar, Ritual de Desapego.' },
+      { num: 'VI',  title: 'Força Pessoal & Situações Avançadas',  desc: 'Vela Preta para Vontade, Ritual do Espelho, Sachê de Proteção, Cortar Demanda, Ritual da Encruzilhada, Firmeza de Exu em Casa.' },
+      { num: '✦',   title: 'Índice dos 20 Feitiços',              desc: 'Referência rápida por categoria: 4 de Proteção, 3 de Dinheiro, 4 de Amor, 3 de Força Pessoal, 4 Situações Específicas, 2 Avançados.' }
     ],
     testimonials: [
       { text: 'Fiz o ritual de abertura de caminhos no dia seguinte que comprei. Em duas semanas veio uma proposta de trabalho que dobrou meu salário. Eu ainda não acredito.', name: 'Marina S.', location: 'Rio de Janeiro / RJ' },
@@ -92,7 +47,7 @@ export const ebooksData = [
     ],
     faqs: [
       { q: 'Preciso ter experiência prévia?', a: 'Não. O grimório foi escrito pra qualquer pessoa — do curioso ao praticante experiente. A linguagem é clara, direta, sem enrolação acadêmica.' },
-      { q: 'Os rituais são perigosos?', a: 'Não. Todos os feitiços foram selecionados para serem seguros e éticos. Você não precisa de altar montado nem ingredientes caros.' },
+      { q: 'Os rituais são perigosos?', a: 'Não. Todos os 20 feitiços foram selecionados para serem seguros e éticos. Você não precisa de altar montado nem ingredientes caros — a maioria usa itens do supermercado.' },
       { q: 'Quando recebo o material?', a: 'Na hora. Assim que o pagamento é confirmado (Pix é instantâneo), o PDF cai direto no seu e-mail.' },
       { q: 'Quimbanda é macumba?', a: 'Não. Exus e Pombagiras são espíritos guardiões que atuam na linha de esquerda — a linha que resolve as questões práticas da vida material.' },
       { q: 'E se eu não gostar?', a: 'Você tem 7 dias de garantia total. Basta enviar um e-mail e o valor volta 100% pra sua conta. Sem perguntas, sem burocracia.' },
@@ -100,23 +55,77 @@ export const ebooksData = [
     ],
   },
   {
+    slug: 'goetia-a-arte-da-soberania',
+    title: 'Goetia: A Arte da Soberania',
+    subtitle: 'A Magia Salomônica sem Medo, sem Dogmas — Domine as 72 Forças e Assuma a Soberania da Sua Realidade',
+    shortDesc: '103 páginas. O grimório mais completo já publicado em português: os 72 espíritos com fórmulas individuais de chamada, Ritual do Pentagrama completo, Treinamento Mental de 30 Dias e Fichas de Protocolo para impressão.',
+    heroText: 'O Lemegeton Revelado: A Chave de Salomão com os 72 Espíritos, Fórmulas Individuais de Chamada e o Ritual Completo de Evocação — 103 páginas de grimório de luxo.',
+    topics: ['Lemegeton & Salomão', 'Os 72 Daemons Goéticos', 'Evocação Segura Passo a Passo', 'Soberania & Prosperidade'],
+    features: [
+      'Os 72 Espíritos com Fórmulas Individuais de Chamada — listados com hierarquia, signo e atribuição',
+      'Ritual do Pentagrama (RmP) Passo a Passo Completo — com Cruz Cabalística e Evocação dos Arcanjos',
+      'Treinamento Mental de 30 Dias — preparação do magista moderno em 3 fases progressivas',
+      'O Método de Evocação Seguro em 6 Etapas: Do banimento à licença para partir',
+      'Arsenal Sagrado: Os Instrumentos de Salomão Ilustrados — adaptados para casa',
+      'Tabela Mestre Astrológica & Os 72 Anjos da Shem HaMephorash',
+      'Botânica Oculta, Resinas Planetárias e Oferendas Seguras',
+      'Fichas de Protocolo Ritual para Impressão e Diário Mágico — 103 páginas de grimório de luxo',
+    ],
+    priceFrom: 97.0,
+    priceTo: 49.90,
+    pages: '103',
+    paymentLink: 'https://pay.kirvano.com/f06834f8-f660-43f0-9307-f162c5e35932',
+    badge: 'LANÇAMENTO',
+    category: 'Goetia & Alta Magia',
+    image: '/assets/img/goetia.jpg',
+    imageHome: '/assets/img/goetia_home.jpg',
+    hasCoverText: true,
+    icon: '🔯',
+    featured: true,
+    chapters: [
+      { num: 'Prólogo', title: 'O Despertar da Vontade',              desc: 'Da herança do Rei Salomão ao magista contemporâneo. A história e o significado real da palavra Goetia.' },
+      { num: 'I',      title: 'A Mente como Templo',                  desc: 'Treinamento Mental de 30 Dias em 3 fases: Purificação (1-10), Sensibilização (11-20), Condensação de Energia (21-30).' },
+      { num: 'II',     title: 'Banimentos, Exorcismos e Proteção Real', desc: 'Ritual Menor do Pentagrama completo, Exorcismo da Água e Sal, Banimento RIP — passo a passo com as palavras exatas.' },
+      { num: 'III',    title: 'O Ritual de Evocação em 6 Etapas',     desc: 'Roteiro cerimonial prático do começo ao fim: preparação, abertura, chamada, comunicação, petição e licença.' },
+      { num: 'IV-V',   title: 'Arsenal Sagrado & Consagrações',       desc: 'Instrumentos de Salomão ilustrados, Óleo de Abramelin e como adaptar tudo para o praticante moderno.' },
+      { num: 'VI',     title: 'Grimório das Conjurações Integrais',   desc: 'As orações e chamadas completas do sistema salomônico, sem cortes ou omissões.' },
+      { num: 'VII-VIII', title: 'Tabela Astrológica & Botânica Oculta', desc: 'Os 72 Anjos da Shem HaMephorash, correspondências planetárias e oferendas seguras para cada espírito.' },
+      { num: '✦',      title: 'Os 72 Espíritos — Fórmulas Individuais', desc: 'Cada um dos 72 daemons: nome, hierarquia, signo zodiacal, atribuição e fórmula de chamada individual.' },
+    ],
+    testimonials: [
+      { text: 'A clareza com que o Eduardo desmistificou a Goetia é surreal. Sempre tive receio de praticar por causa dos mitos da internet, mas o passo a passo com o selo de proteção me deu 100% de segurança. Fiz meu primeiro pacto de trabalho para negócios e fechei o maior contrato da minha empresa.', name: 'Guilherme B.', location: 'São Paulo / SP' },
+      { text: 'O capítulo sobre os 72 daemons e a adaptação do triângulo para quem não tem espaço ou rios de dinheiro em paramentos vale mais que qualquer curso de mil reais. Material de altíssimo nível!', name: 'Renata V.', location: 'Porto Alegre / RS' },
+      { text: 'Direto ao ponto, com respeito e autoridade. A Goetia finalmente explicada como uma arte de soberania e poder pessoal, e não de medo. Simplesmente obrigatório.', name: 'Matheus L.', location: 'Belo Horizonte / MG' }
+    ],
+    faqs: [
+      { q: 'A prática da Goetia é perigosa?', a: 'Não quando realizada com os fundamentos corretos e respeito às leis de proteção. Este grimório ensina detalhadamente o Ritual do Pentagrama, o Exorcismo da Água e Sal e os banimentos necessários, garantindo que você pratique com total soberania.' },
+      { q: 'Preciso de ferramentas medievais caras ou um templo gigante?', a: 'Não. O grimório foi elaborado para o praticante moderno, ensinando como adaptar os instrumentos e montar o espaço ritual em qualquer ambiente com elementos acessíveis.' },
+      { q: 'Serve para quem nunca praticou magia antes?', a: 'Sim. O Treinamento Mental de 30 Dias (Capítulo I) foi criado exatamente para preparar qualquer pessoa — do iniciante ao avançado — antes de começar as evocações.' },
+      { q: 'Como aplico meu cupom de desconto promocional?', a: 'Se você recebeu um cupom ou código promocional exclusivo das redes sociais, basta clicar em comprar e inserir o código diretamente na tela de checkout da Kirvano para ter o desconto aplicado na hora!' },
+      { q: 'Como e quando recebo o grimório?', a: 'O envio é imediato! Assim que o pagamento for aprovado pela Kirvano (Pix cai na mesma hora), você recebe o link de download do PDF em alta resolução no seu e-mail.' },
+      { q: 'Tenho garantia?', a: 'Sim! Você conta com 7 dias de garantia incondicional pela plataforma Kirvano. Se por qualquer motivo não ficar satisfeito, basta um clique para receber 100% do seu dinheiro de volta.' }
+    ],
+  },
+  {
     slug: 'segredos-das-encruzilhadas',
     title: 'Quimbanda: Segredos das Encruzilhadas',
-    subtitle: 'Volume II — Para Quem Já Sabe que Exu Resolve. Rituais Avançados e Fundamentos Reais.',
-    shortDesc: 'A Cosmologia Completa, os Reinos dos Exus, Rituais Avançados e o Código Ético da Esquerda Espiritual.',
-    heroText: 'A Quimbanda não é para quem busca poder sobre os outros. É para quem busca poder sobre si mesmo.',
+    subtitle: 'Volume II — Para Quem Já Sabe que Exu Resolve. Cosmologia, Rituais Avançados e o Código da Esquerda.',
+    shortDesc: 'A Cosmologia Completa dos 7 Grandes Reinos, os Exus e Pombagiras em profundidade, Rituais Avançados e um capítulo exclusivo: Os Erros Mais Comuns na Encruzilhada — e como evitar cada um.',
+    heroText: '"A Quimbanda não é para quem busca poder sobre os outros. É para quem busca poder sobre si mesmo."',
     topics: ['Cosmologia', 'Exus e Pombagiras', 'Rituais Avançados', 'Ética e Fundamentos'],
     features: [
-      'A hierarquia espiritual e os Sete Grandes Reinos da Quimbanda explicados',
-      'Guia detalhado dos Grandes Exus e Pombagiras (personalidades e oferendas)',
-      'O passo a passo correto para montar a sua Firmeza Básica para Exu',
-      'Magias Avançadas: Banhos de Proteção, Prosperidade e Quebra de Demandas',
-      'A linguagem oculta dos Pontos Riscados e o poder dos Pontos Cantados',
-      'O Código Ético da Esquerda, a Lei do Retorno e como evitar os erros mais comuns'
+      'Os 7 Grandes Reinos da Quimbanda: Encruzilhadas, Almas, Matas, Mar, Cemitério, Calunga e Lira',
+      'Exus em Profundidade: Tranca Ruas, Tiriri, Caveira, Veludo, Marabô — personalidades, reinos e oferendas exatas',
+      'Pombagiras: Maria Padilha, Mulambo, Sete Saias — a força feminina sagrada e seus mistérios',
+      'Pontos Riscados e Cantados — o alfabeto sagrado e a música da Quimbanda explicados',
+      'Rituais Avançados: Firmezas, Prosperidade, Amor e Desfazimento de Demandas Pesadas',
+      'NOVO — Capítulo 8: Os Erros Mais Comuns na Encruzilhada e Como Evitar Cada Um',
+      'NOVO — Capítulo 9: Glossário Completo da Quimbanda',
+      'O Código Ético da Esquerda, a Lei do Retorno e como encontrar um terreiro sério',
     ],
     priceFrom: 147.0,
     priceTo: 39.9,
-    pages: '70+',
+    pages: '27',
     paymentLink: 'https://pay.kirvano.com/6cbe9f83-de09-4f69-8972-0a74906a0dd0',
     badge: 'VOLUME II',
     category: 'Quimbanda',
@@ -126,20 +135,21 @@ export const ebooksData = [
     icon: '🗝️',
     featured: true,
     chapters: [
-      { num: 'I',   title: 'Cosmologia da Quimbanda',    desc: 'Os Sete Grandes Reinos, os Impérios e a hierarquia espiritual completa.' },
-      { num: 'II',  title: 'Os Exus em Profundidade',    desc: 'Tranca Ruas, Caveira, Tiriri, Veludo, Marabô: suas personalidades e oferendas.' },
-      { num: 'III', title: 'As Pombagiras',              desc: 'Maria Padilha, Mulambo, Sete Saias: a força feminina sagrada e seus mistérios.' },
-      { num: 'IV',  title: 'Pontos Riscados e Cantados', desc: 'O alfabeto sagrado, os símbolos geométricos e a música da Quimbanda.' },
-      { num: 'V',   title: 'Rituais Avançados',          desc: 'A arte das firmezas, feitiços de prosperidade, amor e desfazimento de demandas pesadas.' },
-      { num: 'VI',  title: 'O Caminho do Iniciado',      desc: 'Sinais de chamado, a Lei do Retorno, como evitar os erros cruciais e o Glossário Completo.' }
+      { num: 'I',    title: 'Cosmologia da Quimbanda',        desc: 'Os 7 Grandes Reinos, os três Eixos do Poder (Vida, Morte, Equilíbrio) e a hierarquia espiritual completa.' },
+      { num: 'II',   title: 'Os Exus em Profundidade',         desc: 'Tranca Ruas, Tiriri, Caveira, Veludo, Marabô e Exu das Almas: suas personalidades, saudações e oferendas exatas.' },
+      { num: 'III',  title: 'As Pombagiras',                   desc: 'Maria Padilha, Mulambo, Sete Saias: a força feminina sagrada, seus reinos e como trabalhar com cada uma.' },
+      { num: 'IV',   title: 'Pontos Riscados e Cantados',      desc: 'O alfabeto sagrado da Quimbanda, os símbolos geométricos e a linguagem musical dos pontos cantados.' },
+      { num: 'V',    title: 'Rituais Avançados',               desc: 'Firmezas, magias de prosperidade e amor, desfazimento de demandas pesadas — para quem já tem a base do Vol.1.' },
+      { num: 'VI-VII', title: 'O Caminho do Iniciado',         desc: 'A Lei do Retorno, sinais de chamado, como identificar um terreiro sério e o Código Ético da Esquerda.' },
+      { num: '✦ NOVO', title: 'Erros Comuns na Encruzilhada',  desc: 'Capítulo inédito: os erros que praticantes cometem e como evitá-los — para quem quer praticar com segurança e resultado.' },
     ],
     testimonials: [
       { text: 'Sempre tive medo de ir na encruzilhada e fazer algo errado. Esse material me deu a segurança que faltava. Fiz minha primeira oferenda com firmeza e o resultado foi imediato.', name: 'Lucas T.', location: 'Belo Horizonte / MG' },
       { text: 'A forma como o Buutzke explica a ritualística é única. Sem tabu, sem invenção. Pura prática. Minha conexão com meu Exu mudou da água pro vinho.', name: 'Camila F.', location: 'Curitiba / PR' }
     ],
     faqs: [
-      { q: 'Eu preciso ser iniciado na religião para praticar?', a: 'Não. Os ensinamentos deste ebook focam em práticas seguras e fundamentos abertos a qualquer pessoa que tenha respeito e desejo de aprender a se conectar com as forças das encruzilhadas.' },
-      { q: 'E se eu fizer algo errado na encruzilhada?', a: 'O objetivo deste material é exatamente evitar isso. O Capítulo 8 foi criado exclusivamente para te ensinar os erros comuns e como evitá-los.' },
+      { q: 'Preciso ter lido o Volume I antes?', a: 'É recomendado, mas não obrigatório. O Vol.II foi estruturado para funcionar de forma independente, embora faça referências ao conteúdo inicial.' },
+      { q: 'Eu preciso ser iniciado na religião para praticar?', a: 'Não. Os ensinamentos focam em práticas seguras e fundamentos abertos a qualquer pessoa que tenha respeito e desejo de aprender a se conectar com as forças das encruzilhadas.' },
       { q: 'O material é digital?', a: 'Sim! É um eBook em formato PDF. Assim que seu pagamento for confirmado pela Kirvano, você recebe o acesso imediato no seu e-mail e pode ler no celular, tablet ou computador.' }
     ],
   },
@@ -147,22 +157,22 @@ export const ebooksData = [
     slug: 'eres-os-guardioes-mirins-da-umbanda',
     title: 'Erês: Os Guardiões Mirins da Umbanda',
     subtitle: 'Um estudo sobre a Linha das Crianças: origem, simbolismo, trabalhos e o significado espiritual dos Erês nos terreiros',
-    shortDesc: 'Descubra a força espiritual mais alegre e poderosa da Umbanda. Os Erês curam, abrem caminhos e trazem a pureza que o adulto esqueceu — e este livro revela como se conectar com eles.',
-    heroText: 'A Linha das Crianças Revelada: O que o Terreiro Sabe e Raramente Ensina Sobre os Guardiões Mirins da Umbanda.',
+    shortDesc: 'O estudo mais completo sobre os Erês em linguagem acessível: origens, diferenças entre Umbanda e Candomblé, nomes e personalidades, oferendas corretas e como se preparar para uma gira de Crianças.',
+    heroText: '"Onde existe uma criança brincando, existe um pedaço do céu tocando a terra." — Provérbio dos terreiros',
     topics: ['Origem & História', 'Erês & Orixás', 'Trabalhos & Rituais', 'Simbolismo Espiritual'],
     features: [
-      'A origem sagrada dos Erês na cosmologia da Umbanda e sua ligação com os Orixás',
-      'Os diferentes tipos de Erês — suas personalidades, cores, oferendas e missões espirituais',
-      'Como identificar se um Erê está presente no seu campo energético ou caminho espiritual',
-      'Rituais e oferendas corretas para honrar os Guardiões Mirins com respeito e eficácia',
-      'A simbologia das gargalhadas, das brincadeiras e dos doces como linguagem espiritual',
-      'O poder de cura e abertura de caminhos que os Erês carregam — e como pedir com fé',
-      'Depoimentos e histórias reais de manifestações e trabalhos com a Linha das Crianças',
-      'Guia completo em PDF — acesso vitalício no celular, tablet e PC'
+      'A origem sagrada dos Erês na cosmologia da Umbanda e a ligação com Oxumaré',
+      'Diferença entre o Erê na Umbanda e no Candomblé — o que nenhum texto popular explica',
+      'Os diferentes tipos de Erês — nomes, personalidades, cores e preferências de cada um',
+      'Cosme, Damião, Doum e o sincretismo religioso — a história por trás da tradição',
+      'Oferendas e trabalhos corretos para honrar os Guardiões Mirins com respeito e eficácia',
+      'Como se preparar para uma Gira de Erês — postura, comportamento e o que esperar',
+      '14 capítulos + Glossário Completo — em linguagem simples e respeitosa',
+      'Guia completo em PDF — acesso vitalício no celular, tablet e PC',
     ],
     priceFrom: 97.0,
     priceTo: 19.00,
-    pages: '80+',
+    pages: '20',
     paymentLink: 'https://pay.kirvano.com/6137269b-9ecf-4638-bdbf-b7a3d2ad2f8c',
     badge: 'LANÇAMENTO',
     category: 'Umbanda & Erês',
@@ -172,17 +182,17 @@ export const ebooksData = [
     icon: '🎠',
     featured: true,
     chapters: [
-      { num: 'I',   title: 'Salve as Crianças!',              desc: 'A saudação que abre os caminhos: quem são os Erês, de onde vêm e por que são considerados os mensageiros mais puros do astral.' },
-      { num: 'II',  title: 'A Linha das Crianças',            desc: 'A estrutura espiritual que sustenta os Erês, sua posição na hierarquia de Umbanda e a relação sagrada com cada Orixá.' },
-      { num: 'III', title: 'Os Guardiões e Seus Mistérios',   desc: 'Os principais Erês, suas cores, características, preferências e como cada um atua no campo espiritual e material.' },
-      { num: 'IV',  title: 'Identificando a Presença do Erê', desc: 'Sinais espirituais, sonhos, coincidências e manifestações que indicam que um Erê está atuando na sua vida ou na sua missão.' },
-      { num: 'V',   title: 'Rituais, Oferendas e Trabalhos',  desc: 'O passo a passo correto para preparar oferendas, realizar pedidos e criar uma relação espiritual sólida e respeitosa com os Guardiões Mirins.' },
-      { num: 'VI',  title: 'Cura, Alegria e Abertura de Caminhos', desc: 'A força terapêutica dos Erês: como a leveza, a brincadeira e a pureza infantil se transformam em instrumentos poderosos de transformação espiritual.' },
-      { num: '✦',   title: 'Bônus: Guia de Pontos Cantados', desc: 'Seleção especial de pontos cantados para abrir a gira, chamar os Erês e encerrar os trabalhos com respeito e alegria.' }
+      { num: 'I-II',   title: 'A Umbanda e Quem São os Erês',       desc: 'Panorama completo da Umbanda e a apresentação dos Erês — as entidades de manifestação infantil mais queridas e mal compreendidas dos terreiros.' },
+      { num: 'III-IV', title: 'Origem & Erês na Umbanda vs Candomblé', desc: 'O significado do termo Erê, suas variações (Ierê, Ibejada) e a diferença fundamental entre como cada religião compreende essas entidades.' },
+      { num: 'V-VI',   title: 'Oxumaré e o Sincretismo',             desc: 'A regência de Oxumaré sobre a Linha das Crianças e a história de Cosme, Damião e Doum no sincretismo religioso brasileiro.' },
+      { num: 'VII-VIII', title: 'Manifestações & Personalidades',    desc: 'Como os Erês se manifestam nos terreiros, seus nomes mais conhecidos e as características de cada um.' },
+      { num: 'IX-X',   title: 'Guias, Cores & Oferendas',            desc: 'Os símbolos, as guias (colares), as cores e as oferendas mais comuns para cada tipo de Erê — com o passo a passo correto.' },
+      { num: 'XI-XII', title: 'O Dia das Crianças & Poder de Cura',  desc: 'O significado espiritual do 12 de outubro nos terreiros e como a brincadeira, a alegria e a pureza infantil se tornam instrumentos de cura.' },
+      { num: '✦',      title: 'Giras, Ética e Glossário',            desc: 'Como se preparar para uma gira de Erês, os cuidados de postura e um glossário completo dos termos usados no material.' },
     ],
     testimonials: [
       { text: 'Nunca imaginei que um ebook me faria chorar de emoção. A forma como o Eduardo explica os Erês é como se eu finalmente entendesse por que tenho essa conexão com a Linha das Crianças desde criança. Fiz a primeira oferenda e senti uma leveza que não sentia há anos.', name: 'Aline M.', location: 'São Paulo / SP' },
-      { text: 'Pratico Umbanda há 10 anos e ainda aprendi muito. O capítulo sobre como identificar a presença do Erê e os rituais corretos de oferenda é ouro puro. Material de qualidade e profundidade rara.', name: 'Padre Ronaldo F.', location: 'Salvador / BA' },
+      { text: 'Pratico Umbanda há 10 anos e ainda aprendi muito. A explicação da diferença entre o Erê na Umbanda e no Candomblé é algo que nenhum livro popular explica. Material de qualidade e profundidade rara.', name: 'Padre Ronaldo F.', location: 'Salvador / BA' },
       { text: 'Comprei para entender o Erê que incorpora na minha mãe e saí muito mais preparada para assistir e ajudar. A explicação das diferenças entre os tipos de Erê e suas missões é algo que nenhum livro popular explica. Valeu muito cada centavo.', name: 'Carla S.', location: 'Recife / PE' }
     ],
     faqs: [
@@ -198,20 +208,22 @@ export const ebooksData = [
     slug: 'grimorio-das-ervas',
     title: 'O Grimório das Ervas Sagradas',
     subtitle: 'A Alquimia das Plantas que Nenhuma Consulta te Ensina — Limpar, Blindar e Prosperar',
-    shortDesc: 'Aprenda a alquimia sagrada que transforma uma simples folha em um instrumento de poder divino.',
-    heroText: 'Descubra o poder oculto das ervas sagradas e a magia da natureza para limpar, blindar e prosperar. Sem folha, não há Orixá.',
+    shortDesc: '44 páginas e 14 partes: Dicionário das Ervas, receitas de Banhos Rituais, Amacis, Perfumes Artesanais (Perfume do Dinheiro, da Sedução), Calendário Mágico Anual, Amuletos e Patuás.',
+    heroText: '"Kosi ewe, kosi Orixá — Sem folha, não há Orixá." A alquimia sagrada que transforma uma simples folha em um instrumento de poder divino.',
     topics: ['Fitomagia', 'Banhos Rituais', 'Perfumes Sagrados', 'Orixás e Caboclos'],
     features: [
-      'A Tabela Completa de Classificação Energética (Ervas Quentes, Mornas e Frias)',
-      'O Grande Dicionário de Ervas de Defesa, Prosperidade e Amor',
-      'Receitas secretas de Banhos Rituais, Amacis e Perfumes Sagrados Artesanais',
-      'A Sabedoria das Ervas para cada Orixá, Caboclos e Pretos Velhos',
-      'O método completo de Consagração Avançada dos Quatro Elementos',
-      'Técnicas de Bruxaria Verde, Magia Natural e Defesa Avançada'
+      'A Tabela Completa de Classificação Energética — Ervas Quentes, Mornas e Frias com suas funções',
+      'O Grande Dicionário das Ervas: Arruda, Guiné, Espada de São Jorge, Louro, Canela, Alecrim e muito mais',
+      'Receitas dos Perfumes Artesanais: Perfume do Dinheiro, Perfume da Sedução e Água Florida Caseira',
+      'A Sabedoria das Ervas para cada Orixá, Caboclos e Pretos Velhos — ervas sagradas de toda a coroa',
+      'Banhos Rituais detalhados: Descarrego, Prosperidade, Amor e como ativar o poder das águas',
+      'Amuletos, Patuás e Pós de Poder — como confeccionar e consagrar seus próprios',
+      'Calendário Mágico Anual Detalhado — as melhores datas para cada tipo de trabalho',
+      'Bruxaria Verde: A tradição viva das ervas + Cromomancia, Velas e Horas Planetárias',
     ],
     priceFrom: 97.0,
     priceTo: 39.9,
-    pages: '60+',
+    pages: '44',
     paymentLink: 'https://pay.kirvano.com/7ea42e6e-ec90-4619-acf6-96e8c2502daf',
     badge: 'EDIÇÃO EXPANDIDA',
     category: 'Ervas & Magia',
@@ -221,12 +233,13 @@ export const ebooksData = [
     icon: '🌿',
     featured: true,
     chapters: [
-      { num: 'I',   title: 'Fundamentos da Fitomagia',       desc: 'A alma das plantas, o axé vegetal e a diferença vital entre ervas quentes, mornas e frias.' },
-      { num: 'II',  title: 'O Grande Dicionário',            desc: 'As propriedades ocultas da Arruda, Guiné, Espada de São Jorge, Louro, Hibisco, Jasmim e muito mais.' },
-      { num: 'III', title: 'Ervas dos Orixás',               desc: 'A linguagem das divindades: as folhas sagradas de Exu, Ogum, Oxum, Iemanjá e toda a coroa.' },
-      { num: 'IV',  title: 'Guardiões das Matas',            desc: 'A medicina ancestral, os chás curativos e os rituais ensinados pelos Caboclos e Pretos Velhos.' },
-      { num: 'V',   title: 'A Alquimia dos Banhos',          desc: 'Regras de ouro dos banhos de descarrego, banhos de prosperidade e como ativar o poder das águas.' },
-      { num: 'VI',  title: 'Perfumes Artesanais & Bruxaria', desc: 'Como preparar o Perfume do Dinheiro, Perfume da Sedução e Água Florida Caseira.' }
+      { num: 'I',    title: 'Fundamentos Ocultos da Fitomagia',   desc: 'A alma das plantas, o Axé Vegetal, o provérbio "Kosi ewe, kosi Orixá" e a classificação em Ervas Quentes, Mornas e Frias.' },
+      { num: 'II',   title: 'O Grande Dicionário das Ervas',      desc: 'Propriedades ocultas da Arruda, Guiné, Pinhão Roxo, Espada de São Jorge, Aroeira, Louro, Canela, Alecrim e dezenas de outras.' },
+      { num: 'III-V', title: 'Ervas dos Orixás, Caboclos & Pretos Velhos', desc: 'As folhas sagradas de Exu, Ogum, Oxum, Iemanjá e toda a coroa. A medicina ancestral dos guardiões das matas.' },
+      { num: 'VI',   title: 'A Alquimia dos Banhos Rituais',      desc: 'Regras de ouro dos banhos de descarrego, prosperidade e amor. Como ativar o poder das águas com intenção e fé.' },
+      { num: 'VII',  title: 'Perfumes Sagrados Artesanais',        desc: 'Receitas completas do Perfume do Dinheiro, Perfume da Sedução e Água Florida Caseira — feitos com ervas simples.' },
+      { num: 'VIII-IX', title: 'Bruxaria Verde & Defesa Avançada', desc: 'A tradição viva das ervas, técnicas de Magia Natural e como criar uma blindagem energética usando apenas plantas.' },
+      { num: '✦',    title: 'Calendário, Amuletos & Patuás',       desc: 'Calendário Mágico Anual Detalhado, como confeccionar Amuletos e Patuás pessoais, Pós de Poder e Cromomancia com Velas.' },
     ],
     testimonials: [
       { text: 'O banho de prosperidade que aprendi no primeiro capítulo trouxe clientes para minha loja já no dia seguinte. O poder das ervas é real, basta saber usar!', name: 'Amanda P.', location: 'Goiânia / GO' },
@@ -234,7 +247,7 @@ export const ebooksData = [
       { text: 'Material riquíssimo. Muito melhor que muita apostila de curso caro que já comprei por aí.', name: 'Fernanda C.', location: 'Florianópolis / SC' }
     ],
     faqs: [
-      { q: 'Preciso comprar ervas difíceis de encontrar?', a: 'Não. A maioria das ervas ensinadas no grimório são fáceis de encontrar em mercados, feiras ou casas de ervas comuns. O segredo não está na raridade da planta, mas em como prepará-la.' },
+      { q: 'Preciso comprar ervas difíceis de encontrar?', a: 'Não. A maioria das ervas ensinadas no grimório são fáceis de encontrar em mercados, feiras ou casas de ervas comuns. O segredo não está na raridade da planta, mas em como prepará-la com a intenção correta.' },
       { q: 'Posso fazer banhos para outras pessoas?', a: 'Sim, você aprenderá os fundamentos de como preparar banhos e defumações tanto para você mesmo quanto para ajudar seus familiares e amigos.' },
       { q: 'O pagamento é seguro?', a: 'Totalmente. Utilizamos a plataforma Kirvano, referência em segurança de pagamentos digitais. Você tem 7 dias de garantia incondicional.' }
     ],
@@ -244,3 +257,36 @@ export const ebooksData = [
 export function getEbookBySlug(slug) {
   return ebooksData.find(e => e.slug === slug) || null;
 }
+
+/* ===============================
+   Bundle: Biblioteca BUUTZKE
+   =============================== */
+export const bibliotecaBundle = {
+  slug: 'biblioteca',
+  title: 'Biblioteca BUUTZKE',
+  subtitle: 'Os 3 Principais Grimórios em Uma Única Oferta',
+  shortDesc: 'Quimbanda: O Caminho da Força + Goetia: A Arte da Soberania + Grimório das Ervas Sagradas. Mais de 169 páginas de conhecimento real por um preço especial.',
+  badge: 'MELHOR OFERTA',
+  icon: '📚',
+  // Ebooks incluídos no bundle
+  includedSlugs: [
+    'quimbanda-o-caminho-da-forca',
+    'goetia-a-arte-da-soberania',
+    'grimorio-das-ervas',
+  ],
+  // Bônus grátis incluso
+  bonusSlug: 'segredos-das-encruzilhadas',
+  bonusTitle: 'Quimbanda: Segredos das Encruzilhadas (Vol. II)',
+  bonusValue: 39.9,
+  priceFrom: 129.70, // soma dos 3 (39.90 + 49.90 + 39.90)
+  priceTo: 89.90,    // ← SUBSTITUA pelo preço real que definir na Kirvano
+  paymentLink: 'COLE_AQUI_O_LINK_KIRVANO_DO_BUNDLE', // ← CRIAR NA KIRVANO E COLAR AQUI
+  features: [
+    '📕 Quimbanda: O Caminho da Força — 20 feitiços com ingredientes e passo a passo',
+    '🔯 Goetia: A Arte da Soberania — 103 páginas com os 72 espíritos e fórmulas individuais',
+    '🌿 Grimório das Ervas Sagradas — Calendário Mágico Anual, Amuletos, Perfumes e Patuás',
+    '🎁 BÔNUS GRÁTIS: Quimbanda: Segredos das Encruzilhadas (Vol. II) — R$39,90 incluso',
+    '⚡ Acesso imediato em PDF — leia em qualquer aparelho',
+    '🛡️ Garantia de 7 dias sem burocracia',
+  ],
+};

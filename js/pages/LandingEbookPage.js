@@ -3,6 +3,7 @@ import { Navbar }         from '../components/Navbar.js';
 import { Footer }         from '../components/Footer.js';
 import { getEbookBySlug } from '../data/ebooks.js';
 import { OfferModal }     from '../components/OfferModal.js';
+import { Analytics }      from '../analytics.js';
 
 export class LandingEbookPage {
   constructor(container, params) {
@@ -17,6 +18,8 @@ export class LandingEbookPage {
     Router.initReveal();
     this._timer();
     this._initFaq();
+    // Dispara ViewContent nos Pixels
+    Analytics.trackViewContent(this.ebook.title, this.ebook.priceTo || 0);
     
     try {
       new OfferModal({ ebookName: this.ebook.title || this.slug });

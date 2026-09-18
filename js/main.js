@@ -3,6 +3,7 @@ import { HomePage }           from './pages/HomePage.js';
 import { LandingEbookPage }   from './pages/LandingEbookPage.js';
 import { QuimbandaSalesPage } from './pages/QuimbandaSalesPage.js';
 import { GoetiaSalesPage }    from './pages/GoetiaSalesPage.js';
+import { BibliotecaPage }     from './pages/BibliotecaPage.js';
 import { LinkBioPage }        from './pages/LinkBioPage.js';
 import { EbooksPage }         from './pages/EbooksPage.js';
 import { AtendimentosPage }   from './pages/AtendimentosPage.js';
@@ -15,6 +16,7 @@ const router = new Router({
   '/':                                     HomePage,
   '/home':                                 HomePage,
   '/ebooks':                               EbooksPage,
+  '/biblioteca':                           BibliotecaPage,
   '/ebook/quimbanda-o-caminho-da-forca':   QuimbandaSalesPage,
   '/ebook/goetia-a-arte-da-soberania':     GoetiaSalesPage,
   '/goetia':                               GoetiaSalesPage,

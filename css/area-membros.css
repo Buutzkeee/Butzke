@@ -1,0 +1,1039 @@
+/* =====================================================
+   BUUTZKE — Área de Membros & Biblioteca Secreta CSS
+   Design Místico Dark Premium
+   ===================================================== */
+
+/* Container & Header da Área */
+.membros-wrapper {
+  min-height: calc(100vh - var(--nav-h));
+  padding-top: calc(var(--nav-h) + 20px);
+  padding-bottom: 80px;
+  background: radial-gradient(circle at 50% 0%, rgba(212,160,23,0.06) 0%, rgba(8,8,10,0.98) 70%);
+  color: var(--text);
+}
+
+.membros-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* Barra de Status do Membro Logado */
+.membros-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: rgba(20, 20, 24, 0.7);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(212,160,23,0.25);
+  border-radius: 14px;
+  padding: 16px 24px;
+  margin-bottom: 28px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.membros-profile {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.membros-avatar {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212,160,23,0.3), rgba(139,0,0,0.4));
+  border: 2px solid #d4a017;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  box-shadow: 0 0 15px rgba(212,160,23,0.3);
+}
+
+.membros-info h3 {
+  font-family: var(--font-title);
+  font-size: 1.05rem;
+  color: #fff;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.membros-badge-vip {
+  display: inline-block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #d4a017, #9b720b);
+  color: #000;
+}
+
+.membros-info p {
+  margin: 2px 0 0 0;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.membros-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Tabs de Navegação da Área de Membros */
+.membros-tabs {
+  display: flex;
+  gap: 10px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding-bottom: 16px;
+  margin-bottom: 30px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.membros-tab-btn {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  color: var(--text-muted);
+  font-family: var(--font-title);
+  font-size: 0.92rem;
+  padding: 10px 22px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.membros-tab-btn:hover {
+  border-color: rgba(212,160,23,0.4);
+  color: #fff;
+  background: rgba(212,160,23,0.08);
+}
+
+.membros-tab-btn.active {
+  background: linear-gradient(135deg, rgba(212,160,23,0.2), rgba(139,0,0,0.3));
+  border-color: #d4a017;
+  color: #f5c842;
+  box-shadow: 0 0 15px rgba(212,160,23,0.15);
+}
+
+/* Barra de Filtros e Busca de Livros */
+.repo-controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.repo-search-box {
+  position: relative;
+  flex: 1;
+  min-width: 260px;
+  max-width: 400px;
+}
+
+.repo-search-box input {
+  width: 100%;
+  background: rgba(18,18,22,0.8);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 25px;
+  padding: 10px 18px 10px 42px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.repo-search-box input:focus {
+  border-color: #d4a017;
+  box-shadow: 0 0 12px rgba(212,160,23,0.2);
+}
+
+.repo-search-icon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.repo-categories {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.repo-cat-btn {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  padding: 6px 14px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.repo-cat-btn.active, .repo-cat-btn:hover {
+  border-color: #d4a017;
+  color: #fff;
+  background: rgba(212,160,23,0.1);
+}
+
+/* Grid de Livros do Repositório */
+.repo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 24px;
+}
+
+.repo-card {
+  background: #111115;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+}
+
+.repo-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212,160,23,0.4);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.6), 0 0 20px rgba(212,160,23,0.1);
+}
+
+.repo-card-thumb {
+  height: 230px;
+  background: #08080a;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.repo-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.repo-card:hover .repo-card-thumb img {
+  transform: scale(1.04);
+}
+
+.repo-card-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(10,10,12,0.85);
+  border: 1px solid rgba(212,160,23,0.4);
+  color: #f5c842;
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 20px;
+  backdrop-filter: blur(6px);
+}
+
+.repo-card-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.repo-card-cat {
+  font-size: 0.72rem;
+  color: #d4a017;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.repo-card-title {
+  font-family: var(--font-title);
+  font-size: 1.12rem;
+  color: #fff;
+  line-height: 1.35;
+  margin-bottom: 6px;
+}
+
+.repo-card-desc {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+  margin-bottom: 16px;
+  flex: 1;
+}
+
+.repo-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 14px;
+  gap: 10px;
+}
+
+.repo-card-meta {
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.repo-btn-read {
+  background: linear-gradient(135deg, #d4a017, #9b720b);
+  border: none;
+  color: #000;
+  font-family: var(--font-title);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.repo-btn-read:hover {
+  box-shadow: 0 0 16px rgba(212,160,23,0.4);
+  transform: translateY(-1px);
+}
+
+/* In-App Reader Modal */
+.reader-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(5,5,7,0.94);
+  backdrop-filter: blur(16px);
+  z-index: 10000;
+  display: flex;
+  flex-direction: column;
+  animation: fadeIn 0.25s ease;
+}
+
+.reader-header {
+  height: 60px;
+  background: #0f0f13;
+  border-bottom: 1px solid rgba(212,160,23,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+}
+
+.reader-title-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.reader-book-title {
+  font-family: var(--font-title);
+  color: #f5c842;
+  font-size: 1.05rem;
+  margin: 0;
+}
+
+.reader-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.reader-btn-icon {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.12);
+  color: var(--text);
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: 0.2s;
+}
+
+.reader-btn-icon:hover {
+  background: rgba(212,160,23,0.15);
+  border-color: #d4a017;
+  color: #fff;
+}
+
+.reader-body {
+  flex: 1;
+  display: flex;
+  overflow: hidden;
+}
+
+.reader-sidebar {
+  width: 280px;
+  background: #0d0d10;
+  border-right: 1px solid rgba(255,255,255,0.06);
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.reader-chapter-item {
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: 0.2s;
+  border-left: 2px solid transparent;
+}
+
+.reader-chapter-item:hover, .reader-chapter-item.active {
+  background: rgba(212,160,23,0.08);
+  color: #fff;
+  border-left-color: #d4a017;
+}
+
+.reader-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 40px 60px;
+  max-width: 860px;
+  margin: 0 auto;
+  line-height: 1.9;
+  font-size: 1.08rem;
+  color: #e5e5ea;
+}
+
+.reader-content h2 {
+  font-family: var(--font-title);
+  color: #d4a017;
+  font-size: 1.8rem;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(212,160,23,0.2);
+  padding-bottom: 12px;
+}
+
+.reader-content p {
+  margin-bottom: 20px;
+}
+
+/* Círculo de Conversas / Chat */
+.chat-container {
+  background: #111116;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  height: 650px;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+}
+
+.chat-header {
+  padding: 16px 24px;
+  background: #0d0d10;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chat-header h3 {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: 1.05rem;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chat-status-dot {
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  box-shadow: 0 0 8px #22c55e;
+}
+
+.chat-messages {
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.chat-msg-row {
+  display: flex;
+  gap: 14px;
+  max-width: 80%;
+  animation: fadeIn 0.2s ease;
+}
+
+.chat-msg-row.mine {
+  align-self: flex-end;
+  flex-direction: row-reverse;
+}
+
+.chat-msg-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(212,160,23,0.2);
+  border: 1px solid #d4a017;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.chat-msg-content {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  padding: 12px 18px;
+  border-radius: 14px;
+}
+
+.chat-msg-row.mine .chat-msg-content {
+  background: linear-gradient(135deg, rgba(212,160,23,0.18), rgba(139,0,0,0.25));
+  border-color: rgba(212,160,23,0.3);
+}
+
+.chat-msg-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.chat-msg-author {
+  font-weight: 600;
+  font-size: 0.82rem;
+  color: #fff;
+}
+
+.chat-msg-role {
+  font-size: 0.68rem;
+  padding: 1px 6px;
+  background: rgba(212,160,23,0.2);
+  color: #f5c842;
+  border-radius: 10px;
+}
+
+.chat-msg-time {
+  font-size: 0.7rem;
+  color: var(--text-faint);
+  margin-left: auto;
+}
+
+.chat-msg-text {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: #ddd;
+}
+
+.chat-input-bar {
+  padding: 16px 24px;
+  background: #0d0d10;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  gap: 12px;
+}
+
+.chat-input-bar input {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 25px;
+  padding: 12px 20px;
+  color: #fff;
+  font-size: 0.9rem;
+  outline: none;
+}
+
+.chat-input-bar input:focus {
+  border-color: #d4a017;
+}
+
+.chat-btn-send {
+  background: linear-gradient(135deg, #d4a017, #8e1a10);
+  border: none;
+  color: #fff;
+  padding: 0 24px;
+  border-radius: 25px;
+  font-family: var(--font-title);
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.chat-btn-send:hover {
+  box-shadow: 0 0 15px rgba(212,160,23,0.3);
+  transform: scale(1.02);
+}
+
+/* Oráculo do Acervo */
+.oraculo-box {
+  background: #111116;
+  border: 1px solid rgba(212,160,23,0.3);
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+/* Painel de Vendas / Visitante Não Logado (Paywall) */
+.membros-paywall-hero {
+  text-align: center;
+  padding: 40px 0 60px 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.membros-paywall-badge {
+  display: inline-block;
+  font-size: 0.78rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #d4a017;
+  border: 1px solid rgba(212,160,23,0.4);
+  padding: 6px 16px;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  background: rgba(212,160,23,0.06);
+}
+
+.membros-paywall-title {
+  font-family: var(--font-title);
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  color: #fff;
+  line-height: 1.15;
+  margin-bottom: 18px;
+}
+
+.membros-paywall-desc {
+  font-size: 1.05rem;
+  color: #ccc;
+  line-height: 1.7;
+  margin-bottom: 30px;
+}
+
+/* Planos de Assinatura */
+.planos-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
+  max-width: 900px;
+  margin: 0 auto 60px auto;
+}
+
+.plano-card {
+  background: #111116;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 18px;
+  padding: 36px 30px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: 0.3s;
+}
+
+.plano-card.featured {
+  border: 2px solid #d4a017;
+  background: radial-gradient(circle at 50% 0%, rgba(212,160,23,0.12), #111116 80%);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.7), 0 0 30px rgba(212,160,23,0.15);
+  transform: scale(1.03);
+}
+
+.plano-ribbon {
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #d4a017, #ff5500);
+  color: #000;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 5px 16px;
+  border-radius: 20px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.plano-name {
+  font-family: var(--font-title);
+  font-size: 1.4rem;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.plano-price {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #d4a017;
+  margin-bottom: 4px;
+}
+
+.plano-price small {
+  font-size: 0.9rem;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+
+.plano-features {
+  list-style: none;
+  margin: 24px 0 30px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex: 1;
+}
+
+.plano-features li {
+  font-size: 0.9rem;
+  color: #ccc;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.plano-features li span {
+  color: #22c55e;
+  font-weight: 700;
+}
+
+.plano-btn {
+  background: linear-gradient(135deg, #ff1a1a 0%, #cc0000 100%);
+  border: none;
+  color: #fff;
+  font-family: var(--font-title);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 16px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: 0.2s;
+  text-align: center;
+  text-decoration: none;
+  display: block;
+}
+
+.plano-btn.featured {
+  background: linear-gradient(135deg, #d4a017, #8e1a10);
+  color: #fff;
+}
+
+.plano-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255,51,0,0.3);
+}
+
+/* Modal de Login / Registro */
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(12px);
+  z-index: 10001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.25s ease;
+}
+
+.auth-card {
+  background: #121217;
+  border: 1px solid rgba(212,160,23,0.3);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 440px;
+  padding: 36px 30px;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+  position: relative;
+}
+
+.auth-close {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+
+.auth-tabs {
+  display: flex;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.auth-tab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-family: var(--font-title);
+  font-size: 0.95rem;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.auth-tab-btn.active {
+  color: #d4a017;
+  border-bottom-color: #d4a017;
+}
+
+.auth-input-group {
+  margin-bottom: 16px;
+}
+
+.auth-input-group label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+
+.auth-input-group input {
+  width: 100%;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 12px 16px;
+  color: #fff;
+  font-size: 0.92rem;
+  outline: none;
+}
+
+.auth-input-group input:focus {
+  border-color: #d4a017;
+}
+
+.auth-btn-submit {
+  width: 100%;
+  background: linear-gradient(135deg, #d4a017, #9b720b);
+  border: none;
+  color: #000;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.auth-btn-demo {
+  width: 100%;
+  background: rgba(255,255,255,0.06);
+  border: 1px dashed rgba(212,160,23,0.4);
+  color: #f5c842;
+  font-family: var(--font-title);
+  font-size: 0.85rem;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 14px;
+  transition: 0.2s;
+}
+
+.auth-btn-demo:hover {
+  background: rgba(212,160,23,0.1);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 768px) {
+  .membros-topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .reader-sidebar {
+    display: none;
+  }
+  .reader-content {
+    padding: 20px;
+  }
+  .chat-msg-row {
+    max-width: 95%;
+  }
+}
+
+/* =====================================================
+   PAINEL DO ADMINISTRADOR (BUUTZKE)
+   ===================================================== */
+.admin-badge-banner {
+  background: linear-gradient(135deg, rgba(212,160,23,0.25), rgba(139,0,0,0.4));
+  border: 1px solid #d4a017;
+  border-radius: 14px;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  box-shadow: 0 0 25px rgba(212,160,23,0.15);
+}
+
+.admin-badge-title {
+  font-family: var(--font-title);
+  color: #f5c842;
+  font-size: 1.15rem;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.admin-subtabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding-bottom: 14px;
+  flex-wrap: wrap;
+}
+
+.admin-subtab-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #ccc;
+  font-family: var(--font-title);
+  font-size: 0.88rem;
+  padding: 8px 18px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.admin-subtab-btn.active, .admin-subtab-btn:hover {
+  border-color: #d4a017;
+  background: rgba(212,160,23,0.15);
+  color: #f5c842;
+}
+
+/* Tabela de Membros */
+.admin-table-container {
+  background: #111116;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 14px;
+  overflow-x: auto;
+  margin-top: 16px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.88rem;
+}
+
+.admin-table th {
+  background: #0d0d10;
+  padding: 14px 18px;
+  color: #d4a017;
+  font-family: var(--font-title);
+  font-weight: 600;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  white-space: nowrap;
+}
+
+.admin-table td {
+  padding: 14px 18px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  color: #e5e5ea;
+  vertical-align: middle;
+}
+
+.admin-table tr:hover td {
+  background: rgba(255,255,255,0.02);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.status-badge.ativo {
+  background: rgba(34,197,94,0.15);
+  color: #22c55e;
+  border: 1px solid rgba(34,197,94,0.3);
+}
+
+.status-badge.bloqueado {
+  background: rgba(239,68,68,0.15);
+  color: #ef4444;
+  border: 1px solid rgba(239,68,68,0.3);
+}
+
+.admin-action-btn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: #ccc;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: 0.2s;
+  margin-right: 4px;
+}
+
+.admin-action-btn:hover {
+  background: rgba(212,160,23,0.2);
+  color: #fff;
+  border-color: #d4a017;
+}
+
+.whatsapp-copy-btn {
+  background: #25d366;
+  border: none;
+  color: #000;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.whatsapp-copy-btn:hover {
+  background: #20ba59;
+}
+

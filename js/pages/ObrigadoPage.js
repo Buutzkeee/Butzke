@@ -2,11 +2,17 @@ import { Navbar }    from '../components/Navbar.js';
 import { Footer }    from '../components/Footer.js';
 import { ebooksData } from '../data/ebooks.js';
 import { Router }    from '../router.js';
+import { Analytics } from '../analytics.js';
 
 export class ObrigadoPage {
   constructor(container) {
     this.container = container;
     Router.loadCSS('/css/obrigado.css?v=' + Date.now());
+    // Dispara evento Purchase nos Pixels (Meta + TikTok)
+    const _p = new URLSearchParams(window.location.search);
+    const _slug = _p.get('ebook') || '';
+    const _eb = ebooksData.find(e => e.slug === _slug);
+    Analytics.trackPurchase(_slug, _eb ? _eb.priceTo : 0);
     this.render();
   }
 
