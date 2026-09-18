@@ -1,14 +1,14 @@
-import { Router }             from './router.js';
-import { HomePage }           from './pages/HomePage.js';
-import { LandingEbookPage }   from './pages/LandingEbookPage.js';
-import { QuimbandaSalesPage } from './pages/QuimbandaSalesPage.js';
-import { GoetiaSalesPage }    from './pages/GoetiaSalesPage.js';
-import { BibliotecaPage }     from './pages/BibliotecaPage.js';
-import { LinkBioPage }        from './pages/LinkBioPage.js';
-import { EbooksPage }         from './pages/EbooksPage.js';
-import { AtendimentosPage }   from './pages/AtendimentosPage.js';
-import { SobrePage }          from './pages/SobrePage.js';
-import { ObrigadoPage }       from './pages/ObrigadoPage.js';
+import { Router }             from './router.js?v=2.2';
+import { HomePage }           from './pages/HomePage.js?v=2.2';
+import { LandingEbookPage }   from './pages/LandingEbookPage.js?v=2.2';
+import { QuimbandaSalesPage } from './pages/QuimbandaSalesPage.js?v=2.2';
+import { GoetiaSalesPage }    from './pages/GoetiaSalesPage.js?v=2.2';
+import { BibliotecaPage }     from './pages/BibliotecaPage.js?v=2.2';
+import { LinkBioPage }        from './pages/LinkBioPage.js?v=2.2';
+import { EbooksPage }         from './pages/EbooksPage.js?v=2.2';
+import { AtendimentosPage }   from './pages/AtendimentosPage.js?v=2.2';
+import { SobrePage }          from './pages/SobrePage.js?v=2.2';
+import { ObrigadoPage }       from './pages/ObrigadoPage.js?v=2.2';
 
 const loader = document.getElementById('loader');
 
