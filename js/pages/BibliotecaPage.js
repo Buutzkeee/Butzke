@@ -42,34 +42,66 @@ export class BibliotecaPage {
     Router.loadCSS('/css/area-membros.css?v=' + Date.now());
     document.title = 'Área de Membros & Acervo — BUUTZKE';
 
-    this._init();
-  }
+    // 1. CARREGAMENTO INSTANTÂNEO — ZERO TELA PRETA:
+    // Carrega dados locais/padrão imediatamente para renderizar o DOM em 0ms
+    this.books = (SupabaseService.getDefaultBooks ? SupabaseService.getDefaultBooks() : []).map(b => ({ ...b, cover: '/assets/capa-membros.jpg' }));
+    this.members = SupabaseService.getCachedMembers ? SupabaseService.getCachedMembers() : [];
+    this.chatMessages = SupabaseService.getCachedMessages ? SupabaseService.getCachedMessages() : [];
 
-  async _init() {
-    // Limpa automaticamente qualquer resíduo de URL S3/Storage do navegador
-    const savedUrl = localStorage.getItem('buutzke_supabase_url');
-    if (savedUrl && (savedUrl.includes('storage.supabase.co') || savedUrl.includes('/s3'))) {
-      localStorage.removeItem('buutzke_supabase_url');
-      SupabaseService.initClient();
-    }
-
-    // Limpa cache de livros para garantir que a nova capa seja aplicada
-    localStorage.removeItem('buutzke_cached_bucket_books');
-
-    this.books = await SupabaseService.getRepositoryBooks();
-    // Força a capa padrão em todos os livros da área de membros
-    this.books = this.books.map(b => ({ ...b, cover: '/assets/capa-membros.jpg' }));
-    this.members = await SupabaseService.getCreatedMembersList();
-    this.chatMessages = await SupabaseService.getChatMessages();
     this._render();
     Navbar.init();
     Router.initReveal();
-    Analytics.trackViewContent({
-      content_name: 'Área de Membros & Repositório',
-      content_category: 'Assinatura',
-      value: 29.90,
-      currency: 'BRL'
-    });
+
+    // 2. Sincronização em segundo plano (não-bloqueante e segura)
+    this._initBackgroundSync();
+  }
+
+  async _initBackgroundSync() {
+    try {
+      const savedUrl = localStorage.getItem('buutzke_supabase_url');
+      if (savedUrl && (savedUrl.includes('storage.supabase.co') || savedUrl.includes('/s3'))) {
+        localStorage.removeItem('buutzke_supabase_url');
+        SupabaseService.initClient();
+      }
+    } catch (e) {}
+
+    try {
+      const [booksRes, membersRes, chatRes] = await Promise.allSettled([
+        SupabaseService.getRepositoryBooks(),
+        SupabaseService.getCreatedMembersList(),
+        SupabaseService.getChatMessages()
+      ]);
+
+      let needReRender = false;
+
+      if (booksRes.status === 'fulfilled' && Array.isArray(booksRes.value) && booksRes.value.length > 0) {
+        this.books = booksRes.value.map(b => ({ ...b, cover: '/assets/capa-membros.jpg' }));
+        needReRender = true;
+      }
+      if (membersRes.status === 'fulfilled' && Array.isArray(membersRes.value) && membersRes.value.length > 0) {
+        this.members = membersRes.value;
+        needReRender = true;
+      }
+      if (chatRes.status === 'fulfilled' && Array.isArray(chatRes.value) && chatRes.value.length > 0) {
+        this.chatMessages = chatRes.value;
+        needReRender = true;
+      }
+
+      if (needReRender && !this.activeReaderBook) {
+        this._render();
+      }
+    } catch (err) {
+      console.warn('Sync secundário finalizado:', err);
+    }
+
+    try {
+      Analytics.trackViewContent({
+        content_name: 'Área de Membros & Repositório',
+        content_category: 'Assinatura',
+        value: 29.90,
+        currency: 'BRL'
+      });
+    } catch (e) {}
   }
 
   _render() {

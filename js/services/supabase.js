@@ -32,6 +32,13 @@ export const SUPABASE_CONFIG = {
   }
 };
 
+const withTimeout = (promise, ms = 2500) => {
+  return Promise.race([
+    promise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error('Supabase request timeout')), ms))
+  ]);
+};
+
 class SupabaseServiceClass {
   constructor() {
     this.client = null;
@@ -131,43 +138,51 @@ class SupabaseServiceClass {
 
     // Validação direta e real via Supabase Auth
     if (this.client) {
-      const { data, error } = await this.client.auth.signInWithPassword({
-        email: trimmedEmail,
-        password: cleanPassword
-      });
+      try {
+        const { data, error } = await withTimeout(
+          this.client.auth.signInWithPassword({
+            email: trimmedEmail,
+            password: cleanPassword
+          }),
+          3500
+        );
 
-      if (error) {
-        console.error('Supabase Auth error:', error.message);
-        throw new Error(this._translateAuthError(error.message));
+        if (error) {
+          console.error('Supabase Auth error:', error.message);
+          throw new Error(this._translateAuthError(error.message));
+        }
+
+        if (data?.user) {
+          const meta = data.user.user_metadata || {};
+          const status = meta.status || 'ativo';
+
+          if (status === 'bloqueado' || status === 'inativo') {
+            throw new Error('Sua assinatura está suspensa ou inativa. Fale com o suporte.');
+          }
+
+          // EXCLUSIVIDADE: Somente gabriel.tsanjos@gmail.com pode ser Administrador
+          const isAdminUser = trimmedEmail === 'gabriel.tsanjos@gmail.com';
+
+          const memberUser = {
+            id: data.user.id,
+            email: data.user.email,
+            name: meta.full_name || (isAdminUser ? 'Gabriel (Administrador Buutzke)' : trimmedEmail.split('@')[0]),
+            role: isAdminUser ? 'admin' : 'member',
+            plan: isAdminUser ? 'Administrador Mestre' : (meta.plan || 'Membro Ativo'),
+            status: status,
+            avatar: '🔱',
+            joinedAt: new Date(data.user.created_at || Date.now()).toLocaleDateString('pt-BR')
+          };
+
+          this.saveCachedUser(memberUser);
+          return { success: true, user: memberUser };
+        }
+      } catch (authErr) {
+        if (authErr.message && !authErr.message.includes('timeout') && !authErr.message.includes('fetch')) {
+          throw authErr;
+        }
+        console.warn('Falha ao conectar no Supabase Auth, verificando cadastro local:', authErr.message);
       }
-
-      if (!data?.user) {
-        throw new Error('Usuário não encontrado no Supabase.');
-      }
-
-      const meta = data.user.user_metadata || {};
-      const status = meta.status || 'ativo';
-
-      if (status === 'bloqueado' || status === 'inativo') {
-        throw new Error('Sua assinatura está suspensa ou inativa. Fale com o suporte.');
-      }
-
-      // EXCLUSIVIDADE: Somente gabriel.tsanjos@gmail.com pode ser Administrador
-      const isAdminUser = trimmedEmail === 'gabriel.tsanjos@gmail.com';
-
-      const memberUser = {
-        id: data.user.id,
-        email: data.user.email,
-        name: meta.full_name || (isAdminUser ? 'Gabriel (Administrador Buutzke)' : trimmedEmail.split('@')[0]),
-        role: isAdminUser ? 'admin' : 'member',
-        plan: isAdminUser ? 'Administrador Mestre' : (meta.plan || 'Membro Ativo'),
-        status: status,
-        avatar: '🔱',
-        joinedAt: new Date(data.user.created_at || Date.now()).toLocaleDateString('pt-BR')
-      };
-
-      this.saveCachedUser(memberUser);
-      return { success: true, user: memberUser };
     }
 
     // 3. Verificação nos Membros Criados pelo Admin (com checagem de expiração)
@@ -283,44 +298,13 @@ class SupabaseServiceClass {
     };
   }
 
-  async getCreatedMembersList() {
+  getCachedMembers() {
     let members = [];
-    let synced = false;
+    try {
+      const list = localStorage.getItem('buutzke_admin_members');
+      if (list) members = JSON.parse(list);
+    } catch (e) {}
 
-    // 1. Tenta buscar da tabela 'membros' no Supabase
-    if (this.client) {
-      try {
-        const { data, error } = await this.client
-          .from('membros')
-          .select('*')
-          .order('created_at', { ascending: false });
-
-        if (!error && Array.isArray(data) && data.length > 0) {
-          members = data.map(row => ({
-            id: row.id,
-            name: row.name || row.full_name || 'Iniciado',
-            email: row.email,
-            password: row.password || 'membrobuutzke',
-            plan: row.plan || 'Assinatura Mensal',
-            status: row.status || 'ativo',
-            createdAt: row.created_at ? new Date(row.created_at).toLocaleDateString('pt-BR') : new Date().toLocaleDateString('pt-BR'),
-            expiresAt: row.expires_at ? new Date(row.expires_at).toISOString().split('T')[0] : null
-          }));
-          synced = true;
-          localStorage.setItem('buutzke_admin_members', JSON.stringify(members));
-        }
-      } catch (err) {}
-    }
-
-    // 2. Se não veio do Supabase, usa o cache local
-    if (!synced) {
-      try {
-        const list = localStorage.getItem('buutzke_admin_members');
-        if (list) members = JSON.parse(list);
-      } catch (e) {}
-    }
-
-    // Se estiver vazio, inicializa com exemplos práticos
     if (!members || members.length === 0) {
       const now = Date.now();
       const initial = [
@@ -356,10 +340,40 @@ class SupabaseServiceClass {
         }
       ];
       members = initial;
-      localStorage.setItem('buutzke_admin_members', JSON.stringify(initial));
+      try { localStorage.setItem('buutzke_admin_members', JSON.stringify(initial)); } catch (e) {}
     }
 
     return members.map(m => this._enrichMemberExpiration(m));
+  }
+
+  async getCreatedMembersList() {
+    // 1. Tenta buscar da tabela 'membros' no Supabase com timeout de 2.5s
+    if (this.client) {
+      try {
+        const { data, error } = await withTimeout(
+          this.client.from('membros').select('*').order('created_at', { ascending: false }),
+          2500
+        );
+
+        if (!error && Array.isArray(data) && data.length > 0) {
+          const members = data.map(row => ({
+            id: row.id,
+            name: row.name || row.full_name || 'Iniciado',
+            email: row.email,
+            password: row.password || 'membrobuutzke',
+            plan: row.plan || 'Assinatura Mensal',
+            status: row.status || 'ativo',
+            createdAt: row.created_at ? new Date(row.created_at).toLocaleDateString('pt-BR') : new Date().toLocaleDateString('pt-BR'),
+            expiresAt: row.expires_at ? new Date(row.expires_at).toISOString().split('T')[0] : null
+          }));
+          try { localStorage.setItem('buutzke_admin_members', JSON.stringify(members)); } catch (e) {}
+          return members.map(m => this._enrichMemberExpiration(m));
+        }
+      } catch (err) {}
+    }
+
+    // 2. Fallback imediato para cache ou padrão
+    return this.getCachedMembers();
   }
 
   async adminCreateMember({ name, email, password, plan = 'Assinatura Mensal', customDays = null }) {
@@ -513,92 +527,23 @@ class SupabaseServiceClass {
     if (name) localStorage.setItem('buutzke_storage_bucket', name.trim());
   }
 
-  async getRepositoryBooks() {
+  getDefaultBooks() {
     const bucketName = this.getStorageBucketName();
-    let books = [];
-
-    // 1. Tenta buscar os arquivos direto do Bucket no Supabase Storage
-    if (this.client) {
+    const cached = localStorage.getItem('buutzke_cached_bucket_books');
+    if (cached) {
       try {
-        const bucketsToTry = [bucketName, 'Ebooks', 'ebooks', 'livros', 'acervo'];
-        const uniqueBuckets = [...new Set(bucketsToTry)];
-
-        for (const b of uniqueBuckets) {
-          const { data, error } = await this.client.storage.from(b).list('', {
-            limit: 1000,
-            sortBy: { column: 'name', order: 'asc' }
-          });
-
-          if (!error && data && data.length > 0) {
-            let allFiles = [];
-
-            for (const item of data) {
-              if (!item.name || item.name.startsWith('.')) continue;
-
-              // Se for uma pasta, busca arquivos dentro dela
-              if (item.id === null || !item.name.includes('.')) {
-                try {
-                  const { data: subData } = await this.client.storage.from(b).list(item.name, { limit: 100 });
-                  if (subData) {
-                    subData.forEach(sf => {
-                      if (sf.name && !sf.name.startsWith('.')) {
-                        allFiles.push({ ...sf, name: `${item.name}/${sf.name}`, folder: item.name });
-                      }
-                    });
-                  }
-                } catch (subErr) {}
-              } else {
-                allFiles.push(item);
-              }
-            }
-
-            if (allFiles.length > 0) {
-              books = allFiles
-                .filter(file => !this._isCommercialEbook(file.name))
-                .map((file, idx) => {
-                const { data: pubData } = this.client.storage.from(b).getPublicUrl(file.name);
-                const publicUrl = pubData?.publicUrl || `${SUPABASE_CONFIG.url}/storage/v1/object/public/${b}/${encodeURIComponent(file.name)}`;
-                const cleanTitle = this._formatBookTitle(file.name.split('/').pop() || file.name);
-                const sizeMb = file.metadata?.size ? (file.metadata.size / 1024 / 1024).toFixed(1) + ' MB' : '';
-
-                return {
-                  id: 'supabase_bucket_' + (file.id || idx),
-                  title: cleanTitle,
-                  subtitle: `Acervo Supabase (${b}) ${sizeMb ? '• ' + sizeMb : ''}`,
-                  category: this._guessCategory(cleanTitle),
-                  pages: file.metadata?.mimetype === 'application/pdf' || file.name.endsWith('.pdf') ? 'PDF Oficial' : 'Manuscrito Digital',
-                  cover: this._matchCover(cleanTitle),
-                  badge: 'Supabase Storage',
-                  pdfUrl: publicUrl,
-                  fileName: file.name,
-                  bucket: b,
-                  description: `Livro sagrado disponível no repositório digital de membros. Clique em "Ler Online" para acessar com leitor interativo de páginas e rotação.`,
-                  chapters: [
-                    {
-                      title: cleanTitle,
-                      preview: `Arquivo oficial: ${cleanTitle}. Abra no leitor para estudar o conteúdo completo.`
-                    }
-                  ]
-                };
-              });
-
-              localStorage.setItem('buutzke_cached_bucket_books', JSON.stringify(books));
-              return books;
-            }
-          }
+        const parsed = JSON.parse(cached);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          return parsed.map(b => ({ ...b, cover: '/assets/capa-membros.jpg' }));
         }
-      } catch (err) {
-        console.warn('Erro ao consultar Supabase Storage bucket:', err);
-      }
+      } catch (e) {}
     }
 
-    // 2. Livros customizados adicionados pelo Admin no painel
     const customBooks = this.getCustomAdminBooks();
     if (customBooks.length > 0) {
-      return customBooks.filter(b => !this._isCommercialEbook(b.title));
+      return customBooks.filter(b => !this._isCommercialEbook(b.title)).map(b => ({ ...b, cover: '/assets/capa-membros.jpg' }));
     }
 
-    // 3. Fallback inteligente com os títulos reais do acervo (sem ebooks de venda externa)
     const defaultBucketFiles = [
       { name: 'angel_sigils_hq.pdf', file: 'angel-sigils-hq.pdf' },
       { name: 'magia_pratica_franz_bardon.pdf', file: '3548Magia-Pratica.pdf' },
@@ -631,6 +576,95 @@ class SupabaseServiceClass {
         ]
       };
     });
+  }
+
+  async getRepositoryBooks() {
+    const bucketName = this.getStorageBucketName();
+    let books = [];
+
+    // 1. Tenta buscar os arquivos direto do Bucket no Supabase Storage com timeout rápido de 2s
+    if (this.client) {
+      try {
+        const bucketsToTry = [bucketName, 'Ebooks', 'livros'];
+        const uniqueBuckets = [...new Set(bucketsToTry)];
+
+        for (const b of uniqueBuckets) {
+          try {
+            const { data, error } = await withTimeout(
+              this.client.storage.from(b).list('', {
+                limit: 1000,
+                sortBy: { column: 'name', order: 'asc' }
+              }),
+              2000
+            );
+
+            if (!error && data && data.length > 0) {
+              let allFiles = [];
+
+              for (const item of data) {
+                if (!item.name || item.name.startsWith('.')) continue;
+
+                if (item.id === null || !item.name.includes('.')) {
+                  try {
+                    const { data: subData } = await withTimeout(
+                      this.client.storage.from(b).list(item.name, { limit: 100 }),
+                      1500
+                    );
+                    if (subData) {
+                      subData.forEach(sf => {
+                        if (sf.name && !sf.name.startsWith('.')) {
+                          allFiles.push({ ...sf, name: `${item.name}/${sf.name}`, folder: item.name });
+                        }
+                      });
+                    }
+                  } catch (subErr) {}
+                } else {
+                  allFiles.push(item);
+                }
+              }
+
+              if (allFiles.length > 0) {
+                books = allFiles
+                  .filter(file => !this._isCommercialEbook(file.name))
+                  .map((file, idx) => {
+                    const { data: pubData } = this.client.storage.from(b).getPublicUrl(file.name);
+                    const publicUrl = pubData?.publicUrl || `${SUPABASE_CONFIG.url}/storage/v1/object/public/${b}/${encodeURIComponent(file.name)}`;
+                    const cleanTitle = this._formatBookTitle(file.name.split('/').pop() || file.name);
+                    const sizeMb = file.metadata?.size ? (file.metadata.size / 1024 / 1024).toFixed(1) + ' MB' : '';
+
+                    return {
+                      id: 'supabase_bucket_' + (file.id || idx),
+                      title: cleanTitle,
+                      subtitle: `Acervo Supabase (${b}) ${sizeMb ? '• ' + sizeMb : ''}`,
+                      category: this._guessCategory(cleanTitle),
+                      pages: file.metadata?.mimetype === 'application/pdf' || file.name.endsWith('.pdf') ? 'PDF Oficial' : 'Manuscrito Digital',
+                      cover: '/assets/capa-membros.jpg',
+                      badge: 'Supabase Storage',
+                      pdfUrl: publicUrl,
+                      fileName: file.name,
+                      bucket: b,
+                      description: `Livro sagrado disponível no repositório digital de membros. Clique em "Ler Online" para acessar com leitor interativo de páginas e rotação.`,
+                      chapters: [
+                        {
+                          title: cleanTitle,
+                          preview: `Arquivo oficial: ${cleanTitle}. Abra no leitor para estudar o conteúdo completo.`
+                        }
+                      ]
+                    };
+                  });
+
+                try { localStorage.setItem('buutzke_cached_bucket_books', JSON.stringify(books)); } catch (e) {}
+                return books;
+              }
+            }
+          } catch (bucketErr) {}
+        }
+      } catch (err) {
+        console.warn('Erro ao consultar Supabase Storage bucket:', err);
+      }
+    }
+
+    return this.getDefaultBooks();
   }
 
   getCustomAdminBooks() {
@@ -818,29 +852,7 @@ class SupabaseServiceClass {
   // CHAT DO CÍRCULO DOS MEMBROS (SALVO NO SUPABASE)
   // =====================================================
 
-  async getChatMessages() {
-    if (this.client) {
-      try {
-        const { data, error } = await this.client
-          .from('mensagens')
-          .select('*')
-          .order('created_at', { ascending: true });
-
-        if (!error && data) {
-          return data.map(m => ({
-            id: m.id,
-            userName: m.user_name || m.userName || 'Membro do Círculo',
-            userRole: m.user_role || m.userRole || 'Membro Ativo',
-            avatar: m.avatar || '🔱',
-            text: m.text,
-            time: m.created_at ? new Date(m.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : (m.time || 'Agora')
-          }));
-        }
-      } catch (err) {
-        console.warn('Tentativa de ler mensagens do Supabase avisou:', err.message);
-      }
-    }
-
+  getCachedMessages() {
     const local = localStorage.getItem('buutzke_chat_messages');
     if (local) {
       try { return JSON.parse(local); } catch (e) {}
@@ -856,8 +868,37 @@ class SupabaseServiceClass {
         time: '20:00'
       }
     ];
-    localStorage.setItem('buutzke_chat_messages', JSON.stringify(defaultFeed));
+    try { localStorage.setItem('buutzke_chat_messages', JSON.stringify(defaultFeed)); } catch (e) {}
     return defaultFeed;
+  }
+
+  async getChatMessages() {
+    if (this.client) {
+      try {
+        const { data, error } = await withTimeout(
+          this.client
+            .from('mensagens')
+            .select('*')
+            .order('created_at', { ascending: true }),
+          2500
+        );
+
+        if (!error && data && Array.isArray(data)) {
+          const list = data.map(m => ({
+            id: m.id,
+            userName: m.user_name || m.userName || 'Membro do Círculo',
+            userRole: m.user_role || m.userRole || 'Membro Ativo',
+            avatar: m.avatar || '🔱',
+            text: m.text,
+            time: m.created_at ? new Date(m.created_at).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }) : (m.time || 'Agora')
+          }));
+          try { localStorage.setItem('buutzke_chat_messages', JSON.stringify(list)); } catch (e) {}
+          return list;
+        }
+      } catch (err) {}
+    }
+
+    return this.getCachedMessages();
   }
 
   async sendChatMessage(text, user) {
