@@ -53,7 +53,12 @@ export class BibliotecaPage {
       SupabaseService.initClient();
     }
 
+    // Limpa cache de livros para garantir que a nova capa seja aplicada
+    localStorage.removeItem('buutzke_cached_bucket_books');
+
     this.books = await SupabaseService.getRepositoryBooks();
+    // Força a capa padrão em todos os livros da área de membros
+    this.books = this.books.map(b => ({ ...b, cover: '/assets/capa-membros.jpg' }));
     this.members = await SupabaseService.getCreatedMembersList();
     this.chatMessages = await SupabaseService.getChatMessages();
     this._render();
@@ -559,7 +564,7 @@ export class BibliotecaPage {
           ${this.books.map(b => `
             <div class="repo-card">
               <div class="repo-card-thumb">
-                <img src="${b.cover}" alt="${b.title}" onerror="this.src='/assets/ebook-cover.jpg'">
+                <img src="${b.cover}" alt="${b.title}" onerror="this.src='/assets/capa-membros.jpg'">
                 <div class="repo-card-badge">🔒 Exclusivo Membros</div>
               </div>
               <div class="repo-card-body">
@@ -716,7 +721,7 @@ export class BibliotecaPage {
         ${filtered.map(b => `
           <div class="repo-card">
             <div class="repo-card-thumb">
-              <img src="${b.cover}" alt="${b.title}" onerror="this.src='/assets/ebook-cover.jpg'">
+              <img src="${b.cover}" alt="${b.title}" onerror="this.src='/assets/capa-membros.jpg'">
               <div class="repo-card-badge" style="background:rgba(34,197,94,0.2); color:#22c55e; border-color:#22c55e;">✓ Liberado</div>
             </div>
             <div class="repo-card-body">
@@ -1574,6 +1579,7 @@ CREATE POLICY "Acesso Publico Membros" ON public.membros FOR ALL USING (true);`;
 
         await SupabaseService.adminAddBook({ title, category, pages, pdfUrl, description });
         this.books = await SupabaseService.getRepositoryBooks();
+        this.books = this.books.map(b => ({ ...b, cover: '/assets/capa-membros.jpg' }));
         this.showNewBookModal = false;
         this._render();
       });
@@ -1585,6 +1591,7 @@ CREATE POLICY "Acesso Publico Membros" ON public.membros FOR ALL USING (true);`;
           const id = btn.dataset.id;
           await SupabaseService.adminDeleteBook(id);
           this.books = await SupabaseService.getRepositoryBooks();
+          this.books = this.books.map(b => ({ ...b, cover: '/assets/capa-membros.jpg' }));
           this._render();
         }
       });
@@ -1599,6 +1606,7 @@ CREATE POLICY "Acesso Publico Membros" ON public.membros FOR ALL USING (true);`;
       const syncBtn = document.getElementById('btn-sync-storage-bucket');
       if (syncBtn) syncBtn.textContent = '🔄 Sincronizando...';
       this.books = await SupabaseService.getRepositoryBooks();
+      this.books = this.books.map(b => ({ ...b, cover: '/assets/capa-membros.jpg' }));
       this._render();
     };
 

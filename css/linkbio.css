@@ -178,6 +178,7 @@ body::after {
   background: conic-gradient(var(--crimson), var(--gold), var(--crimson), var(--gold), var(--crimson)) border-box;
   -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   -webkit-mask-composite: destination-out;
+  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
   mask-composite: exclude;
   animation: spinRing 8s linear infinite;
   z-index: 1;

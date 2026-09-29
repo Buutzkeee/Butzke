@@ -617,7 +617,7 @@ class SupabaseServiceClass {
         subtitle: `Repositório Supabase (Bucket ${bucketName})`,
         category: this._guessCategory(cleanTitle),
         pages: 'PDF Digital',
-        cover: this._matchCover(cleanTitle),
+        cover: '/assets/capa-membros.jpg',
         badge: 'Supabase Storage',
         pdfUrl: publicUrl,
         fileName: item.file,
@@ -795,20 +795,15 @@ class SupabaseServiceClass {
     if (fn.includes('ervas_sagradas') || fn.includes('ervas-sagradas') || fn.includes('grimorio-das-ervas') || fn.includes('ervas sagradas')) return true;
     // 4. Quimbanda: Caminho da Encruzilhada / Segredos das Encruzilhadas (Kirvano R$ 39,90)
     if (fn.includes('caminho-da-encruzilhada') || fn.includes('caminho_da_encruzilhada') || fn.includes('segredos-das-encruzilhadas') || fn.includes('caminho da encruzilhada')) return true;
-    // 5. Erês: Guardiões Mirins da Umbanda (Kirvano R$ 19,00)
+    // 5. Erês: Guardiões Mirins da Umbanda (Kirvano R$ 29,90)
     if (fn.includes('eres_guardioes_mirins') || fn.includes('eres-guardioes-mirins') || fn.includes('guardioes_mirins') || fn.includes('guardioes-mirins') || (fn.includes('erês') && fn.includes('guardiões'))) return true;
 
     return false;
   }
 
-  _matchCover(cleanTitle = '') {
-    const t = cleanTitle.toLowerCase();
-    if (t.includes('quimbanda') && t.includes('força')) return '/assets/img/quimbanda1.jpg';
-    if (t.includes('ervas')) return '/assets/img/grimorio_ervas.jpg';
-    if (t.includes('encruzilhada')) return '/assets/img/quimbanda2.jpg';
-    if (t.includes('goetia')) return '/assets/img/goetia.jpg';
-    if (t.includes('erês') || t.includes('eres')) return '/assets/img/eres.jpg';
-    return '/assets/ebook-cover.jpg';
+  _matchCover(_cleanTitle = '') {
+    // Capa universal para todos os livros da área de membros
+    return '/assets/capa-membros.jpg';
   }
 
   _guessCategory(title = '') {
@@ -943,6 +938,48 @@ class SupabaseServiceClass {
     }
     localStorage.removeItem('buutzke_chat_messages');
     return true;
+  }
+
+  // =====================================================
+  // REALTIME — ESCUTA NOVAS MENSAGENS EM TEMPO REAL
+  // =====================================================
+
+  /**
+   * Assina o canal Realtime da tabela 'mensagens'.
+   * @param {Function} onNewMessage - callback chamado com o objeto de mensagem formatado
+   * @returns {Object|null} subscription — chame .unsubscribe() para cancelar
+   */
+  subscribeToChat(onNewMessage) {
+    if (!this.client) return null;
+
+    const subscription = this.client
+      .channel('mensagens_realtime')
+      .on(
+        'postgres_changes',
+        {
+          event: 'INSERT',
+          schema: 'public',
+          table: 'mensagens'
+        },
+        (payload) => {
+          const m = payload.new;
+          if (!m || !m.text) return;
+          onNewMessage({
+            id: m.id,
+            userName: m.user_name || 'Membro do Círculo',
+            userRole: m.user_role || 'Membro Ativo',
+            avatar: m.avatar || '🔱',
+            text: m.text,
+            time: new Date(m.created_at).toLocaleTimeString('pt-BR', {
+              hour: '2-digit',
+              minute: '2-digit'
+            })
+          });
+        }
+      )
+      .subscribe();
+
+    return subscription;
   }
 
   _translateAuthError(msg = '') {
