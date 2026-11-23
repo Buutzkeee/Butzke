@@ -1,66 +1,232 @@
-/* === ATENDIMENTOS PAGE CSS === */
+/* ============================================================
+   ATENDIMENTOS PAGE CSS — BUUTZKE LUXURY MYSTICAL
+   ============================================================ */
 
-.atend-hero { padding-top: calc(var(--nav-h) + 60px); }
-.atend-hero-icon {
-  font-size: 3.5rem;
-  margin-bottom: 20px;
-  display: block;
-  animation: floatIcon 3s ease-in-out infinite;
+.atend-main {
+  position: relative;
+  overflow: hidden;
 }
-@keyframes floatIcon { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
 
+.atend-hero {
+  position: relative;
+  padding-top: calc(var(--nav-h) + 70px);
+  padding-bottom: 70px;
+  background: radial-gradient(circle at 50% 15%, rgba(139, 0, 0, 0.22) 0%, rgba(7, 7, 9, 0.98) 75%);
+  border-bottom: 1px solid var(--border-subtle);
+  overflow: hidden;
+}
+
+.atend-hero-glow {
+  position: absolute;
+  top: -100px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.12) 0%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.atend-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-title);
+  font-size: 0.72rem;
+  letter-spacing: 4px;
+  color: var(--gold);
+  background: rgba(212, 175, 55, 0.08);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 22px;
+}
+
+.atend-hero-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.atend-hero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 24px;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.atend-hero-trust span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ── Grid de Serviços ── */
 .atend-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
-}
-.atend-card { text-align: center; }
-.atend-card-icon { font-size: 2.2rem; margin-bottom: 14px; }
-.atend-card h3 { font-size: 1.1rem; margin-bottom: 10px; }
-.atend-card p { font-size: 0.86rem; margin-bottom: 16px; }
-.atend-prazo {
-  font-size: 0.72rem;
-  font-weight: 600;
-  color: var(--gold);
-  margin-bottom: 16px;
-  letter-spacing: 0.5px;
+  gap: 24px;
 }
 
-/* Processo */
+.atend-card {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 28px;
+  background: linear-gradient(165deg, rgba(20, 20, 28, 0.8) 0%, rgba(12, 12, 16, 0.95) 100%);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  position: relative;
+  transition: transform 0.3s var(--ease-out), border-color 0.3s var(--ease-out), box-shadow 0.3s var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .atend-card:hover {
+    transform: translateY(-6px);
+    border-color: rgba(212, 175, 55, 0.4);
+    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.5), 0 0 24px rgba(212, 175, 55, 0.12);
+  }
+}
+
+.atend-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.atend-badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: var(--gold);
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+.atend-prazo {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.atend-card-icon {
+  font-size: 2.4rem;
+  margin-bottom: 16px;
+  line-height: 1;
+}
+
+.atend-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.atend-card-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.65;
+  margin-bottom: 24px;
+  flex: 1;
+}
+
+.atend-card-action {
+  margin-top: auto;
+}
+
+.atend-card-btn {
+  width: 100%;
+  justify-content: space-between;
+  padding: 12px 20px;
+  font-size: 0.88rem;
+}
+
+/* ── Processo / Metodologia ── */
 .processo-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 24px;
 }
+
 .prc-step {
   text-align: center;
-  padding: 24px 16px;
-  background: var(--bg-card);
-  border: 1px solid var(--gold-border);
-  border-radius: var(--radius);
-  transition: var(--transition);
+  padding: 32px 20px;
+  background: linear-gradient(180deg, rgba(20, 20, 28, 0.6) 0%, rgba(12, 12, 16, 0.8) 100%);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  transition: transform 0.3s var(--ease-out), border-color 0.3s var(--ease-out);
 }
-.prc-step:hover { border-color: var(--gold-border-hover); transform: translateY(-4px); }
+
+@media (hover: hover) and (pointer: fine) {
+  .prc-step:hover {
+    transform: translateY(-4px);
+    border-color: rgba(212, 175, 55, 0.3);
+  }
+}
+
 .prc-num {
-  width: 48px; height: 48px;
+  width: 52px;
+  height: 52px;
   border-radius: 50%;
-  background: var(--grad-btn);
-  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--crimson) 0%, #4a0000 100%);
+  border: 2px solid var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-family: var(--font-title);
-  font-size: 0.85rem;
+  font-size: 1rem;
   font-weight: 700;
   color: #fff;
-  margin: 0 auto 16px;
-  box-shadow: 0 4px 14px rgba(192,57,43,0.3);
+  margin: 0 auto 18px;
+  box-shadow: 0 4px 16px rgba(139, 0, 0, 0.4), 0 0 12px rgba(212, 175, 55, 0.2);
 }
-.prc-step h4 { font-size: 0.9rem; margin-bottom: 8px; }
-.prc-step p  { font-size: 0.8rem; }
 
-@media (max-width: 900px) {
-  .atend-grid     { grid-template-columns: repeat(2, 1fr); }
-  .processo-grid  { grid-template-columns: repeat(2, 1fr); }
+.prc-step h4 {
+  font-size: 1.05rem;
+  color: var(--text);
+  margin-bottom: 10px;
 }
-@media (max-width: 580px) {
-  .atend-grid    { grid-template-columns: 1fr; }
-  .processo-grid { grid-template-columns: 1fr; }
+
+.prc-step p {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+/* ── Responsive ── */
+@media (max-width: 992px) {
+  .atend-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .processo-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .atend-hero {
+    padding-top: calc(var(--nav-h) + 40px);
+    padding-bottom: 50px;
+  }
+  .atend-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .processo-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .atend-card {
+    padding: 24px 20px;
+  }
+  .atend-hero-trust {
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
 }

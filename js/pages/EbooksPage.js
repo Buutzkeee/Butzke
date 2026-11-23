@@ -1,15 +1,17 @@
 import { Router }    from '../router.js';
 import { Navbar }    from '../components/Navbar.js';
 import { Footer }    from '../components/Footer.js';
-import { ebooksData } from '../data/ebooks.js';
+import { ebooksData, bibliotecaBundle } from '../data/ebooks.js';
 
 export class EbooksPage {
   constructor(container) {
     this.container = container;
     Router.loadCSS('/css/ebooks.css');
+    this.currentCategory = 'all';
     this._render();
     Navbar.init();
     Router.initReveal();
+    this._initFilters();
   }
 
   _render() {
@@ -18,65 +20,161 @@ export class EbooksPage {
       `<main>
         <section class="section ebooks-page">
           <div class="container">
-            <div class="section-header reveal">
-              <span class="section-tag">Biblioteca Oculta</span>
-              <h1 class="section-title">Grimórios que <span class="text-gold">Mudam a Prática</span></h1>
-              <p class="section-subtitle">Conhecimento espiritual real, sem intermediário, sem enganação. Do Lemegeton à Quimbanda — domine as forças que moldam a realidade.</p>
-              <div style="display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-top:16px; font-size:0.8rem; color:#888;">
+            <header class="section-header reveal">
+              <span class="section-tag">BIBLIOTECA OCULTA BUUTZKE</span>
+              <h1 class="section-title">Grimórios que <span class="text-gold">Transformam a Prática</span></h1>
+              <p class="section-subtitle">
+                Obras fundamentadas sem intermediários, sem invenções e sem romantismo. 
+                Rituais autênticos, banimentos, evocações e a sabedoria ancestral da Quimbanda, Goetia e Umbanda.
+              </p>
+              
+              <div style="display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 20px; font-size: 0.8rem; color: var(--text-muted);">
                 <span>⚡ Acesso Imediato em PDF</span>
                 <span>🛡️ Garantia de 7 Dias</span>
-                <span>🔒 Pagamento 100% Seguro</span>
-                <span>🔥 +650 Alunos Satisfeitos</span>
+                <span>🔒 Pagamento Seguro (Pix ou Cartão)</span>
+                <span>🔥 +650 Alunos e Praticantes</span>
               </div>
+            </header>
+
+            <!-- Filtros de Categoria -->
+            <nav class="ebooks-filter-bar reveal" aria-label="Filtrar por categoria">
+              <button class="filter-chip active" data-cat="all">Todos os Grimórios</button>
+              <button class="filter-chip" data-cat="Quimbanda">Quimbanda & Exu</button>
+              <button class="filter-chip" data-cat="Goetia">Goetia & Alta Magia</button>
+              <button class="filter-chip" data-cat="Ervas">Ervas & Banhos</button>
+              <button class="filter-chip" data-cat="Umbanda">Umbanda & Erês</button>
+            </nav>
+
+            <!-- Grid de eBooks -->
+            <div class="ebooks-full-grid" id="ebooks-grid">
+              ${this._renderCards(ebooksData)}
             </div>
-            <div class="ebooks-full-grid">
-              ${ebooksData.map((e, i) => `
-              <div class="ebook-full-card card reveal delay-${i + 1}" style="padding: 0; overflow: hidden; display: flex; flex-direction: column; position: relative;">
-                
-                <div style="width: 100%; height: 350px; position: relative; overflow: hidden; border-bottom: 1px solid var(--gold-border-hover); background: #0a0a0c;">
-                  <img src="${e.image}" alt="${e.title}" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-                  <div style="position: absolute; bottom: 0; left: 0; width: 100%; height: 40%; background: linear-gradient(to top, var(--bg-card) 0%, transparent 100%); pointer-events: none;"></div>
-                  
-                  ${!e.hasCoverText ? `
-                  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: flex-start; align-items: center; padding: 50px 20px 20px; pointer-events: none; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 40%, rgba(0,0,0,0.6) 100%);">
-                    <h3 style="font-family: var(--font-title); font-size: 1.8rem; color: var(--gold); text-align: center; text-transform: uppercase; text-shadow: 0 4px 15px rgba(0,0,0,1), 0 2px 5px rgba(0,0,0,0.8); line-height: 1.1; margin: 0;">
-                      ${e.title.split(': ')[0]}<br><span style="font-size: 1.3rem; color: #fff; display:block; margin-top: 8px;">${e.title.split(': ')[1] || ''}</span>
-                    </h3>
-                    <div style="margin-top: auto; font-family: var(--font-text); font-size: 0.9rem; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; text-shadow: 0 2px 10px rgba(0,0,0,1);">Eduardo Souza</div>
-                  </div>` : ''}
 
-                  <div style="position: absolute; top: 20px; right: 20px; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; z-index: 2;">
-                    ${e.badge ? `<span class="badge badge-gold" style="box-shadow: 0 4px 15px rgba(0,0,0,0.5); font-weight: 700; ${e.badge === 'LANÇAMENTO' ? 'background: linear-gradient(135deg,#d4a017,#8b6508); color:#000;' : ''}">${e.badge}</span>` : ''}
-                    <span class="badge badge-red" style="background: rgba(8,8,8,0.85); box-shadow: 0 4px 15px rgba(0,0,0,0.5);">${e.category}</span>
-                  </div>
-                </div>
-
-                <div style="padding: 32px; display: flex; flex-direction: column; flex-grow: 1;">
-                  <h2 class="efc-title" style="text-align: center; font-size: 1.4rem; margin-bottom: 6px; letter-spacing: 0.5px;">${e.title}</h2>
-                  <p class="efc-sub" style="text-align: center; color: var(--gold); text-transform: uppercase; letter-spacing: 2px; font-size: 0.72rem; font-weight: 700; margin-bottom: 16px;">${e.subtitle}</p>
-                  <p class="efc-desc" style="text-align: center; font-size: 0.9rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 28px;">${e.shortDesc}</p>
-                  
-                  <ul class="efc-topics" style="flex-grow: 1; margin-bottom: 30px; display: flex; flex-direction: column; gap: 12px; padding: 0;">
-                    ${e.topics.map(t => `<li style="font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: flex-start; gap: 10px; line-height: 1.4;"><span style="color:var(--red-light); font-size: 1rem; margin-top: -2px;">✦</span> ${t}</li>`).join('')}
-                  </ul>
-                  
-                  <div class="efc-price-row" style="justify-content: center; align-items: center; gap: 12px; display: flex; margin-bottom: 24px;">
-                    ${e.priceFrom ? `<span class="efc-from" style="font-size: 0.85rem; text-decoration: line-through; color: var(--text-faint);">De R$ ${e.priceFrom.toFixed(2).replace('.', ',')}</span>` : ''}
-                    <span class="efc-price ${!e.priceTo ? 'price-tba' : ''}" style="font-size: 2rem; font-family: var(--font-title); color: var(--gold); font-weight: 700; text-shadow: 0 0 10px rgba(234,171,94,0.15);">${e.priceTo ? 'R$ ' + e.priceTo.toFixed(2).replace('.', ',') : 'Em breve'}</span>
-                  </div>
-                  
-                  <div class="efc-actions" style="display: flex; gap: 12px;">
-                    ${e.featured ? `<a href="javascript:void(0)" onclick="Router.go('/ebook/${e.slug}')" class="btn btn-outline" style="flex:1; text-align: center; padding: 12px 0;" id="efc-ver-${e.slug}">Ver Detalhes</a>` : ''}
-                    <a href="${e.paymentLink}" target="_blank" class="btn btn-primary btn-shimmer" style="flex:1.5; text-align: center; padding: 12px 0;" id="efc-buy-${e.slug}">
-                      ${e.priceTo ? '⚡ GARANTIR AGORA' : 'SAIBA MAIS'}
-                    </a>
-                  </div>
-                </div>
-              </div>`).join('')}
+            <!-- Box VIP Bundle Promocional -->
+            <div style="margin-top: 60px;">
+              ${this._renderBundleBox()}
             </div>
           </div>
         </section>
       </main>` +
       Footer.render();
+  }
+
+  _renderCards(list) {
+    return list.map((e, i) => {
+      const discount = e.priceFrom && e.priceTo
+        ? Math.round(((e.priceFrom - e.priceTo) / e.priceFrom) * 100)
+        : 0;
+
+      const titleParts = e.title.includes(': ') ? e.title.split(': ') : [e.title, ''];
+
+      return `
+      <article class="ebook-full-card card reveal visible delay-${(i % 3) + 1}" data-cat="${e.category}" id="efc-${e.slug}">
+        <div class="efc-media">
+          <img src="${e.image}" alt="${e.title}" loading="lazy" class="efc-cover-img" />
+          
+          ${!e.hasCoverText ? `
+          <div class="efc-cover-overlay">
+            <h3 class="efc-cover-title">
+              ${titleParts[0]}<br>
+              <span class="efc-cover-sub">${titleParts[1]}</span>
+            </h3>
+            <span class="efc-cover-author">Eduardo Souza</span>
+          </div>` : ''}
+
+          <div class="efc-badges-wrap">
+            ${e.badge ? `<span class="badge ${e.badge === 'MAIS VENDIDO' ? 'badge-hot' : 'badge-gold'}">${e.badge}</span>` : ''}
+            <span class="badge badge-red">${e.category}</span>
+          </div>
+        </div>
+
+        <div class="efc-body">
+          <div class="efc-cat">${e.category}</div>
+          <h2 class="efc-title">${e.title}</h2>
+          <p class="efc-sub">${e.subtitle}</p>
+          <p class="efc-desc">${e.shortDesc}</p>
+
+          <div class="efc-topics">
+            ${e.topics ? e.topics.map(t => `
+              <div class="efc-topic-item">
+                <span class="bullet" aria-hidden="true">✦</span>
+                <span>${t}</span>
+              </div>
+            `).join('') : ''}
+          </div>
+
+          <div class="efc-footer">
+            <div class="efc-price-row">
+              <div class="efc-price-left">
+                ${e.priceFrom ? `<span class="efc-from">De R$ ${e.priceFrom.toFixed(2).replace('.', ',')}</span>` : ''}
+                <span class="efc-price">R$ ${e.priceTo.toFixed(2).replace('.', ',')}</span>
+              </div>
+              ${discount > 0 ? `<span class="efc-discount-badge">-${discount}% OFF</span>` : ''}
+            </div>
+
+            <div class="efc-actions">
+              <a href="${e.paymentLink}" target="_blank" rel="noopener" class="btn btn-primary btn-shimmer btn-buy" id="btn-buy-${e.slug}">
+                <span>⚡</span> <span>GARANTIR POR R$ ${e.priceTo.toFixed(2).replace('.', ',')}</span>
+              </a>
+              <a href="/ebook/${e.slug}" class="btn btn-outline btn-details" id="btn-ver-${e.slug}">
+                <span>📖</span> <span>Ver Sumário Completo & Detalhes →</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </article>`;
+    }).join('');
+  }
+
+  _renderBundleBox() {
+    const bundle = bibliotecaBundle;
+    return `
+    <div class="bundle-box reveal visible" style="background: linear-gradient(135deg, rgba(20, 16, 24, 0.95) 0%, rgba(12, 12, 16, 0.95) 100%); border: 1px solid rgba(212,175,55,0.4); border-radius: var(--radius-lg); padding: 48px 36px; text-align: center; position: relative; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.8);">
+      <div style="position: absolute; top:0; left:0; right:0; height: 3px; background: linear-gradient(90deg, transparent, var(--gold-bright), transparent);"></div>
+      <span class="section-tag" style="background: rgba(212,175,55,0.15);">💎 COLECIONADOR</span>
+      <h2 style="font-size: clamp(1.8rem, 4vw, 2.4rem); color: #fff; margin-bottom: 10px;">
+        Quer Todos os Grimórios? <span class="text-gold">Leve a Biblioteca Completa</span>
+      </h2>
+      <p style="color: var(--text-secondary); max-width: 620px; margin: 0 auto 24px; font-size: 0.98rem;">
+        Quimbanda Vol. I + Goetia + Grimório das Ervas + <strong>Bônus Especial: Quimbanda Vol. II Grátis</strong>.
+      </p>
+
+      <div style="display: inline-flex; align-items: baseline; gap: 14px; margin-bottom: 24px;">
+        <span style="font-size: 1rem; text-decoration: line-through; color: var(--text-faint);">
+          De R$ ${bundle.priceFrom.toFixed(2).replace('.', ',')}
+        </span>
+        <span style="font-family: var(--font-title); font-size: 2.2rem; font-weight: 700; color: var(--gold-light);">
+          Por R$ ${bundle.priceTo.toFixed(2).replace('.', ',')}
+        </span>
+      </div>
+
+      <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+        <a href="/biblioteca" class="btn btn-primary btn-lg btn-shimmer" style="padding: 16px 36px;">
+          <span>⚡</span> <span>CONHECER O PACOTE COMPLETO</span>
+        </a>
+      </div>
+    </div>`;
+  }
+
+  _initFilters() {
+    const chips = this.container.querySelectorAll('.filter-chip');
+    const grid = document.getElementById('ebooks-grid');
+    if (!chips.length || !grid) return;
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        chips.forEach(c => c.classList.remove('active'));
+        chip.classList.add('active');
+
+        const cat = chip.dataset.cat;
+        this.currentCategory = cat;
+
+        const filtered = cat === 'all'
+          ? ebooksData
+          : ebooksData.filter(e => (e.category || '').toLowerCase().includes(cat.toLowerCase()));
+
+        grid.innerHTML = this._renderCards(filtered);
+      });
+    });
   }
 }

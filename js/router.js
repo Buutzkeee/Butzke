@@ -1,8 +1,8 @@
 import { Analytics } from './analytics.js';
 
-/* =====================================
-   Router — History API SPA routing
-   ===================================== */
+/* ============================================================
+   Router — History API SPA routing (GitHub Pages + Custom Domain)
+   ============================================================ */
 export class Router {
   constructor(routes) {
     this.routes = routes;
@@ -16,6 +16,13 @@ export class Router {
     window.addEventListener('popstate', () => this._navigate());
   }
 
+  static getBasePath() {
+    if (window.location.hostname.includes('.github.io') && window.location.pathname.startsWith('/Butzke')) {
+      return '/Butzke';
+    }
+    return '';
+  }
+
   start() {
     this._navigate();
   }
@@ -23,10 +30,12 @@ export class Router {
   _interceptLinks() {
     document.body.addEventListener('click', e => {
       const link = e.target.closest('a');
-      if (link && link.getAttribute('href') && link.getAttribute('href').startsWith('/')) {
+      if (link && link.getAttribute('href') && link.getAttribute('href').startsWith('/') && !link.getAttribute('href').startsWith('//')) {
         e.preventDefault();
-        const path = link.getAttribute('href');
-        window.history.pushState(null, '', path);
+        const rawPath = link.getAttribute('href');
+        const base = Router.getBasePath();
+        const targetPath = (base && !rawPath.startsWith(base)) ? base + rawPath : rawPath;
+        window.history.pushState(null, '', targetPath);
         this._navigate();
       }
     });
@@ -70,9 +79,10 @@ export class Router {
   _navigate() {
     try {
       let path = window.location.pathname;
+      const base = Router.getBasePath();
       
-      if (window.location.hostname.includes('.github.io') && path.startsWith('/Butzke')) {
-        path = path.replace('/Butzke', '') || '/';
+      if (base && path.startsWith(base)) {
+        path = path.slice(base.length) || '/';
       }
 
       let PageClass = null;
@@ -128,13 +138,17 @@ export class Router {
     document.querySelectorAll('link[data-page-css]').forEach(el => el.remove());
     const l = document.createElement('link');
     l.rel = 'stylesheet';
-    l.href = href;
+    const base = Router.getBasePath();
+    const finalHref = (base && href.startsWith('/') && !href.startsWith(base)) ? base + href : href;
+    l.href = finalHref;
     l.setAttribute('data-page-css', 'true');
     document.head.appendChild(l);
   }
 
   static go(path) {
-    window.history.pushState(null, '', path);
+    const base = Router.getBasePath();
+    const targetPath = (base && !path.startsWith(base)) ? base + path : path;
+    window.history.pushState(null, '', targetPath);
     window.dispatchEvent(new Event('popstate'));
   }
 

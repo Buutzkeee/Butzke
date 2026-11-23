@@ -232,10 +232,16 @@
   font-weight: 700;
   font-size: 1rem;
   letter-spacing: 0.06em;
-  transition: all var(--transition);
+  transition: transform 150ms var(--ease-spring), box-shadow 200ms var(--ease-smooth), background 200ms var(--ease-smooth);
   position: relative;
   overflow: hidden;
   cursor: pointer;
+  touch-action: manipulation;
+  user-select: none;
+}
+
+.cta-btn:active {
+  transform: scale(0.97);
 }
 
 .cta-btn::after {
@@ -249,8 +255,10 @@
   transition: left 0.5s ease;
 }
 
-.cta-btn:hover::after {
-  left: 100%;
+@media (hover: hover) and (pointer: fine) {
+  .cta-btn:hover::after {
+    left: 100%;
+  }
 }
 
 .primary-cta {
@@ -260,11 +268,13 @@
   box-shadow: 0 6px 30px rgba(0, 120, 40, 0.5), inset 0 1px 0 rgba(0, 255, 100, 0.1);
 }
 
-.primary-cta:hover {
-  background: linear-gradient(135deg, #008833, #004422);
-  box-shadow: 0 10px 40px rgba(0, 160, 60, 0.6), 0 0 0 2px rgba(0, 200, 80, 0.3);
-  transform: translateY(-2px);
-  color: #b0ffc0;
+@media (hover: hover) and (pointer: fine) {
+  .primary-cta:hover {
+    background: linear-gradient(135deg, #008833, #004422);
+    box-shadow: 0 10px 40px rgba(0, 160, 60, 0.6), 0 0 0 2px rgba(0, 200, 80, 0.3);
+    transform: translateY(-2px);
+    color: #b0ffc0;
+  }
 }
 
 .secondary-cta {
@@ -274,11 +284,13 @@
   box-shadow: 0 6px 30px rgba(139, 0, 0, 0.4), inset 0 1px 0 rgba(255, 200, 100, 0.1);
 }
 
-.secondary-cta:hover {
-  background: linear-gradient(135deg, #660000, #380000);
-  box-shadow: 0 10px 40px rgba(180, 0, 0, 0.5), 0 0 0 2px rgba(200, 0, 0, 0.3);
-  transform: translateY(-2px);
-  color: var(--gold-bright);
+@media (hover: hover) and (pointer: fine) {
+  .secondary-cta:hover {
+    background: linear-gradient(135deg, #660000, #380000);
+    box-shadow: 0 10px 40px rgba(180, 0, 0, 0.5), 0 0 0 2px rgba(200, 0, 0, 0.3);
+    transform: translateY(-2px);
+    color: var(--gold-bright);
+  }
 }
 
 .large-cta {
